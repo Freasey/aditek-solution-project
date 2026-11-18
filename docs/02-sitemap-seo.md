@@ -70,12 +70,12 @@ Sub modul pakai nama fungsi, bukan nama fitur internal: `/meeting-room-booking` 
 ### Home `/`
 - Utama: `IT solution perusahaan`, `jasa IT solution Jakarta`
 - Pendukung: `system integrator Jakarta`, `konsultan IT perusahaan`, `solusi IT Jabodetabek`
-- Title: `Aditek — IT Solution & System Integrator Perusahaan di Jabodetabek`
+- Title: `Worksell ID — IT Solution & System Integrator Perusahaan di Jabodetabek`
 
 ### Security `/security-system`
 - Utama: `sistem keamanan terintegrasi`
 - Pendukung: `security system integrator`, `sistem keamanan gedung`, `sistem keamanan perusahaan`, `integrasi CCTV dan access control`
-- Title: `Sistem Keamanan Terintegrasi untuk Perusahaan | Aditek`
+- Title: `Sistem Keamanan Terintegrasi untuk Perusahaan | Worksell ID`
 - Sub:
   - `/access-control` → `access control system`, `sistem access control perusahaan`, `access door terintegrasi absensi`
   - `/cctv` → `sistem CCTV perusahaan`, `instalasi CCTV gedung`, `CCTV terintegrasi`
@@ -84,7 +84,7 @@ Sub modul pakai nama fungsi, bukan nama fitur internal: `/meeting-room-booking` 
 ### ERP `/erp-system`
 - Utama: `sistem ERP perusahaan`
 - Pendukung: `jasa implementasi ERP`, `konsultan ERP Jakarta`, `ERP custom`, `ERP untuk distributor`, `ERP manufaktur`
-- Title: `Sistem ERP Perusahaan — dari Sales sampai Accounting | Aditek`
+- Title: `Sistem ERP Perusahaan — dari Sales sampai Accounting | Worksell ID`
 - Sub:
   - `/accounting` → `sistem akuntansi perusahaan`, `software akuntansi terintegrasi`
   - `/inventory` → `sistem manajemen inventory`, `sistem stok gudang`
@@ -94,7 +94,7 @@ Sub modul pakai nama fungsi, bukan nama fitur internal: `/meeting-room-booking` 
 ### Workspace `/workplace-management`
 - Utama: `aplikasi manajemen kantor`, `workplace management system`
 - Pendukung: `aplikasi otomasi kantor`, `digitalisasi proses kantor`
-- Title: `Spaces — Aplikasi Workplace Management untuk Kantor | Aditek`
+- Title: `Spaces — Aplikasi Workplace Management untuk Kantor | Worksell ID`
 - Sub:
   - `/meeting-room-booking` → `aplikasi booking ruang meeting`, `sistem reservasi ruangan`, `meeting room booking system`
 
