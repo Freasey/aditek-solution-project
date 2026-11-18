@@ -1,0 +1,11 @@
+# Salin ke .dev.vars untuk development lokal. File .dev.vars tidak boleh di-commit.
+SITE_URL=http://localhost:4321
+MEDIA_BASE_URL=/media
+IMAGE_TRANSFORMS=off
+# Key uji resmi Turnstile: selalu lolos
+PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+# Hanya untuk lokal. Middleware menolak bypass bila SITE_URL adalah worksell.id
+ADMIN_DEV_BYPASS=true
+ACCESS_TEAM_DOMAIN=
+ACCESS_AUD=

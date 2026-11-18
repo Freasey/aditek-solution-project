@@ -1,0 +1,180 @@
+---
+import { env } from 'cloudflare:workers';
+import type { SiteSettings } from '../lib/content';
+import { BUILDING_TYPES, CITIES, LEAD_SYSTEM_OPTIONS } from '../lib/labels';
+
+interface Props {
+  settings: SiteSettings;
+  /** Sistem yang langsung tercentang, mis. di halaman layanan. */
+  preselect?: string[];
+  heading?: string;
+  lead?: string;
+}
+const {
+  settings,
+  preselect = [],
+  heading = 'Ceritakan kebutuhan Anda.',
+  lead = 'Isi formnya, pilih mau dihubungi lewat email atau WhatsApp.',
+} = Astro.props;
+const siteKey = env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+<section class="section" id="kontak" aria-labelledby="kontak-h">
+  <div class="container close">
+    <div class="close__text">
+      <h2 id="kontak-h">{heading}</h2>
+      <p class="lead">{lead}</p>
+      <ul>
+        <li>{settings.reply_promise}</li>
+        <li>Survei lokasi pertama tanpa biaya.</li>
+        <li>Area Jabodetabek.</li>
+      </ul>
+    </div>
+    <div class="stock letter">
+      <h3>Permintaan konsultasi</h3>
+      <form
+        class="form"
+        id="lead"
+        novalidate
+        data-wa={settings.whatsapp_number}
+        data-email={settings.contact_email}
+        data-reply={settings.reply_promise}
+      >
+        <label class="field"><span>Nama</span><input type="text" name="nama" autocomplete="name" required minlength="2" maxlength="100" placeholder="Nama lengkap" /></label>
+        <label class="field"><span>Perusahaan</span><input type="text" name="perusahaan" autocomplete="organization" required minlength="2" maxlength="150" placeholder="PT ..." /></label>
+        <fieldset class="field field--full">
+          <legend>Sistem yang dibutuhkan</legend>
+          <div class="choices">
+            {LEAD_SYSTEM_OPTIONS.map((o) => (
+              <label class="choice"><input type="checkbox" name="sistem" value={o.value} checked={preselect.includes(o.value)} /><span>{o.label}</span></label>
+            ))}
+          </div>
+        </fieldset>
+        <label class="field"><span>Jenis gedung</span>
+          <select name="gedung">{BUILDING_TYPES.map((b) => <option>{b}</option>)}</select>
+        </label>
+        <label class="field"><span>Kota</span>
+          <select name="kota">{CITIES.map((c) => <option>{c}</option>)}</select>
+        </label>
+        <fieldset class="field field--full">
+          <legend>Hubungi saya lewat</legend>
+          <div class="via">
+            <label class="choice"><input type="radio" name="via" value="whatsapp" checked /><span>WhatsApp</span></label>
+            <label class="choice"><input type="radio" name="via" value="email" /><span>Email</span></label>
+          </div>
+        </fieldset>
+        <label class="field field--full" data-via="whatsapp"><span>Nomor WhatsApp</span><input type="tel" name="wa" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="0812 3456 7890" /></label>
+        <label class="field field--full" data-via="email" hidden><span>Email kantor</span><input type="email" name="email" autocomplete="email" maxlength="200" placeholder="nama@perusahaan.co.id" /></label>
+        <label class="field field--full"><span>Ceritakan singkat (opsional)</span><textarea name="pesan" maxlength="1000" placeholder="Contoh: 3 lantai, 120 karyawan, ingin ganti absensi ke face recognition."></textarea></label>
+        {siteKey && <div class="form__captcha cf-turnstile" data-sitekey={siteKey} data-appearance="interaction-only" data-language="id"></div>}
+        <div class="form__foot">
+          <p>Data hanya dipakai untuk menghubungi Anda soal permintaan ini. <a href="/kebijakan-privasi">Kebijakan privasi</a>.</p>
+          <button class="btn btn--ink" type="submit">Kirim permintaan</button>
+        </div>
+        <p class="form__status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+{siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<script>
+  import { contactLink } from '../lib/contact-link';
+
+  type Turnstile = { reset: (el?: string | HTMLElement) => void };
+
+  const f = document.querySelector<HTMLFormElement>('#lead');
+  if (f) {
+    const status = f.querySelector<HTMLElement>('.form__status')!;
+    const button = f.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const via = () => (new FormData(f).get('via') === 'email' ? 'email' : 'whatsapp');
+    const sync = () => {
+      const v = via();
+      f.querySelectorAll<HTMLElement>('[data-via]').forEach((el) => {
+        el.hidden = el.dataset.via !== v;
+      });
+    };
+    f.addEventListener('change', (e) => {
+      if ((e.target as HTMLInputElement).name === 'via') sync();
+    });
+
+    const text = (d: FormData, name: string) => String(d.get(name) ?? '').trim();
+
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const v = via();
+      const contact = v === 'whatsapp' ? text(d, 'wa') : text(d, 'email');
+      if (text(d, 'nama').length < 2 || text(d, 'perusahaan').length < 2 || !contact) {
+        status.textContent = 'Lengkapi nama, perusahaan, dan ' + (v === 'whatsapp' ? 'nomor WhatsApp.' : 'email.');
+        return;
+      }
+
+      const payload = {
+        name: text(d, 'nama'),
+        company: text(d, 'perusahaan'),
+        systems: d.getAll('sistem').map(String),
+        buildingType: text(d, 'gedung'),
+        city: text(d, 'kota'),
+        contactVia: v,
+        whatsapp: text(d, 'wa'),
+        email: text(d, 'email'),
+        message: text(d, 'pesan'),
+        sourcePath: location.pathname,
+        turnstileToken: text(d, 'cf-turnstile-response'),
+      };
+      const fallback = contactLink(
+        { whatsapp: f.dataset.wa ?? '', email: f.dataset.email ?? '' },
+        { ...payload, contactValue: contact },
+      );
+
+      // Jendela WhatsApp dibuka langsung saat klik supaya tidak diblokir popup blocker.
+      const win = fallback?.startsWith('https://wa.me/') ? window.open('about:blank', '_blank') : null;
+      const go = (url: string | null) => {
+        if (!url) {
+          win?.close();
+          return;
+        }
+        if (win) {
+          win.opener = null;
+          win.location.href = url;
+        } else location.href = url;
+      };
+
+      button.disabled = true;
+      status.textContent = 'Mengirim...';
+      try {
+        const res = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = (await res.json().catch(() => ({}))) as { ok?: boolean; redirect?: string | null; error?: string };
+        if (res.ok && data.ok) {
+          go(data.redirect ?? fallback);
+          f.classList.add('is-sent');
+          f.reset();
+          sync();
+          status.textContent = `Terima kasih. ${f.dataset.reply ?? ''}`.trim();
+        } else if (res.status === 400) {
+          win?.close();
+          status.textContent = data.error ?? 'Periksa lagi isian form.';
+        } else {
+          // Server menolak atau gagal: tetap buka WhatsApp/email supaya permintaan tidak hilang.
+          go(fallback);
+          status.textContent = fallback
+            ? 'Form sedang bermasalah, kami arahkan ke ' + (v === 'whatsapp' ? 'WhatsApp.' : 'email.')
+            : 'Form sedang bermasalah. Coba lagi beberapa saat lagi.';
+        }
+      } catch {
+        go(fallback);
+        status.textContent = fallback
+          ? 'Koneksi bermasalah, kami arahkan ke ' + (v === 'whatsapp' ? 'WhatsApp.' : 'email.')
+          : 'Koneksi bermasalah. Coba lagi beberapa saat lagi.';
+      } finally {
+        button.disabled = false;
+        (window as unknown as { turnstile?: Turnstile }).turnstile?.reset();
+      }
+    });
+    sync();
+  }
+</script>

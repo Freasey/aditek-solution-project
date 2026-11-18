@@ -1,0 +1,101 @@
+---
+import type { ProjectCard } from '../lib/content';
+import { pad2 } from '../lib/util';
+import Img from './Img.astro';
+
+interface Props {
+  projects: ProjectCard[];
+}
+const { projects } = Astro.props;
+const total = projects.length;
+---
+<div class="showcase" role="region" aria-roledescription="carousel" aria-label="Proyek yang sudah berjalan">
+  <div class="scene" id="cases" aria-live="polite">
+    {projects.map((p, i) => (
+      <div
+        class:list={['slide', { 'is-active': i === 0 }]}
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`${i + 1} dari ${total}: ${p.clientName}`}
+      >
+        <div class="stock print">
+          <div class="print__photo" data-slot={`case-${i + 1}`}>
+            {p.photo && <Img media={p.photo} sizes="(max-width: 40rem) 92vw, (max-width: 60rem) 76vw, 640px" eager={i === 0} />}
+          </div>
+          {p.photoCaption && <span class="print__cap">{p.photoCaption}</span>}
+        </div>
+        <div class="stock sheet">
+          <p class="sheet__org">Worksell ID<span class="fig">Proyek {p.year}</span></p>
+          <p class="sheet__title">{p.clientName}</p>
+          <p class="sheet__meta">{p.location}</p>
+          <p class="sheet__sol">{p.solution}</p>
+          {p.items.length > 0 && (
+            <ul>
+              {p.items.map((it) => (
+                <li><span>{it.label}</span><span>{it.quantity}</span></li>
+              ))}
+            </ul>
+          )}
+          {p.quote && (
+            <blockquote>
+              “{p.quote}”
+              {p.quoteRole && <cite>{p.quoteRole}, {p.clientName}</cite>}
+            </blockquote>
+          )}
+          <span class="stamp" aria-hidden="true">{p.statusLabel}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+  {total > 1 && (
+    <div class="controls">
+      <span class="count fig" aria-hidden="true"><b data-now>01</b> / {pad2(total)}</span>
+      <button class="btn btn--quiet" type="button" data-go="-1" aria-controls="cases" aria-label="Proyek sebelumnya">Sebelumnya</button>
+      <button class="btn btn--quiet" type="button" data-go="1" aria-controls="cases" aria-label="Proyek berikutnya">Berikutnya</button>
+    </div>
+  )}
+</div>
+
+<script>
+  /* carousel: satu proyek per tampilan, tombol dan keyboard, auto-advance hanya tanpa reduced motion */
+  const box = document.querySelector<HTMLElement>('.showcase');
+  if (box) {
+    const slides = [...box.querySelectorAll<HTMLElement>('.slide')];
+    const now = box.querySelector<HTMLElement>('[data-now]');
+    let i = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const show = (n: number) => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => {
+        const on = k === i;
+        s.classList.toggle('is-active', on);
+        s.inert = !on;
+        s.setAttribute('aria-hidden', String(!on));
+      });
+      if (now) now.textContent = String(i + 1).padStart(2, '0');
+    };
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const play = () => {
+      if (still || slides.length < 2) return;
+      clearInterval(timer);
+      timer = setInterval(() => show(i + 1), 8000);
+    };
+    const stop = () => clearInterval(timer);
+    box.querySelectorAll<HTMLButtonElement>('[data-go]').forEach((b) =>
+      b.addEventListener('click', () => {
+        show(i + Number(b.dataset.go));
+        play();
+      }),
+    );
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(i + 1);
+      if (e.key === 'ArrowLeft') show(i - 1);
+    });
+    box.addEventListener('mouseenter', stop);
+    box.addEventListener('mouseleave', play);
+    box.addEventListener('focusin', stop);
+    box.addEventListener('focusout', play);
+    show(0);
+    play();
+  }
+</script>

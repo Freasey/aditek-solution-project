@@ -1,0 +1,20 @@
+---
+interface Props {
+  home?: boolean;
+  showRoadmap?: boolean;
+  hasContact?: boolean;
+}
+const { home = false, showRoadmap = true, hasContact = true } = Astro.props;
+const at = (hash: string) => (home ? hash : `/${hash}`);
+---
+<header class="nav">
+  <div class="container nav__in">
+    <a class="wordmark" href="/" aria-label="Worksell ID, beranda">Worksell ID</a>
+    <nav class="nav__links" aria-label="Halaman">
+      <a href={at('#sistem')}>Sistem</a>
+      <a href={at('#integrasi')}>Integrasi</a>
+      {showRoadmap && <a href={at('#pengembangan')}>Segera hadir</a>}
+    </nav>
+    <a class="btn btn--quiet" href={hasContact ? '#kontak' : '/#kontak'}>Konsultasi</a>
+  </div>
+</header>

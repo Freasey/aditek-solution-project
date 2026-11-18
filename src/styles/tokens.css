@@ -1,0 +1,38 @@
+/* Token dari design/home-coral-dark.html (branch plan). Tema Coral, versi gelap. */
+@font-face { font-family: "General Sans"; src: url("/fonts/GeneralSans-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "General Sans"; src: url("/fonts/GeneralSans-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "General Sans"; src: url("/fonts/GeneralSans-Semibold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("/fonts/GeistMono-Regular-latin.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Geist Mono"; src: url("/fonts/GeistMono-Regular-latin-ext.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+:root {
+  color-scheme: dark;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1.0625rem;
+  --text-display: clamp(2.5rem, 2.8vw + 1rem, 4.25rem); --text-display-s: clamp(2rem, 3vw + 0.5rem, 3.25rem);
+  --text-section: clamp(2rem, 2.4vw + 1rem, 3.25rem); --text-title: clamp(1.1875rem, 0.6vw + 0.95rem, 1.4375rem); --text-lead: clamp(1.125rem, 0.3vw + 1rem, 1.3125rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --dur-micro: 120ms; --dur-short: 220ms;
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px;
+  --z-raised: 10; --z-sticky-nav: 300; --z-toast: 500;
+
+  /* Coral, dark rendering: hue held at 55, paper steps lighter with elevation */
+  --color-paper: oklch(16% 0.010 55); --color-paper-2: oklch(19.5% 0.011 55); --color-paper-3: oklch(23% 0.012 55);
+  --color-ink: oklch(94% 0.008 70); --color-ink-2: oklch(85% 0.010 62); --color-muted: oklch(71% 0.012 55);
+  --color-rule: oklch(30% 0.012 55); --color-rule-2: oklch(38% 0.013 55);
+  --color-accent: oklch(79% 0.105 30); --color-accent-ink: oklch(21% 0.012 38); --color-focus: oklch(79% 0.11 30);
+  --color-desk: oklch(17.5% 0.012 50); --color-lamp: oklch(25% 0.016 60); --color-well: oklch(26% 0.012 55);
+  --color-cotton: oklch(93% 0.007 75); --color-cotton-2: oklch(89.5% 0.009 70); --color-print: oklch(23% 0.012 38); --color-print-muted: oklch(44% 0.013 45); --color-print-rule: oklch(82% 0.010 60);
+  --color-paid: oklch(54% 0.16 31);
+  --color-grid: oklch(30% 0.012 55 / 0.55); --color-grid-2: oklch(38% 0.014 55 / 0.55);
+  --color-trace-live: oklch(79% 0.105 30 / 0.35); --color-plan: oklch(19.5% 0.011 55 / 0.7); --color-accent-rule: oklch(79% 0.105 30 / 0.4);
+  --lit: 100% 0.005 80; --shade: 30% 0.03 50; --deep: 4% 0.01 40;
+  --font-display: "General Sans", ui-sans-serif, system-ui, sans-serif; --font-body: var(--font-display);
+  --font-outlier: "Geist Mono", ui-monospace, monospace;
+  --radius-card: 8px; --radius-input: 6px; --radius-stock: 8px; --rule-hair: 1px;
+  --edge-stock: inset 0 1px 0 oklch(var(--lit) / 0.75), inset 0 -1px 0 oklch(var(--shade) / 0.12), 0 0 0 0.5px oklch(var(--deep) / 0.5);
+  --cast-stock: 10px 12px 22px -8px oklch(var(--deep) / 0.75);
+  --cast-stock-lift: 14px 18px 28px -8px oklch(var(--deep) / 0.8);
+  --tex-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.45  0 0 0 0 0.4  0 0 0 0.06 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+  --tex-felt: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.018 0.6' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.55  0 0 0 0 0.5  0 0 0 0.05 0'/></filter><rect width='300' height='300' filter='url(%23f)'/></svg>");
+  --tracking-display: -0.03em;
+}

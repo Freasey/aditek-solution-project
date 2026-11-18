@@ -1,0 +1,25 @@
+---
+import { env } from 'cloudflare:workers';
+import type { Media } from '../db/schema';
+import { imageSrcset, imageUrl } from '../lib/media';
+
+interface Props {
+  media: Media;
+  sizes: string;
+  eager?: boolean;
+  alt?: string;
+}
+const { media, sizes, eager = false, alt } = Astro.props;
+const srcset = imageSrcset(env, media);
+---
+<img
+  src={imageUrl(env, media.r2Key, 1200)}
+  srcset={srcset}
+  sizes={srcset ? sizes : undefined}
+  width={media.width ?? undefined}
+  height={media.height ?? undefined}
+  alt={alt ?? media.alt}
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : undefined}
+  decoding="async"
+/>

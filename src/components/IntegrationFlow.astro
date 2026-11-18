@@ -1,0 +1,44 @@
+---
+const flows = [
+  {
+    name: 'Absensi',
+    via: 'Keamanan ke ERP',
+    steps: [
+      { t: '08.02', b: 'Kartu di pintu lobi', sys: 'Sistem keamanan' },
+      { t: '08.02', b: 'Jam masuk tercatat', sys: 'ERP, absensi' },
+      { t: 'Akhir bulan', b: 'Payroll dihitung otomatis', sys: 'ERP, payroll' },
+    ],
+  },
+  {
+    name: 'Ruang meeting',
+    via: 'Spaces ke keamanan',
+    steps: [
+      { t: 'Senin 08.45', b: 'Ruang dipesan untuk 09.00', sys: 'Spaces' },
+      { t: 'Senin 08.55', b: 'Tamu check-in di lobi', sys: 'Visitor management' },
+      { t: 'Senin 09.00', b: 'Pintu ruang terbuka untuk peserta', sys: 'Sistem keamanan' },
+    ],
+  },
+];
+---
+<section class="board" id="integrasi" aria-labelledby="flow-h">
+  <div class="container">
+    <div class="head">
+      <h2 id="flow-h">Bisa berdiri sendiri, bisa saling terhubung.</h2>
+      <p class="lead">Kalau Anda memakai lebih dari satu sistem kami, datanya bisa disambungkan. Dua contoh:</p>
+    </div>
+    <div class="flows">
+      {flows.map((f) => (
+        <div class="flow">
+          <p class="flow__name">{f.name}<small>{f.via}</small></p>
+          <ol>
+            {f.steps.map((s, i) => (
+              <li class:list={['stock', { 'is-done': i === f.steps.length - 1 }]}>
+                <span class="t">{s.t}</span><b>{s.b}</b><span class="sys">{s.sys}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

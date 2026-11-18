@@ -1,0 +1,23 @@
+---
+import type { SystemCard } from '../lib/content';
+import Img from './Img.astro';
+
+interface Props {
+  systems: SystemCard[];
+}
+const { systems } = Astro.props;
+---
+<ul class="systems">
+  {systems.map((s) => (
+    <li class="stock system">
+      <div class="system__photo" data-slot={`sys-${s.slug}`}>
+        {s.photo && <Img media={s.photo} sizes="(max-width: 60rem) 92vw, 30vw" />}
+      </div>
+      <div class="system__body">
+        <h3>{s.title}</h3>
+        <p>{s.summary}</p>
+        <a href={s.pagePath}>{s.ctaLabel}</a>
+      </div>
+    </li>
+  ))}
+</ul>

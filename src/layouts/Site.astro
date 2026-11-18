@@ -1,0 +1,82 @@
+---
+import { env } from 'cloudflare:workers';
+import '../styles/tokens.css';
+import '../styles/site.css';
+import '../styles/pages.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import type { SiteSettings } from '../lib/content';
+import { JS_FLAG_SCRIPT } from '../lib/inline';
+import { imageUrl } from '../lib/media';
+import type { Media } from '../db/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path kanonik, mis. "/security-system". */
+  path: string;
+  settings: SiteSettings;
+  ogImage?: Media | null;
+  home?: boolean;
+  showRoadmap?: boolean;
+  noindex?: boolean;
+  hasContact?: boolean;
+  /** JSON-LD tambahan untuk halaman ini (mis. Service). */
+  schema?: Record<string, unknown>[];
+}
+const { title, description, path, settings, ogImage, home = false, showRoadmap = true, noindex = false, hasContact = true, schema = [] } =
+  Astro.props;
+
+const canonical = new URL(path, 'https://worksell.id').href;
+const ogUrl = ogImage ? new URL(imageUrl(env, ogImage.r2Key, 1200), canonical).href : null;
+
+const business: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': ['Organization', 'LocalBusiness'],
+  '@id': 'https://worksell.id/#organization',
+  name: 'Worksell ID',
+  url: 'https://worksell.id',
+  description:
+    'System integrator di Jabodetabek untuk sistem keamanan gedung, ERP, dan aplikasi workplace management.',
+  areaServed: ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi'].map((name) => ({ '@type': 'City', name })),
+  address: { '@type': 'PostalAddress', addressRegion: 'Jabodetabek', addressCountry: 'ID' },
+  ...(settings.contact_email ? { email: settings.contact_email } : {}),
+  ...(settings.whatsapp_number ? { telephone: `+${settings.whatsapp_number}` } : {}),
+  ...(ogUrl ? { image: ogUrl } : {}),
+};
+// JSON-LD tidak dieksekusi, tetapi "<" tetap di-escape supaya tidak bisa menutup tag script.
+const jsonLd = JSON.stringify(schema.length ? [business, ...schema] : business).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+  <meta name="theme-color" content="#1d1916" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="/fonts/GeneralSans-Semibold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/GeneralSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:site_name" content="Worksell ID" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  {ogUrl && <meta property="og:image" content={ogUrl} />}
+  <meta name="twitter:card" content={ogUrl ? 'summary_large_image' : 'summary'} />
+  <script is:inline set:html={JS_FLAG_SCRIPT}></script>
+  <script type="application/ld+json" is:inline set:html={jsonLd}></script>
+</head>
+<body>
+  <a class="skip" href="#main">Langsung ke konten</a>
+  <Nav home={home} showRoadmap={showRoadmap} hasContact={hasContact} />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer line={settings.footer_line} />
+</body>
+</html>

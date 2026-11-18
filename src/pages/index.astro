@@ -1,0 +1,72 @@
+---
+import { env } from 'cloudflare:workers';
+import Site from '../layouts/Site.astro';
+import Traces from '../components/Traces.astro';
+import ProjectCarousel from '../components/ProjectCarousel.astro';
+import SystemCards from '../components/SystemCards.astro';
+import RoadmapList from '../components/RoadmapList.astro';
+import IntegrationFlow from '../components/IntegrationFlow.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { getDb } from '../db/client';
+import { getMedia, getProjectCards, getRoadmap, getSettings, getSystems } from '../lib/content';
+
+const db = getDb(env);
+const [settings, projects, systems, roadmap] = await Promise.all([
+  getSettings(db),
+  getProjectCards(db, { publishedOnly: true }),
+  getSystems(db),
+  getRoadmap(db, { publishedOnly: true }),
+]);
+const ogImage = await getMedia(db, settings.og_image_id);
+---
+<Site
+  title="Worksell ID | IT Solution dan System Integrator Perusahaan di Jabodetabek"
+  description="Worksell ID, system integrator di Jabodetabek untuk sistem keamanan gedung, ERP, dan aplikasi workplace management. Setiap sistem dikerjakan dari survei sampai dipakai tim Anda."
+  path="/"
+  settings={settings}
+  ogImage={ogImage}
+  home
+  showRoadmap={roadmap.length > 0}
+>
+  <section class:list={['hero', { 'hero--text': projects.length === 0 }]}>
+    <Traces />
+    <div class="container">
+      <div class="hero__text">
+        <h1>{settings.hero_title}</h1>
+        <p class="lead">Worksell ID mengerjakan setiap sistem dari survei sampai benar-benar dipakai tim Anda, di Jabodetabek.</p>
+        <div class="actions">
+          <a class="btn btn--card" href="#kontak">Jadwalkan survei</a>
+          <a class="btn btn--quiet" href="#sistem">Lihat sistemnya</a>
+        </div>
+        <p class="hero__note">Untuk kantor, gudang, dan pabrik di Jakarta, Bogor, Depok, Tangerang, dan Bekasi.</p>
+      </div>
+      {projects.length > 0 && <ProjectCarousel projects={projects} />}
+    </div>
+  </section>
+
+  <section class="section" id="sistem" aria-labelledby="sistem-h">
+    <div class="container">
+      <div class="head">
+        <h2 id="sistem-h">Tiga sistem, masing-masing berdiri sendiri.</h2>
+        <p class="lead">Pilih yang Anda butuhkan, dikerjakan sampai dipakai.</p>
+      </div>
+      <SystemCards systems={systems} />
+    </div>
+  </section>
+
+  {roadmap.length > 0 && (
+    <section class="section" id="pengembangan" aria-labelledby="next-h">
+      <div class="container">
+        <div class="head">
+          <h2 id="next-h">Sedang kami kembangkan.</h2>
+          <p class="lead">Daftar untuk uji coba lebih awal.</p>
+        </div>
+        <RoadmapList items={roadmap} />
+      </div>
+    </section>
+  )}
+
+  <IntegrationFlow />
+
+  <LeadForm settings={settings} />
+</Site>

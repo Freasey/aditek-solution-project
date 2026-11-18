@@ -1,0 +1,39 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "worksell-web",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": "./dist", "binding": "ASSETS" },
+  "observability": { "enabled": true },
+
+  // Isi database_id setelah pemilik menjalankan: npx wrangler d1 create worksell-db
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "worksell-db",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  // Bucket dibuat pemilik: npx wrangler r2 bucket create worksell-media
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "worksell-media" }],
+
+  // 5 request per 60 detik per IP untuk POST /api/leads
+  "ratelimits": [
+    { "name": "LEAD_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
+
+  "vars": {
+    "SITE_URL": "https://worksell.id",
+    "MEDIA_BASE_URL": "https://media.worksell.id",
+    // "on" setelah Image Transformations aktif di zone worksell.id dan media.worksell.id diizinkan
+    "IMAGE_TRANSFORMS": "off",
+    // Isi dari dashboard Turnstile dan Cloudflare Access
+    "PUBLIC_TURNSTILE_SITE_KEY": "",
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": ""
+  }
+  // Secret (diisi pemilik): npx wrangler secret put TURNSTILE_SECRET_KEY
+}

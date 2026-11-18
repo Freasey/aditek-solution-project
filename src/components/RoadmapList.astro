@@ -1,0 +1,18 @@
+---
+import type { RoadmapItem } from '../db/schema';
+import { STAGE_LABEL } from '../lib/labels';
+
+interface Props {
+  items: RoadmapItem[];
+}
+const { items } = Astro.props;
+---
+<ul class="next">
+  {items.map((it) => (
+    <li>
+      <span class="state">{STAGE_LABEL[it.stage]}</span>
+      <h3>{it.title}</h3>
+      <p>{it.summary}</p>
+    </li>
+  ))}
+</ul>

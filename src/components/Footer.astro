@@ -1,0 +1,22 @@
+---
+interface Props {
+  line: string;
+}
+const { line } = Astro.props;
+const year = new Date().getUTCFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <p class="footer__line">{line}</p>
+    <div class="footer__row">
+      <nav aria-label="Footer">
+        <a href="/security-system">Sistem keamanan</a>
+        <a href="/erp-system">Sistem ERP</a>
+        <a href="/workplace-management">Spaces</a>
+        <a href="/#kontak">Kontak</a>
+        <a href="/kebijakan-privasi">Kebijakan privasi</a>
+      </nav>
+      <span>© {year} Worksell ID, Jabodetabek</span>
+    </div>
+  </div>
+</footer>
