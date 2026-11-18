@@ -6,7 +6,7 @@ Dokumen perencanaan dan desain ada di branch [`plan`](../../tree/plan).
 | Bagian | Isi |
 |---|---|
 | Framework | Astro 7 (SSR) + `@astrojs/cloudflare` 14 |
-| Database | Cloudflare D1 (`worksell-db`) + Drizzle ORM |
+| Database | Cloudflare D1 (`worksell_db`) + Drizzle ORM |
 | Foto | Vercel Blob (store publik), lewat HTTP API |
 | Form | Rate limit 5 request/menit per IP, honeypot, validasi Zod, Turnstile opsional |
 | Admin | `/admin`, login email dan password dari env, cookie sesi bertanda tangan HMAC |
@@ -87,7 +87,7 @@ pnpm install && pnpm build
 ```
 
 ```bash
-npx wrangler d1 migrations apply worksell-db --remote
+npx wrangler d1 migrations apply DB --remote
 ```
 
 ```bash

@@ -14,7 +14,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "worksell-db",
+      "database_name": "worksell_db",
       "database_id": "1d630403-ebe8-4f60-a449-09b7324cef25",
       "migrations_dir": "migrations"
     }
