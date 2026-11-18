@@ -82,17 +82,15 @@ Isi di dashboard Cloudflare: **Workers & Pages > worksell-web > Settings > Varia
 
 ## Setiap rilis
 
-```bash
-pnpm install && pnpm build
-```
+Workers Builds (Settings > Build) memakai:
 
-```bash
-npx wrangler d1 migrations apply DB --remote
-```
+| Kolom | Isi |
+|---|---|
+| Build command | `pnpm run build` |
+| Deploy command | `pnpm run deploy` (menjalankan migrasi D1 yang belum dijalankan, lalu `wrangler deploy`) |
 
-```bash
-npx wrangler deploy
-```
+Token build bawaan Workers Builds tidak punya izin D1. Tambahkan sekali di
+My Profile > API Tokens > token Workers Builds > Edit > tambah izin **Account / D1 / Edit**.
 
 Pertama kali: Workers > `worksell-web` > Settings > Domains & Routes > tambah custom domain `worksell.id`.
 
