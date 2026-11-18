@@ -1,0 +1,55 @@
+---
+import ServicePage, { type ServiceContent } from '../components/ServicePage.astro';
+
+const content: ServiceContent = {
+  slug: 'erp',
+  path: '/erp-system',
+  title: 'Sistem ERP Perusahaan, dari Sales sampai Accounting | Worksell ID',
+  description:
+    'Implementasi sistem ERP perusahaan di Jabodetabek: sales, purchasing, inventory, dan accounting dalam satu data. Dikerjakan per fase sampai dipakai tim Anda.',
+  h1: 'Sistem ERP perusahaan, dari sales sampai accounting.',
+  lead: 'Worksell ID mengimplementasikan sistem ERP perusahaan yang menyatukan sales, purchasing, inventory, dan accounting dalam satu data, dikerjakan per fase supaya tetap terkendali.',
+  specTitle: 'Modul yang bisa dipilih',
+  spec: [
+    ['Sales order dan invoice', 'modul'],
+    ['Purchasing dan purchase order', 'modul'],
+    ['Inventory dan stok gudang', 'modul'],
+    ['Accounting dan laporan keuangan', 'modul'],
+    ['Absensi dan payroll', 'opsional'],
+  ],
+  problemsTitle: 'Tanda perusahaan sudah butuh ERP.',
+  problems: [
+    {
+      title: 'Data tersebar di banyak spreadsheet',
+      text: 'Sales, gudang, dan finance punya angka sendiri, dan tutup buku selalu dimulai dengan mencocokkan data.',
+    },
+    {
+      title: 'Stok tidak pernah pas',
+      text: 'Barang tercatat ada padahal sudah keluar, atau sebaliknya, sehingga pembelian sering terlambat atau berlebih.',
+    },
+    {
+      title: 'Laporan menunggu akhir bulan',
+      text: 'Pemilik baru tahu margin dan arus kas setelah laporan disusun manual, bukan saat keputusan perlu diambil.',
+    },
+  ],
+  partsTitle: 'Modul sistem ERP.',
+  partsLead: 'Mulai dari modul yang paling mendesak, lalu tambah per fase. Semua memakai satu data.',
+  parts: [
+    { title: 'Sales', text: 'Penawaran, sales order, pengiriman, dan invoice dalam satu alur yang bisa dilacak.' },
+    { title: 'Purchasing', text: 'Permintaan pembelian, purchase order, persetujuan, dan penerimaan barang.' },
+    { title: 'Inventory', text: 'Stok per gudang dan lokasi, scanner barcode, stock opname, dan mutasi barang.' },
+    { title: 'Accounting', text: 'Jurnal otomatis dari setiap transaksi, buku besar, dan laporan keuangan kapan saja.' },
+    { title: 'Absensi dan payroll', text: 'Menerima data dari sistem keamanan kami, sehingga jam kerja langsung dihitung.' },
+    { title: 'Scope per fase', text: 'Setiap fase punya cakupan tertulis di kontrak, supaya proyek tidak melebar tanpa kendali.' },
+  ],
+  steps: [
+    { title: 'Analisis proses', text: 'Kami memetakan alur kerja dan dokumen yang dipakai tim Anda sekarang.' },
+    { title: 'Desain dan konfigurasi', text: 'Modul disesuaikan dengan proses Anda, termasuk migrasi data awal.' },
+    { title: 'Uji coba dan go-live', text: 'Uji paralel dengan data nyata sebelum sistem lama dimatikan.' },
+    { title: 'Training dan support', text: 'Pelatihan per divisi dan pendampingan setelah go-live.' },
+  ],
+  formHeading: 'Konsultasikan sistem ERP Anda.',
+  serviceType: 'ERP implementation',
+};
+---
+<ServicePage content={content} />

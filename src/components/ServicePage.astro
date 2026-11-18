@@ -1,0 +1,129 @@
+---
+import { env } from 'cloudflare:workers';
+import Site from '../layouts/Site.astro';
+import Traces from './Traces.astro';
+import LeadForm from './LeadForm.astro';
+import Img from './Img.astro';
+import { getDb } from '../db/client';
+import { getMedia, getRoadmap, getSettings, getSystems } from '../lib/content';
+import type { SYSTEM_SLUGS } from '../db/schema';
+
+interface Item { title: string; text: string }
+export interface ServiceContent {
+  slug: (typeof SYSTEM_SLUGS)[number];
+  path: string;
+  title: string;
+  description: string;
+  h1: string;
+  lead: string;
+  specTitle: string;
+  spec: [string, string][];
+  problemsTitle: string;
+  problems: Item[];
+  partsTitle: string;
+  partsLead: string;
+  parts: Item[];
+  steps: Item[];
+  formHeading: string;
+  serviceType: string;
+}
+interface Props { content: ServiceContent }
+const { content: c } = Astro.props;
+
+const db = getDb(env);
+const [settings, systems, roadmap] = await Promise.all([
+  getSettings(db),
+  getSystems(db),
+  getRoadmap(db, { publishedOnly: true }),
+]);
+const system = systems.find((s) => s.slug === c.slug);
+const ogImage = system?.photo ?? (await getMedia(db, settings.og_image_id));
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: c.h1.replace(/\.$/, ''),
+  serviceType: c.serviceType,
+  description: c.description,
+  url: `https://worksell.id${c.path}`,
+  provider: { '@id': 'https://worksell.id/#organization' },
+  areaServed: ['Jakarta', 'Bogor', 'Depok', 'Tangerang', 'Bekasi'].map((name) => ({ '@type': 'City', name })),
+};
+---
+<Site
+  title={c.title}
+  description={c.description}
+  path={c.path}
+  settings={settings}
+  ogImage={ogImage}
+  showRoadmap={roadmap.length > 0}
+  schema={[serviceSchema]}
+>
+  <section class="hero">
+    <Traces />
+    <div class="container">
+      <div class="hero__text">
+        <h1>{c.h1}</h1>
+        <p class="lead">{c.lead}</p>
+        <div class="actions">
+          <a class="btn btn--card" href="#kontak">Jadwalkan survei</a>
+          <a class="btn btn--quiet" href="#komponen">Lihat komponennya</a>
+        </div>
+        <p class="hero__note">Untuk kantor, gudang, dan pabrik di Jakarta, Bogor, Depok, Tangerang, dan Bekasi.</p>
+      </div>
+      <div class="stock spec">
+        {system?.photo && (
+          <div class="system__photo" data-slot={`sys-${c.slug}`}>
+            <Img media={system.photo} sizes="(max-width: 60rem) 92vw, 480px" eager />
+          </div>
+        )}
+        <p class="spec__org">Worksell ID<span>{system?.title ?? ''}</span></p>
+        <h2>{c.specTitle}</h2>
+        <ul>
+          {c.spec.map(([label, value]) => <li><span>{label}</span><span>{value}</span></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="masalah-h">
+    <div class="container">
+      <div class="head">
+        <h2 id="masalah-h">{c.problemsTitle}</h2>
+      </div>
+      <ul class="points">
+        {c.problems.map((p) => <li><h3>{p.title}</h3><p>{p.text}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="komponen" aria-labelledby="komponen-h">
+    <div class="container">
+      <div class="head">
+        <h2 id="komponen-h">{c.partsTitle}</h2>
+        <p class="lead">{c.partsLead}</p>
+      </div>
+      <ul class="parts">
+        {c.parts.map((p, i) => (
+          <li class="stock"><span class="fig">{String(i + 1).padStart(2, '0')}</span><h3>{p.title}</h3><p>{p.text}</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="board" id="cara-kerja" aria-labelledby="cara-h">
+    <div class="container">
+      <div class="head">
+        <h2 id="cara-h">Cara kami mengerjakannya.</h2>
+        <p class="lead">Satu tim dari survei sampai sistem dipakai setiap hari.</p>
+      </div>
+      <ol class="steps">
+        {c.steps.map((s, i) => (
+          <li class="stock"><span class="t">Langkah {i + 1}</span><b>{s.title}</b><p>{s.text}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <LeadForm settings={settings} preselect={[c.slug]} heading={c.formHeading} />
+</Site>

@@ -1,0 +1,75 @@
+---
+import { env } from 'cloudflare:workers';
+import Site from '../layouts/Site.astro';
+import { getDb } from '../db/client';
+import { getSettings } from '../lib/content';
+
+const settings = await getSettings(getDb(env));
+const contact = [
+  settings.contact_email && `email ${settings.contact_email}`,
+  settings.whatsapp_number && `WhatsApp +${settings.whatsapp_number}`,
+]
+  .filter(Boolean)
+  .join(' atau ');
+---
+<Site
+  title="Kebijakan Privasi | Worksell ID"
+  description="Cara Worksell ID mengumpulkan, memakai, dan menjaga data pribadi yang Anda kirim lewat form konsultasi, sesuai UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi."
+  path="/kebijakan-privasi"
+  settings={settings}
+  hasContact={false}
+>
+  <header class="page-head">
+    <div class="container">
+      <h1>Kebijakan privasi</h1>
+      <p class="lead">Data yang Anda kirim hanya dipakai untuk menghubungi Anda soal permintaan itu.</p>
+    </div>
+  </header>
+  <div class="container">
+    <article class="prose">
+      <p class="meta">Berlaku sejak 18 November 2026.</p>
+      <p>
+        Kebijakan ini menjelaskan bagaimana Worksell ID ("kami") mengelola data pribadi yang Anda berikan
+        lewat website worksell.id, sesuai Undang-Undang No. 27 Tahun 2022 tentang Pelindungan Data Pribadi.
+      </p>
+
+      <h2>Data yang kami kumpulkan</h2>
+      <ul>
+        <li>Nama, nama perusahaan, jenis gedung, dan kota yang Anda isi di form konsultasi.</li>
+        <li>Nomor WhatsApp atau alamat email, sesuai pilihan Anda.</li>
+        <li>Pesan yang Anda tulis, bila ada.</li>
+        <li>Data teknis saat form dikirim: halaman asal dan jenis browser, untuk mencegah spam.</li>
+      </ul>
+
+      <h2>Untuk apa data dipakai</h2>
+      <ul>
+        <li>Menghubungi Anda soal permintaan konsultasi, survei, dan penawaran.</li>
+        <li>Mencatat riwayat komunikasi supaya Anda tidak perlu mengulang cerita.</li>
+      </ul>
+      <p>Kami tidak menjual data Anda dan tidak memakainya untuk iklan.</p>
+
+      <h2>Penyimpanan dan keamanan</h2>
+      <p>
+        Data disimpan di infrastruktur Cloudflare dan hanya bisa dibuka oleh tim Worksell ID yang berwenang
+        melalui halaman admin yang dilindungi login. Form dilindungi Cloudflare Turnstile untuk mencegah spam.
+      </p>
+      <p>
+        Data permintaan kami simpan selama masih dibutuhkan untuk tujuan di atas, paling lama dua tahun sejak
+        kontak terakhir, kecuali Anda menjadi klien dan ada kewajiban hukum untuk menyimpannya lebih lama.
+      </p>
+
+      <h2>Pihak ketiga</h2>
+      <p>
+        Saat Anda memilih WhatsApp atau email, percakapan berlanjut di layanan tersebut dan tunduk pada
+        kebijakan privasi masing-masing. Website ini memakai Cloudflare Web Analytics yang tidak memakai cookie
+        pelacak.
+      </p>
+
+      <h2>Hak Anda</h2>
+      <p>
+        Anda berhak meminta salinan, perbaikan, atau penghapusan data pribadi Anda, serta menarik persetujuan
+        kapan saja.{contact ? ` Hubungi kami lewat ${contact}.` : ' Hubungi kami lewat kontak yang tercantum di website ini.'}
+      </p>
+    </article>
+  </div>
+</Site>

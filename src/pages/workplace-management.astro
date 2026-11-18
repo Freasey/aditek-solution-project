@@ -1,0 +1,55 @@
+---
+import ServicePage, { type ServiceContent } from '../components/ServicePage.astro';
+
+const content: ServiceContent = {
+  slug: 'spaces',
+  path: '/workplace-management',
+  title: 'Spaces, Aplikasi Workplace Management untuk Kantor | Worksell ID',
+  description:
+    'Spaces, aplikasi workplace management dari Worksell ID untuk otomasi pekerjaan ringan kantor, dimulai dari booking ruang meeting. Untuk perusahaan di Jabodetabek.',
+  h1: 'Spaces, aplikasi workplace management untuk kantor.',
+  lead: 'Spaces adalah aplikasi workplace management buatan Worksell ID untuk mengotomasi pekerjaan ringan kantor, dimulai dari booking ruang meeting yang tidak pernah bentrok.',
+  specTitle: 'Modul Spaces',
+  spec: [
+    ['Booking ruang meeting', 'tersedia'],
+    ['Tablet di depan ruang', 'opsional'],
+    ['Check-in tamu', 'terhubung'],
+    ['Akses pintu ruang', 'terhubung'],
+    ['Modul berikutnya', 'segera'],
+  ],
+  problemsTitle: 'Pekerjaan kecil yang menghabiskan waktu.',
+  problems: [
+    {
+      title: 'Ruang meeting bentrok',
+      text: 'Pemesanan lewat chat atau kertas di pintu membuat dua tim datang ke ruang yang sama.',
+    },
+    {
+      title: 'Ruang dipesan, tapi kosong',
+      text: 'Ruang tercatat terpakai padahal rapat batal, sementara tim lain tidak kebagian.',
+    },
+    {
+      title: 'GA jadi operator',
+      text: 'Tim general affairs sibuk menjawab pertanyaan jadwal ruang, bukan mengurus hal yang lebih penting.',
+    },
+  ],
+  partsTitle: 'Yang ada di Spaces.',
+  partsLead: 'Dipakai sendiri sudah berguna, lebih kuat bila disambungkan ke sistem keamanan.',
+  parts: [
+    { title: 'Booking ruang meeting', text: 'Lihat ruang yang kosong, pesan dari HP atau laptop, dan undang peserta.' },
+    { title: 'Tablet di depan ruang', text: 'Status ruang terlihat dari luar, dan rapat bisa dikonfirmasi atau dilepas di tempat.' },
+    { title: 'Lepas otomatis', text: 'Ruang yang tidak dikonfirmasi dalam beberapa menit dilepas untuk tim lain.' },
+    { title: 'Terhubung ke visitor management', text: 'Tamu rapat yang sudah check-in di lobi langsung tercatat di jadwal.' },
+    { title: 'Terhubung ke access control', text: 'Pintu ruang terbuka untuk peserta rapat pada jam yang dipesan.' },
+    { title: 'Laporan pemakaian', text: 'Lihat ruang mana yang paling sering dipakai untuk merencanakan ruang kantor.' },
+  ],
+  steps: [
+    { title: 'Demo dan pemetaan', text: 'Kami tunjukkan Spaces dan memetakan ruang serta aturan kantor Anda.' },
+    { title: 'Konfigurasi', text: 'Ruang, kapasitas, jam kerja, dan pengguna diatur sesuai kebutuhan.' },
+    { title: 'Pemasangan', text: 'Tablet dan integrasi pintu dipasang bila dibutuhkan.' },
+    { title: 'Pendampingan', text: 'Tim Anda dilatih, lalu kami pantau pemakaian di minggu pertama.' },
+  ],
+  formHeading: 'Minta demo Spaces.',
+  serviceType: 'Workplace management software',
+};
+---
+<ServicePage content={content} />

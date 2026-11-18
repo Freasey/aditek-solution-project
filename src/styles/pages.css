@@ -7,6 +7,7 @@
 /* spec card di hero halaman layanan */
 .spec { padding: var(--space-xl); transform: rotate(1.2deg); max-width: 520px; justify-self: end; width: 100%; }
 .spec__org { display: flex; justify-content: space-between; font-size: var(--text-sm); font-weight: 600; }
+.spec .system__photo + .spec__org { margin-top: var(--space-md); }
 .spec__org span { font-weight: 400; color: var(--color-print-muted); }
 .spec h2 { margin-top: var(--space-md); font-size: var(--text-title); line-height: 1.2; letter-spacing: -0.015em; max-width: none; }
 .spec ul { margin-top: var(--space-md); border-top: var(--rule-hair) solid var(--color-print); }

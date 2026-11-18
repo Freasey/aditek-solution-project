@@ -6,7 +6,7 @@ import { contactLink } from '../../lib/contact-link';
 import { getSettings } from '../../lib/content';
 import { verifyTurnstile } from '../../lib/turnstile';
 import { leadSchema } from '../../lib/validation';
-import { newId, nowIso } from '../../lib/util';
+import { isProductionSite, newId, nowIso } from '../../lib/util';
 
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json; charset=utf-8' } });
@@ -42,7 +42,9 @@ export const POST: APIRoute = async ({ request }) => {
   }
   const lead = parsed.data;
 
-  const human = await verifyTurnstile(env.TURNSTILE_SECRET_KEY, lead.turnstileToken, ip);
+  const human = await verifyTurnstile(env.TURNSTILE_SECRET_KEY, lead.turnstileToken, ip, {
+    production: isProductionSite(env.SITE_URL),
+  });
   if (!human) return json(403, { ok: false, error: 'Verifikasi anti-spam gagal.' });
 
   const db = getDb(env);

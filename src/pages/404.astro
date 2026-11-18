@@ -1,0 +1,35 @@
+---
+import { env } from 'cloudflare:workers';
+import Site from '../layouts/Site.astro';
+import { getDb } from '../db/client';
+import { DEFAULT_SETTINGS, getSettings } from '../lib/content';
+
+Astro.response.status = 404;
+const settings = await getSettings(getDb(env)).catch(() => DEFAULT_SETTINGS);
+---
+<Site
+  title="Halaman tidak ditemukan | Worksell ID"
+  description="Halaman yang Anda cari tidak ada di worksell.id."
+  path={Astro.url.pathname}
+  settings={settings}
+  hasContact={false}
+  noindex
+>
+  <header class="page-head">
+    <div class="container">
+      <h1>Halaman tidak ditemukan.</h1>
+      <p class="lead">Mungkin alamatnya berubah. Coba mulai dari beranda atau salah satu sistem kami.</p>
+      <div class="actions">
+        <a class="btn btn--card" href="/">Ke beranda</a>
+        <a class="btn btn--quiet" href="/#kontak">Hubungi kami</a>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <ul class="prose">
+      <li><a href="/security-system">Sistem keamanan terintegrasi</a></li>
+      <li><a href="/erp-system">Sistem ERP perusahaan</a></li>
+      <li><a href="/workplace-management">Spaces, aplikasi workplace management</a></li>
+    </ul>
+  </div>
+</Site>

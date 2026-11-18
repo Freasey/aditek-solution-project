@@ -1,0 +1,73 @@
+---
+import ServicePage, { type ServiceContent } from '../components/ServicePage.astro';
+
+const content: ServiceContent = {
+  slug: 'security',
+  path: '/security-system',
+  title: 'Sistem Keamanan Terintegrasi untuk Perusahaan | Worksell ID',
+  description:
+    'Sistem keamanan terintegrasi untuk gedung dan perusahaan di Jabodetabek: access control, CCTV, dan visitor management dalam satu arsitektur, dari survei sampai dipakai.',
+  h1: 'Sistem keamanan terintegrasi untuk gedung dan perusahaan.',
+  lead: 'Worksell ID merancang sistem keamanan terintegrasi: access control, CCTV, dan visitor management yang bekerja sebagai satu sistem, bukan tumpukan perangkat.',
+  specTitle: 'Yang biasanya termasuk',
+  spec: [
+    ['Reader kartu atau face recognition', 'per pintu'],
+    ['Kamera IP dan NVR', 'per area'],
+    ['Visitor management', 'lobi'],
+    ['Software VMS dan dashboard', '1 sistem'],
+    ['Integrasi absensi ke ERP', 'opsional'],
+  ],
+  problemsTitle: 'Masalah yang sering kami temui di lapangan.',
+  problems: [
+    {
+      title: 'Perangkat jalan sendiri-sendiri',
+      text: 'CCTV, reader pintu, dan buku tamu dibeli terpisah, jadi kejadian di pintu sulit dicocokkan dengan rekaman.',
+    },
+    {
+      title: 'Akses tidak pernah dirapikan',
+      text: 'Kartu karyawan yang sudah keluar masih aktif, dan tidak ada yang tahu siapa boleh masuk ke zona mana.',
+    },
+    {
+      title: 'Rekaman ada, tapi sulit dicari',
+      text: 'Saat ada insiden, tim butuh berjam-jam memutar rekaman karena tidak ada log yang menunjukkan waktunya.',
+    },
+  ],
+  partsTitle: 'Komponen sistem keamanan.',
+  partsLead: 'Bisa dipasang bertahap, dirancang dari awal supaya bisa disambungkan.',
+  parts: [
+    {
+      title: 'Access control',
+      text: 'Reader kartu, PIN, atau face recognition per pintu dan per zona, dengan hak akses yang diatur dari satu tempat.',
+    },
+    {
+      title: 'CCTV dan NVR',
+      text: 'Kamera IP, perekam, dan software VMS. Event di pintu langsung ditautkan ke rekaman pada detik yang sama.',
+    },
+    {
+      title: 'Visitor management',
+      text: 'Tamu check-in di lobi, mendapat akses sementara, dan tercatat siapa yang ditemui.',
+    },
+    {
+      title: 'Integrasi absensi',
+      text: 'Data tap kartu di pintu dikirim ke modul absensi dan payroll di ERP, tanpa input ulang.',
+    },
+    {
+      title: 'Kepatuhan UU PDP',
+      text: 'Data biometrik dan rekaman disimpan dengan batas akses dan masa simpan yang jelas, sesuai UU No. 27/2022.',
+    },
+    {
+      title: 'Support dan SLA',
+      text: 'Maintenance berkala dan SLA tertulis supaya sistem tetap jalan setelah serah terima.',
+    },
+  ],
+  steps: [
+    { title: 'Survei lokasi', text: 'Kami datang, memetakan pintu, area, dan alur orang di gedung Anda.' },
+    { title: 'Desain arsitektur', text: 'Gambar penempatan perangkat, jaringan, dan zona akses, beserta penawaran.' },
+    { title: 'Instalasi dan integrasi', text: 'Pemasangan, konfigurasi, dan pengujian setiap pintu dan kamera.' },
+    { title: 'Training dan support', text: 'Tim Anda dilatih memakainya, lalu kami jaga lewat SLA.' },
+  ],
+  formHeading: 'Konsultasikan sistem keamanan Anda.',
+  serviceType: 'Security system integration',
+};
+---
+<ServicePage content={content} />
