@@ -33,7 +33,7 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 html, body { overflow-x: clip; }
-html { scroll-padding-top: var(--space-3xl); }
+html { scroll-padding-top: var(--space-3xl); scrollbar-color: var(--color-muted) var(--color-paper); }
 body { margin: 0; background: var(--color-paper); color: var(--color-ink); font: 400 var(--text-md)/1.5 var(--font-body); -webkit-font-smoothing: antialiased; }
 :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 ::selection { background: var(--color-mark); color: var(--color-mark-ink); }
@@ -66,7 +66,7 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
 
 /* hero: the overprint sheet */
 .hero { position: relative; min-height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; padding-bottom: var(--space-2xl); }
-.hero__field { position: absolute; top: 0; bottom: 0; right: 0; left: calc((100% - min(100%, var(--container))) / 2 + var(--gutter) + 7 * (min(100%, var(--container)) - 2 * var(--gutter) + var(--gap-columns)) / 12); background: var(--color-field); }
+.hero__field { position: absolute; top: 0; bottom: 0; right: 0; left: calc((100% - min(100%, var(--container))) / 2 + var(--gutter) + 7 * (min(100%, var(--container)) - 2 * var(--gutter) + var(--gap-columns)) / 12); background: var(--color-field); color: var(--color-field-ink); }
 .hero > *:not(.hero__field) { position: relative; z-index: var(--z-raised); }
 .nav__in { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap-columns); align-items: center; min-height: 88px; }
 .nav__links { display: flex; justify-content: space-between; gap: var(--space-lg); padding-left: var(--space-lg); color: var(--color-field-ink); }
@@ -87,24 +87,15 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
 .section--l { padding-top: var(--section-gap-l); }
 .cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); }
 
-/* the index as a specimen */
-.index__head { grid-column: 1 / span 5; display: grid; gap: var(--space-md); align-content: start; }
-.index__body { grid-column: 6 / span 7; }
-.names { display: flex; flex-wrap: wrap; gap: 0 var(--space-xl); border: 0; }
-.names button { padding: 0; border: 0; background: none; color: var(--color-ink); font: 700 var(--text-display-s)/1.05 var(--font-display); letter-spacing: var(--tracking-display); cursor: pointer; transition: color var(--dur-short) var(--ease-out); }
-.names button:hover { color: var(--color-mark); }
-.names button[aria-selected="true"] { color: var(--color-mark); }
-.names button:active { color: var(--color-ink-2); }
-.names button:focus-visible { outline-offset: 4px; }
-.panes { margin-top: var(--space-2xl); }
-.pane { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 4fr); gap: var(--gap-columns); padding-block: var(--space-xl); }
-.pane + .pane { margin-top: var(--space-md); }
-.pane .big { font: 700 clamp(5rem, 11vw, 10rem)/0.85 var(--font-display); letter-spacing: -0.05em; color: var(--color-mark); }
-.pane p { font-size: var(--text-lead); line-height: 1.45; max-width: 36ch; }
-.pane dl { margin-top: var(--space-lg); }
-.pane dl > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--space-md); padding-block: var(--space-sm); border-bottom: 1px solid var(--color-rule); }
-.pane dt { font-weight: 500; font-size: var(--text-sm); color: var(--color-muted); }
-.pane .path { display: inline-block; margin-top: var(--space-lg); font-weight: 500; }
+/* the three systems as a specimen row */
+.index__head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-2xl); }
+.systems { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); }
+.systems li { display: grid; align-content: start; gap: var(--space-md); min-height: 420px; }
+.systems .big { font: 700 clamp(7rem, 15vw, 14rem)/0.8 var(--font-display); letter-spacing: -0.05em; color: var(--color-ink); }
+.systems li:first-child .big { color: var(--color-mark); }
+.systems h3 { font-size: var(--text-display-s); margin-top: var(--space-md); }
+.systems p { max-width: 32ch; }
+.systems .path { margin-top: auto; font-weight: 500; justify-self: start; }
 
 /* a statement hung asymmetric */
 .statement { grid-column: 4 / span 9; font: 400 var(--text-display-s)/1.08 var(--font-display); letter-spacing: -0.03em; max-width: 24ch; }
@@ -144,15 +135,18 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
   .nav__links { display: none; }
   .hero__foot { grid-template-columns: minmax(0, 1fr); gap: var(--space-3xl); }
   .hero__foot .right { padding: var(--space-xl) 0 0; }
-  .index__head, .index__body, .statement, .field h2, .route, .close__head, .close__body { grid-column: 1 / -1; }
-  .index__body, .route, .close__body { margin-top: var(--space-xl); }
+  .index__head, .statement, .field h2, .route, .close__head, .close__body { grid-column: 1 / -1; }
+  .route, .close__body { margin-top: var(--space-xl); }
+  .index__head { grid-template-columns: minmax(0, 1fr); }
+  .systems { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xl); }
+  .systems li { min-height: 0; }
   .pane { grid-template-columns: minmax(0, 1fr); }
   .footer__row { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 40rem) {
   :root { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; }
   .hero__field { height: 32%; }
-  .contact > div, .pane dl > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xs); }
+  .contact > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xs); }
   .route li { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
@@ -193,44 +187,31 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
   </section>
 
   <section class="section--l" id="sistem" aria-labelledby="sistem-h">
-    <div class="container cols">
+    <div class="container">
       <div class="index__head">
-        <h2 id="sistem-h">Pilih sistemnya.</h2>
+        <h2 id="sistem-h">Tiga sistem, satu jaringan data.</h2>
         <p class="lead">Bisa dipasang satu per satu, dan makin berguna saat terhubung.</p>
       </div>
-      <div class="index__body">
-        <div class="names" role="tablist" aria-label="Sistem" data-switch>
-          <button type="button" role="tab" id="t1" aria-controls="s1" aria-selected="true">Keamanan</button>
-          <button type="button" role="tab" id="t2" aria-controls="s2" aria-selected="false">ERP</button>
-          <button type="button" role="tab" id="t3" aria-controls="s3" aria-selected="false">Workplace</button>
-        </div>
-        <div class="panes">
-          <div class="pane" role="tabpanel" id="s1" aria-labelledby="t1">
-            <span class="big" aria-hidden="true">K</span>
-            <div>
-              <p>Access control, CCTV, dan buku tamu digital dirancang sebagai satu arsitektur.</p>
-              <dl><div><dt>Terhubung ke</dt><dd>Absensi, ERP, dan booking ruangan</dd></div></dl>
-              <a class="path" href="#kontak">/security-system</a>
-            </div>
-          </div>
-          <div class="pane" role="tabpanel" id="s2" aria-labelledby="t2">
-            <span class="big" aria-hidden="true">E</span>
-            <div>
-              <p>Sales, purchasing, inventory, sampai jurnal accounting dalam satu alur dokumen.</p>
-              <dl><div><dt>Terhubung ke</dt><dd>Data absensi dari pintu masuk</dd></div></dl>
-              <a class="path" href="#kontak">/erp-system</a>
-            </div>
-          </div>
-          <div class="pane" role="tabpanel" id="s3" aria-labelledby="t3">
-            <span class="big" aria-hidden="true">W</span>
-            <div>
-              <p>Spaces, aplikasi kami untuk pekerjaan kantor rutin, mulai dari booking ruang meeting.</p>
-              <dl><div><dt>Terhubung ke</dt><dd>Akses pintu ruang meeting</dd></div></dl>
-              <a class="path" href="#kontak">/workplace-management</a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ul class="systems">
+        <li>
+          <span class="big" aria-hidden="true">K</span>
+          <h3>Keamanan</h3>
+          <p>Access control, CCTV, dan buku tamu digital dalam satu arsitektur.</p>
+          <a class="path" href="#kontak">/security-system</a>
+        </li>
+        <li>
+          <span class="big" aria-hidden="true">E</span>
+          <h3>ERP</h3>
+          <p>Sales, purchasing, inventory, sampai jurnal accounting dalam satu alur.</p>
+          <a class="path" href="#kontak">/erp-system</a>
+        </li>
+        <li>
+          <span class="big" aria-hidden="true">W</span>
+          <h3>Workplace</h3>
+          <p>Spaces, aplikasi kami untuk pekerjaan kantor rutin, mulai dari booking ruangan.</p>
+          <a class="path" href="#kontak">/workplace-management</a>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -262,7 +243,9 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
         <dl class="contact">
           <div><dt>Email</dt><dd><span class="fill" data-fill="email">Alamat email belum diisi</span></dd></div>
           <div><dt>WhatsApp</dt><dd><span class="fill" data-fill="whatsapp">Nomor WhatsApp belum diisi</span></dd></div>
+          <div><dt>Survei lokasi</dt><dd>Kami datang ke gedung Anda</dd></div>
         </dl>
+        <div class="actions"><a class="btn btn--primary" href="#kontak">Jadwalkan konsultasi</a></div>
       </div>
     </div>
   </section>
@@ -278,23 +261,5 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
   </div>
 </footer>
 
-<script>
-document.querySelectorAll('[data-switch]').forEach((sw) => {
-  const tabs = [...sw.querySelectorAll('[role="tab"]')];
-  const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')));
-  const select = (i, focus) => {
-    tabs.forEach((t, j) => { const on = i === j; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; panels[j].hidden = !on; });
-    if (focus) tabs[i].focus();
-  };
-  tabs.forEach((t, i) => {
-    t.addEventListener('click', () => select(i, false));
-    t.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') { e.preventDefault(); select((i + 1) % tabs.length, true); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); select((i - 1 + tabs.length) % tabs.length, true); }
-    });
-  });
-  select(0, false);
-});
-</script>
 </body>
 </html>

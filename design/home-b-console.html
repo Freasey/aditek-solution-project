@@ -34,7 +34,7 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 html, body { overflow-x: clip; }
-html { scroll-padding-top: var(--space-3xl); }
+html { scroll-padding-top: var(--space-3xl); scrollbar-color: var(--color-rule-2) var(--color-paper); }
 body { margin: 0; background: var(--color-paper); color: var(--color-ink); font: 400 var(--text-md)/1.55 var(--font-body); -webkit-font-smoothing: antialiased; }
 :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 ::selection { background: var(--color-accent-soft); }
@@ -81,12 +81,12 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
 
 /* the trail */
 .trail { border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper-2); overflow: hidden; }
-.trail__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); padding: var(--space-md) var(--space-lg); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.trail__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); padding: var(--space-lg); border-bottom: var(--rule-hair) solid var(--color-rule); }
 .trail__head b { font-weight: 500; font-size: var(--text-title); }
 .trail__head span { font-size: var(--text-sm); color: var(--color-muted); }
 .trail ol { position: relative; padding: var(--space-md) var(--space-lg) var(--space-md) calc(var(--space-lg) + var(--space-lg)); }
 .trail ol::before { content: ""; position: absolute; left: calc(var(--space-lg) + 3px); top: var(--space-lg); bottom: var(--space-lg); border-left: var(--rule-hair) solid var(--color-rule-2); }
-.trail li { position: relative; display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) auto; gap: var(--space-md); align-items: baseline; padding-block: var(--space-sm); }
+.trail li { position: relative; display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) auto; gap: var(--space-md); align-items: baseline; padding-block: var(--space-lg); }
 .trail li::before { content: ""; position: absolute; left: calc(-1 * var(--space-lg)); top: 1.05em; width: 7px; height: 7px; border-radius: 2px; background: var(--color-rule-2); }
 .trail li.is-key { margin-inline: calc(-1 * var(--space-sm)); padding-inline: var(--space-sm); background: var(--color-paper-3); border-radius: var(--radius-pill); }
 .trail li.is-key::before { background: var(--color-accent); left: calc(-1 * var(--space-lg) + var(--space-sm)); }
@@ -96,7 +96,7 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
 .chip--cool { background: var(--color-cool-soft); }
 .chip--amber { background: var(--color-accent-soft); }
 .trail__foot { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: var(--rule-hair) solid var(--color-rule); }
-.trail__foot > div { padding: var(--space-md) var(--space-lg); }
+.trail__foot > div { padding: var(--space-lg); }
 .trail__foot > div + div { border-left: var(--rule-hair) solid var(--color-rule); }
 .trail__foot small { display: block; font-size: var(--text-sm); color: var(--color-muted); }
 
@@ -105,8 +105,8 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
 .head { display: grid; gap: var(--space-md); margin-bottom: var(--space-2xl); }
 
 /* bento: panels cut from one surface */
-.panels { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--rule-hair); background: var(--color-rule); border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); overflow: hidden; }
-.panels > * { background: var(--color-paper-2); padding: var(--space-xl); display: grid; align-content: start; gap: var(--space-md); min-height: 300px; }
+.panels { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--rule-hair); background: var(--color-rule); color: var(--color-ink); border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); overflow: hidden; }
+.panels > * { background: var(--color-paper-2); color: var(--color-ink); padding: var(--space-xl); display: grid; align-content: start; gap: var(--space-md); min-height: 300px; }
 .p-lead { grid-column: span 7; grid-row: span 2; }
 .p-side { grid-column: span 5; }
 .panels h3 { font-size: var(--text-display-s); }
@@ -118,7 +118,7 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
 .doors span:first-child { color: var(--color-ink); }
 
 /* a reading: one statement made of a record */
-.reading-band { margin-top: var(--section-gap); padding-block: var(--section-gap-s); background: var(--color-paper-3); }
+.reading-band { margin-top: var(--section-gap); padding-block: var(--section-gap-s); background: var(--color-paper-3); color: var(--color-ink); }
 .reading-band .container { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap-columns); align-items: end; }
 .reading { margin: 0; font: 500 var(--text-display)/1.04 var(--font-display); letter-spacing: var(--tracking-display); max-width: 18ch; color: var(--color-ink); }
 .reading-band .rows { border-top: var(--rule-hair) solid var(--color-rule-2); }
@@ -264,10 +264,10 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
         <h2 id="cara-h">Dari survei sampai dipakai.</h2>
       </div>
       <ol class="log">
-        <li><h3>Survei dan audit</h3><p>Memetakan alur kerja, gedung, dan perangkat yang sudah ada.</p></li>
-        <li><h3>Desain arsitektur</h3><p>Rancangan sistem dan titik integrasi, disepakati per fase.</p></li>
-        <li><h3>Implementasi</h3><p>Instalasi perangkat, konfigurasi software, dan migrasi data.</p></li>
-        <li><h3>Training dan support</h3><p>Pelatihan per peran, lalu pendampingan lewat kontrak support.</p></li>
+        <li><h3>Survei dan audit</h3><p>Alur kerja dan perangkat yang ada.</p></li>
+        <li><h3>Desain arsitektur</h3><p>Sistem dan integrasi, disepakati per fase.</p></li>
+        <li><h3>Implementasi</h3><p>Instalasi, konfigurasi, migrasi data.</p></li>
+        <li><h3>Training dan support</h3><p>Pelatihan per peran dan kontrak support.</p></li>
       </ol>
     </div>
   </section>
@@ -276,7 +276,7 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
     <div class="container close">
       <div class="close__text">
         <h2 id="kontak-h">Mulai dari satu kunjungan.</h2>
-        <p class="lead">Ceritakan gedung dan alur kerja Anda. Kami datang untuk survei.</p>
+        <p class="lead">Kami datang ke gedung Anda untuk survei.</p>
       </div>
       <dl class="contact">
         <div><dt>Email</dt><dd><span class="fill" data-fill="email">Alamat email belum diisi</span></dd></div>
