@@ -1,0 +1,45 @@
+---
+import { env } from 'cloudflare:workers';
+import Admin from '../../../layouts/Admin.astro';
+import { getDb } from '../../../db/client';
+import { getProjectCards } from '../../../lib/content';
+import { PROJECT_SYSTEM_LABEL } from '../../../lib/labels';
+import { imageUrl } from '../../../lib/media';
+
+const projects = await getProjectCards(getDb(env), { publishedOnly: false });
+---
+<Admin title="Proyek">
+  <div class="bar">
+    <div><h1>Proyek</h1><p>Proyek yang tampil muncul di carousel Home sesuai urutan. Bila tidak ada, carousel disembunyikan.</p></div>
+    <a class="btn btn--accent btn--sm" href="/admin/projects/new">Tambah proyek</a>
+  </div>
+  <section class="panel panel--flush">
+    {projects.length === 0 ? <p class="muted" style="padding: var(--space-lg)">Belum ada proyek.</p> : (
+      <table class="table">
+        <thead><tr><th>Urutan</th><th>Foto</th><th>Klien</th><th>Sistem</th><th>Tahun</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          {projects.map((p) => (
+            <tr>
+              <td class="fig">{p.sortOrder}</td>
+              <td style="width: 96px">
+                <div class="thumb" data-slot={p.id} style="aspect-ratio: 4 / 3; width: 80px; border-radius: 4px">
+                  {p.photo && <img src={imageUrl(env, p.photo.r2Key, 480)} alt="" loading="lazy" style="filter: none" />}
+                </div>
+              </td>
+              <td><a href={`/admin/projects/${p.id}`}>{p.clientName}</a><br /><span class="muted">{p.location}</span></td>
+              <td>{PROJECT_SYSTEM_LABEL[p.system]}</td>
+              <td class="fig">{p.year}</td>
+              <td>{p.published ? <span class="badge badge--on">Tampil</span> : <span class="badge">Draft</span>}</td>
+              <td>
+                <form method="post" action={`/api/admin/projects/${p.id}/publish`} class="inline">
+                  <input type="hidden" name="published" value={p.published ? '0' : '1'} />
+                  <button class="btn btn--quiet btn--sm" type="submit">{p.published ? 'Sembunyikan' : 'Tampilkan'}</button>
+                </form>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </section>
+</Admin>

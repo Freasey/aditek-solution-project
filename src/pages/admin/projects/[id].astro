@@ -1,0 +1,39 @@
+---
+import { env } from 'cloudflare:workers';
+import { desc } from 'drizzle-orm';
+import Admin from '../../../layouts/Admin.astro';
+import ProjectForm from '../../../components/admin/ProjectForm.astro';
+import ProjectSlide from '../../../components/ProjectSlide.astro';
+import { getDb } from '../../../db/client';
+import { media } from '../../../db/schema';
+import { getProjectCard } from '../../../lib/content';
+
+const db = getDb(env);
+const project = await getProjectCard(db, Astro.params.id ?? '');
+if (!project) return Astro.redirect('/admin/projects?error=Proyek%20tidak%20ditemukan', 303);
+const mediaItems = await db.select().from(media).orderBy(desc(media.createdAt)).limit(200);
+---
+<Admin title={project.clientName}>
+  <div class="bar">
+    <div><p><a href="/admin/projects">Proyek</a></p><h1>{project.clientName}</h1></div>
+    <form method="post" action={`/api/admin/projects/${project.id}/delete`} data-confirm="Hapus proyek ini?">
+      <button class="btn btn--danger btn--sm" type="submit">Hapus proyek</button>
+    </form>
+  </div>
+  <section class="panel">
+    <h2>Preview kartu</h2>
+    <p class="hint muted">Teks berubah saat Anda mengetik. Foto dan baris perangkat diperbarui setelah disimpan.</p>
+    <div class="preview">
+      <div class="scene"><div class="slide is-active"><ProjectSlide project={project} index={0} /></div></div>
+    </div>
+  </section>
+  <ProjectForm action={`/api/admin/projects/${project.id}`} project={project} mediaItems={mediaItems} />
+</Admin>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((f) =>
+    f.addEventListener('submit', (e) => {
+      if (!confirm(f.dataset.confirm ?? 'Lanjutkan?')) e.preventDefault();
+    }),
+  );
+</script>

@@ -1,0 +1,74 @@
+---
+import { env } from 'cloudflare:workers';
+import { count } from 'drizzle-orm';
+import Admin from '../../../layouts/Admin.astro';
+import { getDb } from '../../../db/client';
+import { LEAD_STATUSES, leads } from '../../../db/schema';
+import { LEAD_STATUS_LABEL, leadSystemLabel } from '../../../lib/labels';
+import { leadWhere, parseLeadFilter, queryLeads } from '../../../lib/leads-query';
+import { formatDate } from '../../../lib/util';
+
+const PAGE = 50;
+const db = getDb(env);
+const filter = parseLeadFilter(Astro.url);
+const page = Math.max(1, Number(Astro.url.searchParams.get('page') ?? 1) || 1);
+const [rows, total] = await Promise.all([
+  queryLeads(db, filter, PAGE, (page - 1) * PAGE),
+  db.select({ n: count() }).from(leads).where(leadWhere(filter)).get(),
+]);
+const pages = Math.max(1, Math.ceil((total?.n ?? 0) / PAGE));
+const qs = (extra: Record<string, string>) => {
+  const p = new URLSearchParams({ ...(filter.status && { status: filter.status }), ...(filter.from && { from: filter.from }), ...(filter.to && { to: filter.to }), ...extra });
+  return p.toString() ? `?${p}` : '';
+};
+const parseSystems = (s: string): string[] => {
+  try { return JSON.parse(s) as string[]; } catch { return []; }
+};
+---
+<Admin title="Leads">
+  <div class="bar">
+    <h1>Leads</h1>
+    <a class="btn btn--quiet btn--sm" href={`/api/admin/leads/export${qs({})}`}>Export CSV</a>
+  </div>
+  <form class="panel af" method="get">
+    <div class="row row--3">
+      <label>Status
+        <select name="status">
+          <option value="">Semua</option>
+          {LEAD_STATUSES.map((s) => <option value={s} selected={filter.status === s}>{LEAD_STATUS_LABEL[s]}</option>)}
+        </select>
+      </label>
+      <label>Dari tanggal<input type="date" name="from" value={filter.from} /></label>
+      <label>Sampai tanggal<input type="date" name="to" value={filter.to} /></label>
+    </div>
+    <div class="actions"><button class="btn btn--quiet btn--sm" type="submit">Terapkan filter</button><a href="/admin/leads">Reset</a></div>
+  </form>
+  <section class="panel panel--flush">
+    {rows.length === 0 ? <p class="muted" style="padding: var(--space-lg)">Tidak ada lead untuk filter ini.</p> : (
+      <table class="table">
+        <thead><tr><th>Perusahaan</th><th>Sistem</th><th>Lokasi</th><th>Kontak</th><th>Status</th><th>Masuk</th></tr></thead>
+        <tbody>
+          {rows.map((l) => (
+            <tr>
+              <td><a href={`/admin/leads/${l.id}`}>{l.company}</a><br /><span class="muted">{l.name}</span></td>
+              <td>{parseSystems(l.systems).map(leadSystemLabel).join(', ') || '-'}</td>
+              <td>{l.buildingType}<br /><span class="muted">{l.city}</span></td>
+              <td>{l.contactVia === 'whatsapp' ? 'WhatsApp' : 'Email'}<br /><span class="muted">{l.contactValue}</span></td>
+              <td><span class:list={['badge', `badge--${l.status}`]}>{LEAD_STATUS_LABEL[l.status]}</span></td>
+              <td class="muted">{formatDate(l.createdAt)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </section>
+  {pages > 1 && (
+    <div class="bar">
+      <p>Halaman {page} dari {pages} · {total?.n} lead</p>
+      <div class="actions">
+        {page > 1 && <a class="btn btn--quiet btn--sm" href={`/admin/leads${qs({ page: String(page - 1) })}`}>Sebelumnya</a>}
+        {page < pages && <a class="btn btn--quiet btn--sm" href={`/admin/leads${qs({ page: String(page + 1) })}`}>Berikutnya</a>}
+      </div>
+    </div>
+  )}
+</Admin>

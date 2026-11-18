@@ -1,0 +1,92 @@
+---
+import type { Media } from '../../db/schema';
+import { PROJECT_SYSTEMS } from '../../db/schema';
+import type { ProjectCard } from '../../lib/content';
+import { PROJECT_SYSTEM_LABEL } from '../../lib/labels';
+import MediaPicker from './MediaPicker.astro';
+
+interface Props {
+  action: string;
+  project?: ProjectCard | null;
+  mediaItems: Media[];
+}
+const { action, project, mediaItems } = Astro.props;
+const items = project?.items.length ? project.items : [{ label: '', quantity: '' }];
+---
+<form class="af panel" method="post" action={action} data-project-form>
+  <div class="row">
+    <label>Nama klien<input type="text" name="clientName" required maxlength="150" value={project?.clientName ?? ''} data-bind="clientName" placeholder="PT Contoh Logistik" /></label>
+    <label>Lokasi<input type="text" name="location" required maxlength="150" value={project?.location ?? ''} data-bind="location" placeholder="Gudang distribusi, Cikarang" /></label>
+  </div>
+  <div class="row row--3">
+    <label>Tahun<input type="number" name="year" required min="2000" max="2100" value={project?.year ?? new Date().getUTCFullYear()} data-bind="year" /></label>
+    <label>Sistem
+      <select name="system">
+        {PROJECT_SYSTEMS.map((s) => <option value={s} selected={project?.system === s}>{PROJECT_SYSTEM_LABEL[s]}</option>)}
+      </select>
+    </label>
+    <label>Solusi (teks di kartu)<input type="text" name="solution" required maxlength="100" value={project?.solution ?? ''} data-bind="solution" placeholder="Sistem keamanan" /></label>
+  </div>
+  <div class="label">
+    <span>Baris perangkat <span class="hint">(maksimal 12)</span></span>
+    <div class="items" data-items>
+      {items.map((it) => (
+        <div class="items__row">
+          <input type="text" name="item_label" maxlength="100" value={it.label} placeholder="Reader face recognition" aria-label="Perangkat" />
+          <input type="text" name="item_qty" maxlength="30" value={it.quantity} placeholder="12" aria-label="Jumlah" />
+          <button type="button" data-remove aria-label="Hapus baris">×</button>
+        </div>
+      ))}
+    </div>
+    <div><button class="btn btn--quiet btn--sm" type="button" data-add>Tambah baris</button></div>
+  </div>
+  <MediaPicker name="photoId" label="Foto proyek" value={project?.photoId ?? null} items={mediaItems} folder="projects" />
+  <label>Keterangan foto<input type="text" name="photoCaption" maxlength="160" value={project?.photoCaption ?? ''} data-bind="photoCaption" placeholder="Access control dan CCTV, gudang Cikarang" /></label>
+  <label>Testimoni<textarea name="quote" maxlength="300" data-bind="quote" placeholder="Tanpa tanda kutip">{project?.quote ?? ''}</textarea></label>
+  <div class="row row--3">
+    <label>Jabatan pemberi testimoni<input type="text" name="quoteRole" maxlength="100" value={project?.quoteRole ?? ''} data-bind="quoteRole" placeholder="Kepala operasional" /></label>
+    <label>Teks stempel<input type="text" name="statusLabel" required maxlength="30" value={project?.statusLabel ?? 'Berjalan'} data-bind="statusLabel" /></label>
+    <label>Urutan<input type="number" name="sortOrder" min="0" max="9999" value={project?.sortOrder ?? 0} /><span class="hint">Angka kecil tampil lebih dulu.</span></label>
+  </div>
+  <label class="check"><input type="checkbox" name="published" checked={project?.published ?? false} /> Tampilkan di carousel Home</label>
+  <div class="actions">
+    <button class="btn btn--accent btn--sm" type="submit">Simpan proyek</button>
+    <a href="/admin/projects">Batal</a>
+  </div>
+</form>
+
+<template id="item-row">
+  <div class="items__row">
+    <input type="text" name="item_label" maxlength="100" placeholder="Perangkat" aria-label="Perangkat" />
+    <input type="text" name="item_qty" maxlength="30" placeholder="Jumlah" aria-label="Jumlah" />
+    <button type="button" data-remove aria-label="Hapus baris">×</button>
+  </div>
+</template>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-project-form]');
+  if (form) {
+    const list = form.querySelector<HTMLElement>('[data-items]')!;
+    const tpl = document.querySelector<HTMLTemplateElement>('#item-row')!;
+    form.querySelector('[data-add]')?.addEventListener('click', () => {
+      if (list.children.length >= 12) return;
+      list.appendChild(tpl.content.cloneNode(true));
+      list.querySelector<HTMLInputElement>('.items__row:last-child input')?.focus();
+    });
+    list.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('[data-remove]');
+      if (!btn) return;
+      const row = btn.closest('.items__row');
+      if (list.children.length > 1) row?.remove();
+      else row?.querySelectorAll('input').forEach((i) => (i.value = ''));
+    });
+    // Preview langsung untuk teks kartu
+    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-bind]').forEach((el) =>
+      el.addEventListener('input', () => {
+        document.querySelectorAll<HTMLElement>(`.preview [data-show="${el.dataset.bind}"]`).forEach((t) => {
+          t.textContent = el.value;
+        });
+      }),
+    );
+  }
+</script>

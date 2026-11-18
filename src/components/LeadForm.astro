@@ -115,7 +115,7 @@ const siteKey = env.PUBLIC_TURNSTILE_SITE_KEY;
         systems: d.getAll('sistem').map(String),
         buildingType: text(d, 'gedung'),
         city: text(d, 'kota'),
-        contactVia: v,
+        contactVia: v as 'whatsapp' | 'email',
         whatsapp: text(d, 'wa'),
         email: text(d, 'email'),
         message: text(d, 'pesan'),

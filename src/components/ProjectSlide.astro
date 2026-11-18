@@ -1,0 +1,37 @@
+---
+import type { ProjectCard } from '../lib/content';
+import Img from './Img.astro';
+
+interface Props {
+  project: ProjectCard;
+  index: number;
+  eager?: boolean;
+}
+const { project: p, index, eager = false } = Astro.props;
+---
+<div class="stock print">
+  <div class="print__photo" data-slot={`case-${index + 1}`}>
+    {p.photo && <Img media={p.photo} sizes="(max-width: 40rem) 92vw, (max-width: 60rem) 76vw, 640px" eager={eager} />}
+  </div>
+  {p.photoCaption && <span class="print__cap" data-show="photoCaption">{p.photoCaption}</span>}
+</div>
+<div class="stock sheet">
+  <p class="sheet__org">Worksell ID<span class="fig">Proyek <span data-show="year">{p.year}</span></span></p>
+  <p class="sheet__title" data-show="clientName">{p.clientName}</p>
+  <p class="sheet__meta" data-show="location">{p.location}</p>
+  <p class="sheet__sol" data-show="solution">{p.solution}</p>
+  {p.items.length > 0 && (
+    <ul>
+      {p.items.map((it) => (
+        <li><span>{it.label}</span><span>{it.quantity}</span></li>
+      ))}
+    </ul>
+  )}
+  {p.quote && (
+    <blockquote>
+      “<span data-show="quote">{p.quote}</span>”
+      {p.quoteRole && <cite><span data-show="quoteRole">{p.quoteRole}</span>, {p.clientName}</cite>}
+    </blockquote>
+  )}
+  <span class="stamp" aria-hidden="true" data-show="statusLabel">{p.statusLabel}</span>
+</div>

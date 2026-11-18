@@ -1,0 +1,52 @@
+---
+import '../styles/tokens.css';
+import '../styles/site.css';
+import '../styles/admin.css';
+import { flash } from '../lib/admin';
+
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+const path = Astro.url.pathname;
+const msg = flash(Astro.url);
+const links = [
+  { href: '/admin', label: 'Dashboard' },
+  { href: '/admin/leads', label: 'Leads' },
+  { href: '/admin/projects', label: 'Proyek' },
+  { href: '/admin/systems', label: 'Sistem' },
+  { href: '/admin/roadmap', label: 'Roadmap' },
+  { href: '/admin/media', label: 'Media' },
+  { href: '/admin/settings', label: 'Pengaturan' },
+];
+const current = (href: string) => (href === '/admin' ? path === '/admin' : path.startsWith(href));
+---
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>{title} | Admin Worksell ID</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div class="admin">
+    <aside class="side">
+      <a class="wordmark" href="/admin">Worksell ID</a>
+      <nav aria-label="Menu admin">
+        {links.map((l) => <a href={l.href} aria-current={current(l.href) ? 'page' : undefined}>{l.label}</a>)}
+      </nav>
+      <div class="side__foot">
+        <span>{Astro.locals.user?.email}</span>
+        <a href="/" target="_blank" rel="noopener">Buka website</a>
+      </div>
+    </aside>
+    <main class="content" id="main">
+      {msg.ok && <p class="flash" role="status">{msg.ok}</p>}
+      {msg.error && <p class="flash flash--error" role="alert">{msg.error}</p>}
+      <slot />
+    </main>
+  </div>
+</body>
+</html>

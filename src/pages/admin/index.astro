@@ -1,0 +1,57 @@
+---
+import { env } from 'cloudflare:workers';
+import { count, desc, eq, gte } from 'drizzle-orm';
+import Admin from '../../layouts/Admin.astro';
+import { getDb } from '../../db/client';
+import { auditLog, leads, projects } from '../../db/schema';
+import { LEAD_STATUS_LABEL } from '../../lib/labels';
+import { formatDate } from '../../lib/util';
+
+const db = getDb(env);
+const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
+const [weekLeads, openLeads, published, recent, activity] = await Promise.all([
+  db.select({ n: count() }).from(leads).where(gte(leads.createdAt, weekAgo)).get(),
+  db.select({ n: count() }).from(leads).where(eq(leads.status, 'baru')).get(),
+  db.select({ n: count() }).from(projects).where(eq(projects.published, true)).get(),
+  db.select().from(leads).orderBy(desc(leads.createdAt)).limit(5),
+  db.select().from(auditLog).orderBy(desc(auditLog.createdAt)).limit(8),
+]);
+---
+<Admin title="Dashboard">
+  <div class="bar"><h1>Dashboard</h1></div>
+  <div class="grid-3">
+    <div class="panel stat"><b class="fig">{weekLeads?.n ?? 0}</b><span>Lead masuk 7 hari terakhir</span></div>
+    <div class="panel stat"><b class="fig">{openLeads?.n ?? 0}</b><span>Lead berstatus baru</span></div>
+    <div class="panel stat"><b class="fig">{published?.n ?? 0}</b><span>Proyek tampil di Home</span></div>
+  </div>
+  <div class="grid-2">
+    <section class="panel">
+      <div class="bar"><h2>Lead terbaru</h2><a href="/admin/leads">Semua lead</a></div>
+      {recent.length === 0 ? <p class="muted">Belum ada lead.</p> : (
+        <table class="table">
+          <tbody>
+            {recent.map((l) => (
+              <tr>
+                <td><a href={`/admin/leads/${l.id}`}>{l.company}</a><br /><span class="muted">{l.name}</span></td>
+                <td><span class:list={['badge', `badge--${l.status}`]}>{LEAD_STATUS_LABEL[l.status]}</span></td>
+                <td class="muted">{formatDate(l.createdAt)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </section>
+    <section class="panel">
+      <h2>Aktivitas admin</h2>
+      {activity.length === 0 ? <p class="muted">Belum ada perubahan.</p> : (
+        <table class="table">
+          <tbody>
+            {activity.map((a) => (
+              <tr><td>{a.action}</td><td class="muted">{a.actor}</td><td class="muted">{formatDate(a.createdAt)}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </section>
+  </div>
+</Admin>

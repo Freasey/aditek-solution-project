@@ -1,0 +1,75 @@
+---
+import { env } from 'cloudflare:workers';
+import type { Media } from '../../db/schema';
+import { imageUrl } from '../../lib/media';
+
+interface Props {
+  name: string;
+  label: string;
+  value: string | null;
+  items: Media[];
+  folder: 'projects' | 'systems' | 'site';
+}
+const { name, label, value, items, folder } = Astro.props;
+---
+<div class="label media-picker" data-name={name} data-folder={folder}>
+  <span>{label}</span>
+  <div class="picker" role="radiogroup" aria-label={label}>
+    <label class="pick">
+      <input type="radio" name={name} value="" checked={!value} />
+      <span class="thumb" data-slot="none">Tanpa foto</span>
+    </label>
+    {items.map((m) => (
+      <label class="pick" title={m.alt || m.r2Key}>
+        <input type="radio" name={name} value={m.id} checked={value === m.id} />
+        <span class="thumb" data-slot={m.id}><img src={imageUrl(env, m.r2Key, 480)} alt={m.alt} loading="lazy" /></span>
+      </label>
+    ))}
+  </div>
+  <label class="hint">Atau upload foto baru
+    <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-upload />
+  </label>
+  <span class="hint" data-upload-status role="status"></span>
+</div>
+
+<script>
+  import { uploadImage } from '../../scripts/upload';
+
+  document.querySelectorAll<HTMLElement>('.media-picker').forEach((box) => {
+    const input = box.querySelector<HTMLInputElement>('[data-upload]');
+    const status = box.querySelector<HTMLElement>('[data-upload-status]');
+    const grid = box.querySelector<HTMLElement>('.picker');
+    if (!input || !status || !grid) return;
+    input.addEventListener('change', async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      status.textContent = 'Mengunggah...';
+      try {
+        const up = await uploadImage(file, box.dataset.folder ?? 'site');
+        const label = document.createElement('label');
+        label.className = 'pick';
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = box.dataset.name ?? '';
+        radio.value = up.id;
+        radio.checked = true;
+        const thumb = document.createElement('span');
+        thumb.className = 'thumb';
+        thumb.dataset.slot = up.id;
+        const img = document.createElement('img');
+        img.src = up.url;
+        img.alt = '';
+        thumb.appendChild(img);
+        label.appendChild(radio);
+        label.appendChild(thumb);
+        grid.insertBefore(label, grid.children[1] ?? null);
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+        status.textContent = 'Foto diunggah dan dipilih. Isi alt text-nya di menu Media.';
+      } catch (err) {
+        status.textContent = err instanceof Error ? err.message : 'Upload gagal.';
+      } finally {
+        input.value = '';
+      }
+    });
+  });
+</script>

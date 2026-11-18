@@ -1,0 +1,31 @@
+---
+import { env } from 'cloudflare:workers';
+import { desc } from 'drizzle-orm';
+import Admin from '../../layouts/Admin.astro';
+import MediaPicker from '../../components/admin/MediaPicker.astro';
+import { getDb } from '../../db/client';
+import { media } from '../../db/schema';
+import { getSystems } from '../../lib/content';
+
+const db = getDb(env);
+const [systems, mediaItems] = await Promise.all([
+  getSystems(db),
+  db.select().from(media).orderBy(desc(media.createdAt)).limit(200),
+]);
+---
+<Admin title="Sistem">
+  <div class="bar"><div><h1>Sistem</h1><p>Tiga kartu sistem di Home. Tautan kartu mengarah ke halaman layanannya.</p></div></div>
+  {systems.map((s) => (
+    <form class="af panel" method="post" action={`/api/admin/systems/${s.slug}`}>
+      <div class="bar"><h2>{s.title}</h2><a class="hint" href={s.pagePath} target="_blank" rel="noopener">{s.pagePath}</a></div>
+      <div class="row row--3">
+        <label>Judul<input type="text" name="title" required maxlength="60" value={s.title} /></label>
+        <label>Label tautan<input type="text" name="ctaLabel" required maxlength="60" value={s.ctaLabel} /></label>
+        <label>Urutan<input type="number" name="sortOrder" min="0" max="99" value={s.sortOrder} /></label>
+      </div>
+      <label>Ringkasan<textarea name="summary" required maxlength="200" rows="2">{s.summary}</textarea></label>
+      <MediaPicker name="photoId" label="Foto kartu" value={s.photoId} items={mediaItems} folder="systems" />
+      <div class="actions"><button class="btn btn--accent btn--sm" type="submit">Simpan {s.title}</button></div>
+    </form>
+  ))}
+</Admin>

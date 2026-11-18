@@ -8,8 +8,8 @@ export async function verifyTurnstile(
   ip: string | null,
   opts: { production: boolean },
 ): Promise<boolean> {
-  if (!secret || !token) return false;
   if (secret === TEST_SECRET_PASS) return !opts.production;
+  if (!secret || !token) return false;
   const body = new FormData();
   body.append('secret', secret);
   body.append('response', token);

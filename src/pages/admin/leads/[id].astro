@@ -1,0 +1,57 @@
+---
+import { env } from 'cloudflare:workers';
+import { eq } from 'drizzle-orm';
+import Admin from '../../../layouts/Admin.astro';
+import { getDb } from '../../../db/client';
+import { LEAD_STATUSES, leads } from '../../../db/schema';
+import { LEAD_STATUS_LABEL, leadSystemLabel } from '../../../lib/labels';
+import { formatDate } from '../../../lib/util';
+
+const db = getDb(env);
+const lead = await db.select().from(leads).where(eq(leads.id, Astro.params.id ?? '')).get();
+if (!lead) return Astro.redirect('/admin/leads?error=Lead%20tidak%20ditemukan', 303);
+
+let systems: string[] = [];
+try { systems = JSON.parse(lead.systems) as string[]; } catch { systems = []; }
+const greeting = `Halo ${lead.name}, kami dari Worksell ID menindaklanjuti permintaan konsultasi ${lead.company}.`;
+const quick =
+  lead.contactVia === 'whatsapp'
+    ? { label: 'Balas lewat WhatsApp', href: `https://wa.me/${lead.contactValue}?text=${encodeURIComponent(greeting)}` }
+    : { label: 'Balas lewat email', href: `mailto:${lead.contactValue}?subject=${encodeURIComponent('Permintaan konsultasi ' + lead.company)}&body=${encodeURIComponent(greeting)}` };
+---
+<Admin title={lead.company}>
+  <div class="bar">
+    <div><p><a href="/admin/leads">Leads</a></p><h1>{lead.company}</h1></div>
+    <a class="btn btn--accent btn--sm" href={quick.href} target="_blank" rel="noopener">{quick.label}</a>
+  </div>
+  <div class="grid-2">
+    <section class="panel">
+      <h2>Detail</h2>
+      <table class="table">
+        <tbody>
+          <tr><th>Nama</th><td>{lead.name}</td></tr>
+          <tr><th>Perusahaan</th><td>{lead.company}</td></tr>
+          <tr><th>Sistem</th><td>{systems.map(leadSystemLabel).join(', ') || '-'}</td></tr>
+          <tr><th>Gedung</th><td>{lead.buildingType}, {lead.city}</td></tr>
+          <tr><th>Kontak</th><td>{lead.contactVia === 'whatsapp' ? 'WhatsApp' : 'Email'}: {lead.contactValue}</td></tr>
+          <tr><th>Pesan</th><td style="white-space: pre-wrap">{lead.message ?? '-'}</td></tr>
+          <tr><th>Halaman</th><td class="muted">{lead.sourcePath ?? '-'}</td></tr>
+          <tr><th>Masuk</th><td class="muted">{formatDate(lead.createdAt)}</td></tr>
+          <tr><th>Diubah</th><td class="muted">{formatDate(lead.updatedAt)}</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="panel">
+      <h2>Tindak lanjut</h2>
+      <form class="af" method="post" action={`/api/admin/leads/${lead.id}`}>
+        <label>Status
+          <select name="status">
+            {LEAD_STATUSES.map((s) => <option value={s} selected={lead.status === s}>{LEAD_STATUS_LABEL[s]}</option>)}
+          </select>
+        </label>
+        <label>Catatan internal<textarea name="notes" rows="8" maxlength="4000">{lead.notes ?? ''}</textarea></label>
+        <div class="actions"><button class="btn btn--accent btn--sm" type="submit">Simpan</button></div>
+      </form>
+    </section>
+  </div>
+</Admin>

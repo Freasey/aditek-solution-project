@@ -1,0 +1,14 @@
+---
+import { env } from 'cloudflare:workers';
+import { desc } from 'drizzle-orm';
+import Admin from '../../../layouts/Admin.astro';
+import ProjectForm from '../../../components/admin/ProjectForm.astro';
+import { getDb } from '../../../db/client';
+import { media } from '../../../db/schema';
+
+const mediaItems = await getDb(env).select().from(media).orderBy(desc(media.createdAt)).limit(200);
+---
+<Admin title="Tambah proyek">
+  <div class="bar"><div><p><a href="/admin/projects">Proyek</a></p><h1>Tambah proyek</h1></div></div>
+  <ProjectForm action="/api/admin/projects" mediaItems={mediaItems} />
+</Admin>

@@ -1,7 +1,7 @@
 ---
 import type { ProjectCard } from '../lib/content';
 import { pad2 } from '../lib/util';
-import Img from './Img.astro';
+import ProjectSlide from './ProjectSlide.astro';
 
 interface Props {
   projects: ProjectCard[];
@@ -18,32 +18,7 @@ const total = projects.length;
         aria-roledescription="slide"
         aria-label={`${i + 1} dari ${total}: ${p.clientName}`}
       >
-        <div class="stock print">
-          <div class="print__photo" data-slot={`case-${i + 1}`}>
-            {p.photo && <Img media={p.photo} sizes="(max-width: 40rem) 92vw, (max-width: 60rem) 76vw, 640px" eager={i === 0} />}
-          </div>
-          {p.photoCaption && <span class="print__cap">{p.photoCaption}</span>}
-        </div>
-        <div class="stock sheet">
-          <p class="sheet__org">Worksell ID<span class="fig">Proyek {p.year}</span></p>
-          <p class="sheet__title">{p.clientName}</p>
-          <p class="sheet__meta">{p.location}</p>
-          <p class="sheet__sol">{p.solution}</p>
-          {p.items.length > 0 && (
-            <ul>
-              {p.items.map((it) => (
-                <li><span>{it.label}</span><span>{it.quantity}</span></li>
-              ))}
-            </ul>
-          )}
-          {p.quote && (
-            <blockquote>
-              “{p.quote}”
-              {p.quoteRole && <cite>{p.quoteRole}, {p.clientName}</cite>}
-            </blockquote>
-          )}
-          <span class="stamp" aria-hidden="true">{p.statusLabel}</span>
-        </div>
+        <ProjectSlide project={p} index={i} eager={i === 0} />
       </div>
     ))}
   </div>

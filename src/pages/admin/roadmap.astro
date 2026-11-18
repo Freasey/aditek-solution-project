@@ -1,0 +1,53 @@
+---
+import { env } from 'cloudflare:workers';
+import Admin from '../../layouts/Admin.astro';
+import { getDb } from '../../db/client';
+import { ROADMAP_STAGES } from '../../db/schema';
+import { getRoadmap } from '../../lib/content';
+import { STAGE_LABEL } from '../../lib/labels';
+
+const items = await getRoadmap(getDb(env), { publishedOnly: false });
+---
+<Admin title="Roadmap">
+  <div class="bar"><div><h1>Roadmap</h1><p>Bagian "Sedang kami kembangkan" di Home. Disembunyikan bila tidak ada item yang tampil.</p></div></div>
+  {items.map((it) => (
+    <div class="panel">
+      <form class="af" method="post" action={`/api/admin/roadmap/${it.id}`}>
+        <div class="row row--3">
+          <label>Judul<input type="text" name="title" required maxlength="80" value={it.title} /></label>
+          <label>Tahap
+            <select name="stage">{ROADMAP_STAGES.map((s) => <option value={s} selected={it.stage === s}>{STAGE_LABEL[s]}</option>)}</select>
+          </label>
+          <label>Urutan<input type="number" name="sortOrder" min="0" max="9999" value={it.sortOrder} /></label>
+        </div>
+        <label>Ringkasan<input type="text" name="summary" required maxlength="200" value={it.summary} /></label>
+        <label class="check"><input type="checkbox" name="published" checked={it.published} /> Tampilkan di Home</label>
+        <div class="actions"><button class="btn btn--accent btn--sm" type="submit">Simpan</button></div>
+      </form>
+      <form method="post" action={`/api/admin/roadmap/${it.id}/delete`} data-confirm={`Hapus "${it.title}"?`}>
+        <button class="btn btn--danger btn--sm" type="submit">Hapus</button>
+      </form>
+    </div>
+  ))}
+  <form class="af panel" method="post" action="/api/admin/roadmap">
+    <h2>Tambah item</h2>
+    <div class="row row--3">
+      <label>Judul<input type="text" name="title" required maxlength="80" /></label>
+      <label>Tahap
+        <select name="stage">{ROADMAP_STAGES.map((s) => <option value={s}>{STAGE_LABEL[s]}</option>)}</select>
+      </label>
+      <label>Urutan<input type="number" name="sortOrder" min="0" max="9999" value={items.length + 1} /></label>
+    </div>
+    <label>Ringkasan<input type="text" name="summary" required maxlength="200" /></label>
+    <label class="check"><input type="checkbox" name="published" checked /> Tampilkan di Home</label>
+    <div class="actions"><button class="btn btn--accent btn--sm" type="submit">Tambah</button></div>
+  </form>
+</Admin>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((f) =>
+    f.addEventListener('submit', (e) => {
+      if (!confirm(f.dataset.confirm ?? 'Lanjutkan?')) e.preventDefault();
+    }),
+  );
+</script>

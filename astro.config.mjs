@@ -13,4 +13,9 @@ export default defineConfig({
   build: { inlineStylesheets: 'never', format: 'file' },
   security: { checkOrigin: true },
   devToolbar: { enabled: false },
+  // Script selalu jadi file terpisah supaya CSP tidak butuh 'unsafe-inline'.
+  vite: {
+    build: { assetsInlineLimit: 0 },
+    environments: { client: { build: { assetsInlineLimit: 0 } } },
+  },
 });
