@@ -6,6 +6,7 @@ import { getDb } from '../../db/client';
 import { auditLog, leads, projects } from '../../db/schema';
 import { LEAD_STATUS_LABEL } from '../../lib/labels';
 import { formatDate } from '../../lib/util';
+import { failedLogins24h } from '../../lib/login-guard';
 
 const db = getDb(env);
 const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
@@ -16,6 +17,7 @@ const [weekLeads, openLeads, published, recent, activity] = await Promise.all([
   db.select().from(leads).orderBy(desc(leads.createdAt)).limit(5),
   db.select().from(auditLog).orderBy(desc(auditLog.createdAt)).limit(8),
 ]);
+const failedLogins = await failedLogins24h(db);
 ---
 <Admin title="Dashboard">
   <div class="bar"><h1>Dashboard</h1></div>
@@ -43,6 +45,7 @@ const [weekLeads, openLeads, published, recent, activity] = await Promise.all([
     </section>
     <section class="panel">
       <h2>Aktivitas admin</h2>
+      <p class:list={['hint', failedLogins > 0 ? 'flash flash--error' : 'muted']}>Login gagal 24 jam terakhir: <span class="fig">{failedLogins}</span></p>
       {activity.length === 0 ? <p class="muted">Belum ada perubahan.</p> : (
         <table class="table">
           <tbody>

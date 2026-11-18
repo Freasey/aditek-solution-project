@@ -4,10 +4,12 @@ import '../../styles/tokens.css';
 import '../../styles/site.css';
 import '../../styles/admin.css';
 import { authConfigured } from '../../lib/session';
+import { turnstileEnabled } from '../../lib/turnstile';
 
 const next = Astro.url.searchParams.get('next') ?? '/admin';
 const error = Astro.url.searchParams.get('error');
 const configured = authConfigured(env);
+const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
 ---
 <!doctype html>
 <html lang="id">
@@ -28,8 +30,10 @@ const configured = authConfigured(env);
       <label>Email<input type="email" name="email" autocomplete="username" required maxlength="200" /></label>
       <label>Password<input type="password" name="password" autocomplete="current-password" required maxlength="200" /></label>
       <input type="hidden" name="next" value={next} />
+      {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-language="id" data-theme="dark"></div>}
       <div class="actions"><button class="btn btn--accent btn--sm" type="submit">Masuk</button></div>
     </form>
   </main>
+  {siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
 </body>
 </html>

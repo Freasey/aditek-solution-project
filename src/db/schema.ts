@@ -134,3 +134,15 @@ export type ProjectItem = typeof projectItems.$inferSelect;
 export type System = typeof systems.$inferSelect;
 export type RoadmapItem = typeof roadmapItems.$inferSelect;
 export type Lead = typeof leads.$inferSelect;
+
+/** Percobaan login admin, untuk mengunci IP dan akun saat ada brute force. Dibersihkan setelah 24 jam. */
+export const loginAttempts = sqliteTable(
+  'login_attempts',
+  {
+    id: text('id').primaryKey(),
+    ip: text('ip').notNull(),
+    success: integer('success', { mode: 'boolean' }).notNull(),
+    createdAt: text('created_at').notNull(),
+  },
+  (t) => [index('login_attempts_created_idx').on(t.createdAt), index('login_attempts_ip_idx').on(t.ip, t.createdAt)],
+);
