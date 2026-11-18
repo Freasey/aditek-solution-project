@@ -1,6 +1,6 @@
 {
-  "id": "1ffad56d-26a5-4b5b-9db0-3cb4bc23f85d",
-  "prevId": "b0900ede-f84f-4455-9d2a-ba65f225b4cd",
+  "id": "8bd6c05a-91f3-413d-b4f1-f8bf82dc28a8",
+  "prevId": "260a722b-f2ec-4e59-9cfc-ad36fd0bc0f3",
   "version": "6",
   "dialect": "sqlite",
   "tables": {
@@ -199,8 +199,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "r2_key": {
-          "name": "r2_key",
+        "pathname": {
+          "name": "pathname",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "url": {
+          "name": "url",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -258,10 +265,10 @@
         }
       },
       "indexes": {
-        "media_r2_key_unique": {
-          "name": "media_r2_key_unique",
+        "media_pathname_unique": {
+          "name": "media_pathname_unique",
           "columns": [
-            "r2_key"
+            "pathname"
           ],
           "isUnique": true
         }

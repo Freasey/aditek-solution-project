@@ -5,6 +5,7 @@ import { getDb } from '../../../../../db/client';
 import { media, projects, settings, systems } from '../../../../../db/schema';
 import { actor, back } from '../../../../../lib/admin';
 import { audit } from '../../../../../lib/audit';
+import { deleteFile } from '../../../../../lib/storage';
 
 export const POST: APIRoute = async (ctx) => {
   const id = ctx.params.id ?? '';
@@ -20,8 +21,13 @@ export const POST: APIRoute = async (ctx) => {
   const usedBy = p ? `proyek ${p.name}` : s ? `kartu ${s.title}` : og ? 'OG image di pengaturan' : null;
   if (usedBy) return back('/admin/media', { error: `Foto masih dipakai oleh ${usedBy}.` });
 
+  try {
+    await deleteFile(env, row);
+  } catch (err) {
+    console.warn('media delete failed', err instanceof Error ? err.message : err);
+    return back('/admin/media', { error: 'Gagal menghapus file dari penyimpanan. Coba lagi.' });
+  }
   await db.delete(media).where(eq(media.id, id));
-  await env.MEDIA.delete(row.r2Key);
-  await audit(db, actor(ctx.locals), 'media.delete', row.r2Key);
+  await audit(db, actor(ctx.locals), 'media.delete', row.pathname);
   return back('/admin/media', { ok: 'Foto dihapus.' });
 };

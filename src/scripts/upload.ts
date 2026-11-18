@@ -1,7 +1,7 @@
 /** Upload foto ke /api/admin/media. Ukuran asli dibaca di browser lalu dikirim bersama file. */
 export interface Uploaded {
   id: string;
-  key: string;
+  pathname: string;
   alt: string;
   url: string;
 }

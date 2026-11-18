@@ -65,3 +65,6 @@
   .steps { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
   .steps li { min-height: 0; }
 }
+
+/* honeypot anti-spam: tidak terlihat dan tidak bisa difokus */
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }

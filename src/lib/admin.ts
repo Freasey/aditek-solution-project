@@ -1,6 +1,6 @@
 import type { APIContext } from 'astro';
 
-/** Email admin dari JWT Access (diisi middleware). */
+/** Email admin dari cookie sesi (diisi middleware). */
 export function actor(locals: App.Locals): string {
   return locals.user?.email ?? 'unknown';
 }

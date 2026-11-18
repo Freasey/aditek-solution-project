@@ -11,14 +11,13 @@
     "check": "astro check",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
-    "db:seed:local": "wrangler d1 execute DB --local --file=seed/dev.sql",
+    "db:seed:local": "wrangler d1 execute DB --local --file=seed/dev-storage.sql && wrangler d1 execute DB --local --file=seed/dev.sql",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.4.8",
     "astro": "7.4.12",
     "drizzle-orm": "^0.45.4",
-    "jose": "^6.2.17",
     "zod": "^4.6.7"
   },
   "devDependencies": {

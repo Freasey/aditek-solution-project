@@ -2,6 +2,7 @@
 import { env } from 'cloudflare:workers';
 import type { SiteSettings } from '../lib/content';
 import { BUILDING_TYPES, CITIES, LEAD_SYSTEM_OPTIONS } from '../lib/labels';
+import { turnstileEnabled } from '../lib/turnstile';
 
 interface Props {
   settings: SiteSettings;
@@ -16,7 +17,7 @@ const {
   heading = 'Ceritakan kebutuhan Anda.',
   lead = 'Isi formnya, pilih mau dihubungi lewat email atau WhatsApp.',
 } = Astro.props;
-const siteKey = env.PUBLIC_TURNSTILE_SITE_KEY;
+const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
 ---
 <section class="section" id="kontak" aria-labelledby="kontak-h">
   <div class="container close">
@@ -64,6 +65,7 @@ const siteKey = env.PUBLIC_TURNSTILE_SITE_KEY;
         </fieldset>
         <label class="field field--full" data-via="whatsapp"><span>Nomor WhatsApp</span><input type="tel" name="wa" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="0812 3456 7890" /></label>
         <label class="field field--full" data-via="email" hidden><span>Email kantor</span><input type="email" name="email" autocomplete="email" maxlength="200" placeholder="nama@perusahaan.co.id" /></label>
+        <label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
         <label class="field field--full"><span>Ceritakan singkat (opsional)</span><textarea name="pesan" maxlength="1000" placeholder="Contoh: 3 lantai, 120 karyawan, ingin ganti absensi ke face recognition."></textarea></label>
         {siteKey && <div class="form__captcha cf-turnstile" data-sitekey={siteKey} data-appearance="interaction-only" data-language="id"></div>}
         <div class="form__foot">
@@ -121,6 +123,7 @@ const siteKey = env.PUBLIC_TURNSTILE_SITE_KEY;
         message: text(d, 'pesan'),
         sourcePath: location.pathname,
         turnstileToken: text(d, 'cf-turnstile-response'),
+        website: text(d, 'website'),
       };
       const fallback = contactLink(
         { whatsapp: f.dataset.wa ?? '', email: f.dataset.email ?? '' },

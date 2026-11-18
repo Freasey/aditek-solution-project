@@ -40,6 +40,7 @@ const current = (href: string) => (href === '/admin' ? path === '/admin' : path.
       <div class="side__foot">
         <span>{Astro.locals.user?.email}</span>
         <a href="/" target="_blank" rel="noopener">Buka website</a>
+        <form method="post" action="/api/admin/logout"><button class="btn btn--quiet btn--sm" type="submit">Keluar</button></form>
       </div>
     </aside>
     <main class="content" id="main">

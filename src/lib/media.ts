@@ -11,30 +11,23 @@ export const MEDIA_MAX_BYTES = 10 * 1024 * 1024;
 export const MEDIA_FOLDERS = ['projects', 'systems', 'site'] as const;
 export const SRCSET_WIDTHS = [480, 800, 1200, 1600] as const;
 
-type MediaEnv = Pick<Env, 'MEDIA_BASE_URL' | 'IMAGE_TRANSFORMS'>;
+type MediaEnv = Pick<Env, 'IMAGE_TRANSFORMS'>;
 
-/** URL asli object R2, lewat custom domain media.worksell.id (atau /media di lokal). */
-export function mediaUrl(env: MediaEnv, key: string): string {
-  const base = env.MEDIA_BASE_URL.replace(/\/+$/, '');
-  return `${base}/${key.split('/').map(encodeURIComponent).join('/')}`;
-}
-
-export function transformsEnabled(env: MediaEnv): boolean {
-  return env.IMAGE_TRANSFORMS === 'on' && /^https:\/\//.test(env.MEDIA_BASE_URL);
+function transformable(env: MediaEnv, url: string): boolean {
+  return env.IMAGE_TRANSFORMS === 'on' && url.startsWith('https://');
 }
 
 /** URL lewat Cloudflare Image Transformations, fallback ke URL asli bila belum aktif. */
-export function imageUrl(env: MediaEnv, key: string, width: number): string {
-  const src = mediaUrl(env, key);
-  if (!transformsEnabled(env)) return src;
-  return `/cdn-cgi/image/width=${width},quality=80,format=auto/${src}`;
+export function imageUrl(env: MediaEnv, m: Pick<Media, 'url'>, width: number): string {
+  if (!transformable(env, m.url)) return m.url;
+  return `/cdn-cgi/image/width=${width},quality=80,format=auto/${m.url}`;
 }
 
-export function imageSrcset(env: MediaEnv, m: Pick<Media, 'r2Key' | 'width'>): string | undefined {
-  if (!transformsEnabled(env)) return undefined;
+export function imageSrcset(env: MediaEnv, m: Pick<Media, 'url' | 'width'>): string | undefined {
+  if (!transformable(env, m.url)) return undefined;
   const widths = SRCSET_WIDTHS.filter((w) => !m.width || w <= m.width);
   const list = widths.length ? widths : [SRCSET_WIDTHS[0]];
-  return list.map((w) => `${imageUrl(env, m.r2Key, w)} ${w}w`).join(', ');
+  return list.map((w) => `${imageUrl(env, m, w)} ${w}w`).join(', ');
 }
 
 /** Deteksi tipe gambar dari magic bytes. */
@@ -56,7 +49,7 @@ export function sniffImageType(bytes: Uint8Array): MediaType | null {
   return null;
 }
 
-export function mediaKey(folder: (typeof MEDIA_FOLDERS)[number], type: MediaType, id: string): string {
+export function mediaPathname(folder: (typeof MEDIA_FOLDERS)[number], type: MediaType, id: string): string {
   const year = new Date().getUTCFullYear();
   return `${folder}/${year}/${id}.${MEDIA_TYPES[type]}`;
 }

@@ -4,7 +4,8 @@ import { getDb } from '../../../../db/client';
 import { media } from '../../../../db/schema';
 import { actor, back, jsonResponse, readForm, wantsJson } from '../../../../lib/admin';
 import { audit } from '../../../../lib/audit';
-import { MEDIA_FOLDERS, MEDIA_MAX_BYTES, MEDIA_TYPES, mediaKey, mediaUrl, sniffImageType } from '../../../../lib/media';
+import { MEDIA_FOLDERS, MEDIA_MAX_BYTES, MEDIA_TYPES, mediaPathname, sniffImageType } from '../../../../lib/media';
+import { deleteFile, putFile, type StoredFile } from '../../../../lib/storage';
 import { newId, nowIso } from '../../../../lib/util';
 
 const dim = (v: FormDataEntryValue | null): number | null => {
@@ -33,18 +34,23 @@ export const POST: APIRoute = async (ctx) => {
   if (!type || !(type in MEDIA_TYPES)) return fail(415, 'Hanya JPEG, PNG, WebP, atau AVIF.');
 
   const id = newId();
-  const key = mediaKey(folder, type, id);
+  const pathname = mediaPathname(folder, type, id);
   const alt = String(form.get('alt') ?? '').trim().slice(0, 200);
   const email = actor(ctx.locals);
 
-  await env.MEDIA.put(key, buf, {
-    httpMetadata: { contentType: type, cacheControl: 'public, max-age=31536000, immutable' },
-  });
+  let stored: StoredFile;
+  try {
+    stored = await putFile(env, pathname, buf, type);
+  } catch (err) {
+    console.warn('media upload failed', err instanceof Error ? err.message : err);
+    return fail(502, 'Gagal menyimpan file. Periksa BLOB_READ_WRITE_TOKEN.');
+  }
   const db = getDb(env);
   try {
     await db.insert(media).values({
       id,
-      r2Key: key,
+      pathname: stored.pathname,
+      url: stored.url,
       contentType: type,
       bytes: buf.byteLength,
       width: dim(form.get('width')),
@@ -54,11 +60,11 @@ export const POST: APIRoute = async (ctx) => {
       createdBy: email,
     });
   } catch (err) {
-    await env.MEDIA.delete(key); // jangan tinggalkan object tanpa baris di D1
+    await deleteFile(env, stored).catch(() => {}); // jangan tinggalkan file tanpa baris di D1
     throw err;
   }
-  await audit(db, email, 'media.upload', key);
+  await audit(db, email, 'media.upload', stored.pathname);
 
-  if (json) return jsonResponse(200, { ok: true, id, key, alt, url: mediaUrl(env, key) });
+  if (json) return jsonResponse(200, { ok: true, id, pathname: stored.pathname, alt, url: stored.url });
   return back('/admin/media', { ok: 'Foto diunggah.' });
 };

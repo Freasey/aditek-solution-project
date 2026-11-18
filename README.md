@@ -1,18 +1,18 @@
 # worksell-web
 
-Website dan admin **Worksell ID** (worksell.id): Astro di Cloudflare Workers, D1, dan R2.
+Website dan admin **Worksell ID** (worksell.id): Astro di Cloudflare Workers, D1, dan Vercel Blob.
 Dokumen perencanaan dan desain ada di branch [`plan`](../../tree/plan).
 
 | Bagian | Isi |
 |---|---|
 | Framework | Astro 7 (SSR) + `@astrojs/cloudflare` 14 |
 | Database | Cloudflare D1 (`worksell-db`) + Drizzle ORM |
-| Foto | Cloudflare R2 (`worksell-media`), disajikan dari `media.worksell.id` |
-| Form | Turnstile + rate limit 5 request/menit per IP + validasi Zod |
-| Admin | `/admin`, dilindungi Cloudflare Access, JWT diverifikasi lagi di middleware |
+| Foto | Vercel Blob (store publik), lewat HTTP API |
+| Form | Rate limit 5 request/menit per IP, honeypot, validasi Zod, Turnstile opsional |
+| Admin | `/admin`, login email dan password dari env, cookie sesi bertanda tangan HMAC |
 
-Hanya ada satu set resource (production). Development memakai D1 dan R2 lokal (Miniflare),
-jadi tidak butuh akun Cloudflare.
+Hanya ada satu set resource (production). Development memakai D1 lokal (Miniflare), dan foto
+disimpan di tabel D1 lokal bila `BLOB_READ_WRITE_TOKEN` kosong, jadi tidak butuh akun apa pun.
 
 ## Development lokal
 
@@ -37,10 +37,10 @@ pnpm dev
 ```
 
 - Website: http://localhost:4321
-- Admin: http://localhost:4321/admin (login dilewati karena `ADMIN_DEV_BYPASS=true` di `.dev.vars`;
-  middleware menolak bypass ini bila `SITE_URL` adalah worksell.id)
-- `seed/dev.sql` mengisi tiga proyek contoh dari desain. **Jangan** dijalankan ke database production.
-- Turnstile memakai key uji resmi Cloudflare yang selalu lolos.
+- Admin: http://localhost:4321/admin, login dengan `ADMIN_EMAIL` dan `ADMIN_PASSWORD` dari `.dev.vars`
+- `seed/dev.sql` mengisi tiga proyek contoh dari desain, `seed/dev-storage.sql` membuat tabel foto lokal.
+  **Jangan** jalankan keduanya ke database production.
+- Turnstile memakai key uji resmi Cloudflare yang selalu lolos (atau kosongkan untuk mematikannya).
 
 Perintah lain:
 
@@ -59,33 +59,26 @@ migrations/          SQL untuk wrangler d1 migrations (0000_init, 0001_seed)
 seed/dev.sql         data contoh, hanya lokal
 public/fonts/        General Sans (Fontshare) dan Geist Mono, di-host sendiri
 src/db/              skema Drizzle dan client
-src/lib/             Access, Turnstile, media/R2, validasi, query konten
-src/middleware.ts    guard /admin dan /api/admin, cek Origin, security headers, cache
+src/lib/             sesi admin, Turnstile, penyimpanan Blob, validasi, query konten
+src/middleware.ts    login wajib untuk /admin dan /api/admin, cek Origin, security headers, cache
 src/components/      komponen website (port dari design/home-coral-dark.html) dan admin
-src/pages/           halaman publik, /admin, /api/leads, /api/admin/*, /media/* (cadangan R2)
+src/pages/           halaman publik, /admin, /api/leads, /api/admin/*, /media/* (foto lokal, dev saja)
 ```
 
-## Langkah untuk pemilik (sekali saja)
+## Env yang diisi pemilik
 
-Detail lengkap ada di `docs/05-deploy-cloudflare.md` di branch `plan`. Ringkasnya:
+Isi di dashboard Cloudflare: **Workers & Pages > worksell-web > Settings > Variables and Secrets**.
+`wrangler.jsonc` memakai `keep_vars: true`, jadi isian dashboard tidak terhapus saat deploy.
 
-1. Aktifkan R2 di dashboard.
-2. Buat database dan bucket:
-   ```bash
-   npx wrangler d1 create worksell-db
-   ```
-   ```bash
-   npx wrangler r2 bucket create worksell-media
-   ```
-3. Kirim `database_id` hasil langkah 2 (atau isi sendiri di `wrangler.jsonc`, menggantikan
-   `00000000-0000-0000-0000-000000000000`).
-4. Isi `vars` di `wrangler.jsonc`: `PUBLIC_TURNSTILE_SITE_KEY`, `ACCESS_TEAM_DOMAIN`, `ACCESS_AUD`.
-5. Simpan secret Turnstile:
-   ```bash
-   npx wrangler secret put TURNSTILE_SECRET_KEY
-   ```
-6. Custom domain bucket `media.worksell.id`, Access application "Worksell Admin" untuk
-   `worksell.id/admin*` dan `worksell.id/api/admin/*`.
+| Nama | Tipe | Isi |
+|---|---|---|
+| `BLOB_READ_WRITE_TOKEN` | Secret | Token read-write Vercel Blob store (store harus akses **public**) |
+| `ADMIN_EMAIL` | Text | Email untuk login `/admin` |
+| `ADMIN_PASSWORD` | Secret | Password admin. Minimal 12 karakter, acak. Mengganti password mengeluarkan semua sesi |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Text | Opsional. Site key widget Turnstile untuk anti-spam form |
+| `TURNSTILE_SECRET_KEY` | Secret | Opsional. Secret key Turnstile. Turnstile aktif hanya bila kedua key diisi |
+
+`SITE_URL` dan `IMAGE_TRANSFORMS` sudah ada di `wrangler.jsonc`.
 
 ## Setiap rilis
 
@@ -101,8 +94,11 @@ npx wrangler d1 migrations apply worksell-db --remote
 npx wrangler deploy
 ```
 
-Setelah Image Transformations aktif dan `media.worksell.id` diizinkan sebagai source,
-ubah `IMAGE_TRANSFORMS` menjadi `"on"` supaya foto disajikan dengan `srcset`.
+Pertama kali: Workers > `worksell-web` > Settings > Domains & Routes > tambah custom domain `worksell.id`.
+
+Setelah Image Transformations aktif di zone worksell.id dan host
+`*.public.blob.vercel-storage.com` diizinkan sebagai source, ubah `IMAGE_TRANSFORMS` menjadi `"on"`
+supaya foto disajikan dengan `srcset`.
 
 Setelah live, isi nomor WhatsApp, email kontak, dan OG image di `/admin/settings`, lalu
 tampilkan item roadmap yang sudah dikonfirmasi di `/admin/roadmap` (seed production menyimpannya sebagai draft).

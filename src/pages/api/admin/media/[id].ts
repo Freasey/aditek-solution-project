@@ -15,7 +15,7 @@ export const POST: APIRoute = async (ctx) => {
   if (!parsed.success) return back('/admin/media', { error: firstIssue(parsed.error) });
 
   const db = getDb(env);
-  const res = await db.update(media).set({ alt: parsed.data.alt }).where(eq(media.id, id)).returning({ key: media.r2Key });
+  const res = await db.update(media).set({ alt: parsed.data.alt }).where(eq(media.id, id)).returning({ key: media.pathname });
   if (!res.length) return back('/admin/media', { error: 'Foto tidak ditemukan.' });
   await audit(db, actor(ctx.locals), 'media.alt', res[0]!.key);
   return back('/admin/media', { ok: 'Alt text disimpan.' });

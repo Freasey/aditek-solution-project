@@ -7,33 +7,34 @@
   "assets": { "directory": "./dist", "binding": "ASSETS" },
   "observability": { "enabled": true },
 
-  // Isi database_id setelah pemilik menjalankan: npx wrangler d1 create worksell-db
+  // Variabel dan secret yang diisi lewat dashboard (Workers > worksell-web > Settings >
+  // Variables and Secrets) tidak dihapus saat deploy.
+  "keep_vars": true,
+
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "worksell-db",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "1d630403-ebe8-4f60-a449-09b7324cef25",
       "migrations_dir": "migrations"
     }
   ],
 
-  // Bucket dibuat pemilik: npx wrangler r2 bucket create worksell-media
-  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "worksell-media" }],
-
-  // 5 request per 60 detik per IP untuk POST /api/leads
   "ratelimits": [
-    { "name": "LEAD_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+    // 5 request per 60 detik per IP untuk POST /api/leads
+    { "name": "LEAD_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } },
+    // 5 percobaan login admin per 60 detik per IP
+    { "name": "LOGIN_LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
   ],
 
   "vars": {
     "SITE_URL": "https://worksell.id",
-    "MEDIA_BASE_URL": "https://media.worksell.id",
-    // "on" setelah Image Transformations aktif di zone worksell.id dan media.worksell.id diizinkan
-    "IMAGE_TRANSFORMS": "off",
-    // Isi dari dashboard Turnstile dan Cloudflare Access
-    "PUBLIC_TURNSTILE_SITE_KEY": "",
-    "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": ""
+    // "on" setelah Image Transformations aktif di zone worksell.id
+    "IMAGE_TRANSFORMS": "off"
   }
-  // Secret (diisi pemilik): npx wrangler secret put TURNSTILE_SECRET_KEY
+  // Diisi pemilik di dashboard (lihat README):
+  //   BLOB_READ_WRITE_TOKEN (secret)  token Vercel Blob
+  //   ADMIN_EMAIL                     email login admin
+  //   ADMIN_PASSWORD (secret)         password login admin
+  //   PUBLIC_TURNSTILE_SITE_KEY, TURNSTILE_SECRET_KEY (opsional, anti-spam form)
 }

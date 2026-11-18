@@ -1,21 +1,15 @@
 import { env } from 'cloudflare:workers';
 import type { APIRoute } from 'astro';
+import { readLocalFile } from '../../lib/storage';
+import { isProductionSite } from '../../lib/util';
 
-/**
- * Menyajikan object R2 lewat Worker. Di production foto disajikan dari media.worksell.id
- * (custom domain bucket); route ini dipakai di lokal dan sebagai cadangan.
- */
-export const GET: APIRoute = async ({ params, request }) => {
+/** Menyajikan foto dari penyimpanan lokal development. Di production foto ada di Vercel Blob. */
+export const GET: APIRoute = async ({ params }) => {
   const key = params.key;
-  if (!key || key.includes('..')) return new Response('Not found', { status: 404 });
-
-  const obj = await env.MEDIA.get(key, { onlyIf: request.headers });
-  if (!obj) return new Response('Not found', { status: 404 });
-
-  const headers = new Headers();
-  obj.writeHttpMetadata(headers);
-  headers.set('etag', obj.httpEtag);
-  if (!headers.has('cache-control')) headers.set('cache-control', 'public, max-age=31536000, immutable');
-  if (!('body' in obj)) return new Response(null, { status: 304, headers });
-  return new Response(obj.body, { headers });
+  if (!key || key.includes('..') || isProductionSite(env.SITE_URL)) return new Response('Not found', { status: 404 });
+  const file = await readLocalFile(env, key);
+  if (!file) return new Response('Not found', { status: 404 });
+  return new Response(file.data, {
+    headers: { 'content-type': file.contentType, 'cache-control': 'public, max-age=31536000, immutable' },
+  });
 };

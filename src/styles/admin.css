@@ -84,3 +84,8 @@
   .content { padding: var(--space-lg) var(--space-md) var(--space-2xl); }
   .grid-2, .grid-3, .af .row, .af .row--3 { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* login */
+.login { min-height: 100dvh; display: grid; place-items: center; padding: var(--space-md); }
+.login form { width: min(100%, 400px); }
+.login h1 { font-size: var(--text-title); max-width: none; }

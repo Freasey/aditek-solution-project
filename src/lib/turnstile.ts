@@ -1,3 +1,10 @@
+import { env } from 'cloudflare:workers';
+
+/** Turnstile aktif bila PUBLIC_TURNSTILE_SITE_KEY dan TURNSTILE_SECRET_KEY sama-sama diisi. */
+export function turnstileEnabled(): boolean {
+  return !!env.PUBLIC_TURNSTILE_SITE_KEY?.trim() && !!env.TURNSTILE_SECRET_KEY?.trim();
+}
+
 const SITEVERIFY = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 /** Secret uji resmi Cloudflare yang selalu lolos. Hanya dihormati di luar production. */
 const TEST_SECRET_PASS = '1x0000000000000000000000000000000AA';

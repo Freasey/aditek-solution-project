@@ -25,6 +25,7 @@ export const leadSchema = z
     message: optionalText(1000),
     sourcePath: z.string().max(200).optional(),
     turnstileToken: z.string().max(4096).optional().default(''),
+    website: z.string().max(200).optional().default(''),
   })
   .transform((v, ctx) => {
     let contactValue: string;

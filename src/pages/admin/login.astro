@@ -1,0 +1,35 @@
+---
+import { env } from 'cloudflare:workers';
+import '../../styles/tokens.css';
+import '../../styles/site.css';
+import '../../styles/admin.css';
+import { authConfigured } from '../../lib/session';
+
+const next = Astro.url.searchParams.get('next') ?? '/admin';
+const error = Astro.url.searchParams.get('error');
+const configured = authConfigured(env);
+---
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Login | Admin Worksell ID</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <main class="login" id="main">
+    <form class="af panel" method="post" action="/api/admin/login">
+      <p class="wordmark">Worksell ID</p>
+      <h1>Masuk admin</h1>
+      {!configured && <p class="flash flash--error" role="alert">Login admin belum dikonfigurasi. Isi ADMIN_EMAIL dan ADMIN_PASSWORD di env Worker.</p>}
+      {error && <p class="flash flash--error" role="alert">{error}</p>}
+      <label>Email<input type="email" name="email" autocomplete="username" required maxlength="200" /></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required maxlength="200" /></label>
+      <input type="hidden" name="next" value={next} />
+      <div class="actions"><button class="btn btn--accent btn--sm" type="submit">Masuk</button></div>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,26 +1,20 @@
 import { env } from 'cloudflare:workers';
 import { defineMiddleware } from 'astro:middleware';
-import { verifyAccess } from './lib/access';
 import { jsFlagHash } from './lib/inline';
-import { isProductionSite, siteOrigin } from './lib/util';
+import { SESSION_COOKIE, readCookie, verifySession } from './lib/session';
+import { BLOB_PUBLIC_HOST_SUFFIX } from './lib/storage';
+import { siteOrigin } from './lib/util';
 
 const MUTATING = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
+const PUBLIC_ADMIN_PATHS = new Set(['/admin/login', '/api/admin/login']);
 
 function isAdminPath(path: string): boolean {
   return path === '/admin' || path.startsWith('/admin/') || path.startsWith('/api/admin/');
 }
 
-function originOf(url: string): string | null {
-  try {
-    return new URL(url).origin;
-  } catch {
-    return null;
-  }
-}
-
 async function contentSecurityPolicy(): Promise<string> {
-  const media = originOf(env.MEDIA_BASE_URL);
-  const img = ["'self'", 'data:', 'blob:', media].filter(Boolean).join(' ');
+  const img = ["'self'", 'data:', 'blob:', `https://*${BLOB_PUBLIC_HOST_SUFFIX}`].join(' ');
   return [
     "default-src 'self'",
     `script-src 'self' ${await jsFlagHash()} https://challenges.cloudflare.com https://static.cloudflareinsights.com`,
@@ -45,10 +39,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const admin = isAdminPath(url.pathname);
 
   if (admin) {
-    const bypass = env.ADMIN_DEV_BYPASS === 'true' && !isProductionSite(env.SITE_URL);
-    const email = bypass ? 'dev@localhost' : await verifyAccess(request, env);
-    if (!email) return forbidden('Akses ditolak.');
-    locals.user = { email };
+    if (!PUBLIC_ADMIN_PATHS.has(url.pathname)) {
+      const email = await verifySession(env, readCookie(request.headers.get('cookie'), SESSION_COOKIE));
+      if (!email) {
+        if (request.method === 'GET' && !url.pathname.startsWith('/api/')) {
+          const next = encodeURIComponent(url.pathname + url.search);
+          return new Response(null, { status: 303, headers: { Location: `/admin/login?next=${next}` } });
+        }
+        return new Response('Silakan login.', { status: 401, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+      }
+      locals.user = { email };
+    }
 
     if (MUTATING.has(request.method)) {
       const origin = request.headers.get('origin');

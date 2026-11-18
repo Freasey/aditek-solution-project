@@ -30,7 +30,8 @@ CREATE INDEX `leads_created_idx` ON `leads` ("created_at" DESC);--> statement-br
 CREATE INDEX `leads_status_idx` ON `leads` (`status`);--> statement-breakpoint
 CREATE TABLE `media` (
 	`id` text PRIMARY KEY NOT NULL,
-	`r2_key` text NOT NULL,
+	`pathname` text NOT NULL,
+	`url` text NOT NULL,
 	`content_type` text NOT NULL,
 	`bytes` integer NOT NULL,
 	`width` integer,
@@ -40,7 +41,7 @@ CREATE TABLE `media` (
 	`created_by` text
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `media_r2_key_unique` ON `media` (`r2_key`);--> statement-breakpoint
+CREATE UNIQUE INDEX `media_pathname_unique` ON `media` (`pathname`);--> statement-breakpoint
 CREATE TABLE `project_items` (
 	`id` text PRIMARY KEY NOT NULL,
 	`project_id` text NOT NULL,

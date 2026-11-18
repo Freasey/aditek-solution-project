@@ -4,7 +4,7 @@ import { getDb } from '../../db/client';
 import { leads } from '../../db/schema';
 import { contactLink } from '../../lib/contact-link';
 import { getSettings } from '../../lib/content';
-import { verifyTurnstile } from '../../lib/turnstile';
+import { turnstileEnabled, verifyTurnstile } from '../../lib/turnstile';
 import { leadSchema } from '../../lib/validation';
 import { isProductionSite, newId, nowIso } from '../../lib/util';
 
@@ -41,11 +41,19 @@ export const POST: APIRoute = async ({ request }) => {
     return json(400, { ok: false, field, error: FIELD_MESSAGE[field] ?? 'Periksa lagi isian form.' });
   }
   const lead = parsed.data;
+  const s = await getSettings(getDb(env));
+  const redirect = contactLink({ whatsapp: s.whatsapp_number, email: s.contact_email }, lead);
 
-  const human = await verifyTurnstile(env.TURNSTILE_SECRET_KEY, lead.turnstileToken, ip, {
-    production: isProductionSite(env.SITE_URL),
-  });
-  if (!human) return json(403, { ok: false, error: 'Verifikasi anti-spam gagal.' });
+  // Honeypot: field tersembunyi yang hanya diisi bot. Balas seolah berhasil, tanpa menyimpan.
+  if (lead.website) return json(200, { ok: true, redirect });
+
+  // Turnstile opsional: hanya diperiksa bila site key dan secret key sudah diisi.
+  if (turnstileEnabled()) {
+    const human = await verifyTurnstile(env.TURNSTILE_SECRET_KEY, lead.turnstileToken, ip, {
+      production: isProductionSite(env.SITE_URL),
+    });
+    if (!human) return json(403, { ok: false, error: 'Verifikasi anti-spam gagal.' });
+  }
 
   const db = getDb(env);
   const now = nowIso();
@@ -64,8 +72,5 @@ export const POST: APIRoute = async ({ request }) => {
     createdAt: now,
     updatedAt: now,
   });
-
-  const s = await getSettings(db);
-  const redirect = contactLink({ whatsapp: s.whatsapp_number, email: s.contact_email }, lead);
   return json(200, { ok: true, redirect });
 };

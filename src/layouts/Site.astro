@@ -28,7 +28,7 @@ const { title, description, path, settings, ogImage, home = false, showRoadmap =
   Astro.props;
 
 const canonical = new URL(path, 'https://worksell.id').href;
-const ogUrl = ogImage ? new URL(imageUrl(env, ogImage.r2Key, 1200), canonical).href : null;
+const ogUrl = ogImage ? new URL(imageUrl(env, ogImage, 1200), canonical).href : null;
 
 const business: Record<string, unknown> = {
   '@context': 'https://schema.org',

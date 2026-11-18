@@ -20,9 +20,9 @@ const { name, label, value, items, folder } = Astro.props;
       <span class="thumb" data-slot="none">Tanpa foto</span>
     </label>
     {items.map((m) => (
-      <label class="pick" title={m.alt || m.r2Key}>
+      <label class="pick" title={m.alt || m.pathname}>
         <input type="radio" name={name} value={m.id} checked={value === m.id} />
-        <span class="thumb" data-slot={m.id}><img src={imageUrl(env, m.r2Key, 480)} alt={m.alt} loading="lazy" /></span>
+        <span class="thumb" data-slot={m.id}><img src={imageUrl(env, m, 480)} alt={m.alt} loading="lazy" /></span>
       </label>
     ))}
   </div>

@@ -9,7 +9,10 @@ export const CONTACT_VIA = ['whatsapp', 'email'] as const;
 
 export const media = sqliteTable('media', {
   id: text('id').primaryKey(),
-  r2Key: text('r2_key').notNull().unique(),
+  /** Path di Blob store, mis. "projects/2026/<uuid>.jpg". */
+  pathname: text('pathname').notNull().unique(),
+  /** URL publik file (Vercel Blob, atau /media/... untuk penyimpanan lokal development). */
+  url: text('url').notNull(),
   contentType: text('content_type').notNull(),
   bytes: integer('bytes').notNull(),
   width: integer('width'),

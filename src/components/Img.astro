@@ -13,7 +13,7 @@ const { media, sizes, eager = false, alt } = Astro.props;
 const srcset = imageSrcset(env, media);
 ---
 <img
-  src={imageUrl(env, media.r2Key, 1200)}
+  src={imageUrl(env, media, 1200)}
   srcset={srcset}
   sizes={srcset ? sizes : undefined}
   width={media.width ?? undefined}

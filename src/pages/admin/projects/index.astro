@@ -23,7 +23,7 @@ const projects = await getProjectCards(getDb(env), { publishedOnly: false });
               <td class="fig">{p.sortOrder}</td>
               <td style="width: 96px">
                 <div class="thumb" data-slot={p.id} style="aspect-ratio: 4 / 3; width: 80px; border-radius: 4px">
-                  {p.photo && <img src={imageUrl(env, p.photo.r2Key, 480)} alt="" loading="lazy" style="filter: none" />}
+                  {p.photo && <img src={imageUrl(env, p.photo, 480)} alt="" loading="lazy" style="filter: none" />}
                 </div>
               </td>
               <td><a href={`/admin/projects/${p.id}`}>{p.clientName}</a><br /><span class="muted">{p.location}</span></td>

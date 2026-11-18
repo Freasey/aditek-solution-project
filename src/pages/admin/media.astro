@@ -4,14 +4,14 @@ import { desc } from 'drizzle-orm';
 import Admin from '../../layouts/Admin.astro';
 import { getDb } from '../../db/client';
 import { media } from '../../db/schema';
-import { imageUrl, mediaUrl } from '../../lib/media';
+import { imageUrl } from '../../lib/media';
 import { formatDate } from '../../lib/util';
 
 const items = await getDb(env).select().from(media).orderBy(desc(media.createdAt)).limit(500);
 const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB` : `${Math.round(n / 1024)} KB`);
 ---
 <Admin title="Media">
-  <div class="bar"><h1>Media</h1><p>Foto disimpan di R2. File tidak pernah ditimpa: ganti foto berarti upload baru.</p></div>
+  <div class="bar"><h1>Media</h1><p>Foto disimpan di Vercel Blob. File tidak pernah ditimpa: ganti foto berarti upload baru.</p></div>
   <section class="panel">
     <h2>Upload</h2>
     <form class="af" method="post" action="/api/admin/media" enctype="multipart/form-data" id="upload-form">
@@ -34,13 +34,13 @@ const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB
     <ul class="media-grid">
       {items.map((m) => (
         <li class="media-card">
-          <a class="thumb" data-slot={m.id} href={mediaUrl(env, m.r2Key)} target="_blank" rel="noopener"><img src={imageUrl(env, m.r2Key, 480)} alt={m.alt} loading="lazy" /></a>
+          <a class="thumb" data-slot={m.id} href={m.url} target="_blank" rel="noopener"><img src={imageUrl(env, m, 480)} alt={m.alt} loading="lazy" /></a>
           <span class="meta">{m.width && m.height ? `${m.width}×${m.height} · ` : ''}{kb(m.bytes)} · {formatDate(m.createdAt)}</span>
           <form class="af" method="post" action={`/api/admin/media/${m.id}`}>
             <label class="hint">Alt text<input type="text" name="alt" value={m.alt} maxlength="200" /></label>
             <button class="btn btn--quiet btn--sm" type="submit">Simpan alt</button>
           </form>
-          <form method="post" action={`/api/admin/media/${m.id}/delete`} data-confirm="Hapus foto ini dari R2?">
+          <form method="post" action={`/api/admin/media/${m.id}/delete`} data-confirm="Hapus foto ini dari penyimpanan?">
             <button class="btn btn--danger btn--sm" type="submit">Hapus</button>
           </form>
         </li>
