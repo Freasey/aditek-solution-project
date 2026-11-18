@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aditek | IT Solution dan System Integrator Perusahaan di Jabodetabek</title>
+<meta name="description" content="Aditek merancang dan memasang sistem keamanan terintegrasi, ERP, dan aplikasi workplace management untuk perusahaan di Jabodetabek, sampai benar-benar dipakai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Langsung ke konten</a>
+
+<header class="nav">
+  <div class="container nav__inner">
+    <a class="wordmark" href="index.html" aria-label="Aditek, beranda">Aditek</a>
+    <nav class="nav__links" aria-label="Sistem">
+      <a href="security-system/index.html"><span class="sw sw--security" aria-hidden="true"></span>Sistem keamanan</a>
+      <a href="erp-system/index.html"><span class="sw sw--erp" aria-hidden="true"></span>ERP</a>
+      <a href="workplace-management/index.html"><span class="sw sw--workplace" aria-hidden="true"></span>Workplace</a>
+    </nav>
+    <a class="btn" href="#kontak">Konsultasi</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <h1>Satu sistem, satu gedung.</h1>
+        <p class="lead">Keamanan, ERP, dan aplikasi kantor dirancang terhubung, dipasang sampai dipakai tim Anda.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#kontak">Jadwalkan konsultasi</a>
+          <a class="btn" href="#sistem">Lihat tiga sistem</a>
+        </div>
+      </div>
+
+      <figure data-slot="hero-board" data-kind="product" data-alt="Tangkapan layar dashboard Aditek yang menampilkan log kejadian lintas sistem">
+        <div class="board">
+          <div class="board__head">
+            <span class="board__title">Lantai 3, Senin pagi</span>
+            <span class="board__meta">Contoh alur</span>
+          </div>
+          <table>
+            <thead><tr><th scope="col">Jam</th><th scope="col">Kejadian</th><th scope="col">Sistem</th></tr></thead>
+            <tbody>
+              <tr><td class="t">08.02</td><td class="ev">Kartu karyawan di pintu lobi</td><td><span class="tag"><span class="sw sw--security" aria-hidden="true"></span>Keamanan</span></td></tr>
+              <tr><td class="t">08.02</td><td class="ev">Jam masuk tercatat di absensi</td><td><span class="tag"><span class="sw sw--erp" aria-hidden="true"></span>ERP</span></td></tr>
+              <tr><td class="t">08.40</td><td class="ev">Tamu check-in di resepsionis</td><td><span class="tag"><span class="sw sw--security" aria-hidden="true"></span>Keamanan</span></td></tr>
+              <tr><td class="t">08.45</td><td class="ev">Ruang Rinjani dipesan untuk 09.00</td><td><span class="tag"><span class="sw sw--workplace" aria-hidden="true"></span>Workplace</span></td></tr>
+              <tr><td class="t">09.00</td><td class="ev">Pintu Ruang Rinjani terbuka</td><td><span class="tag"><span class="sw sw--security" aria-hidden="true"></span>Keamanan</span></td></tr>
+            </tbody>
+          </table>
+          <div class="board__foot">
+            <div><b>Satu tap kartu</b><span>Akses, absensi, dan jadwal ruang ikut tercatat.</span></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="sistem" aria-labelledby="sistem-h">
+    <div class="container">
+      <div class="head head--split">
+        <h2 id="sistem-h">Tiga sistem, satu jaringan.</h2>
+        <p class="lead">Setiap sistem bisa berdiri sendiri, dan makin berguna saat terhubung.</p>
+      </div>
+      <ul class="lines">
+        <li><a class="line" href="security-system/index.html">
+          <h3><span class="sw sw--security" aria-hidden="true"></span>Keamanan</h3>
+          <p>Access control, CCTV, dan buku tamu digital dalam satu arsitektur.</p>
+          <span class="line__path">/security-system</span>
+        </a></li>
+        <li><a class="line" href="erp-system/index.html">
+          <h3><span class="sw sw--erp" aria-hidden="true"></span>ERP</h3>
+          <p>Sales, purchasing, inventory, sampai jurnal accounting dalam satu alur.</p>
+          <span class="line__path">/erp-system</span>
+        </a></li>
+        <li><a class="line" href="workplace-management/index.html">
+          <h3><span class="sw sw--workplace" aria-hidden="true"></span>Workplace</h3>
+          <p>Spaces, aplikasi kami untuk pekerjaan kantor rutin, mulai dari booking ruangan.</p>
+          <span class="line__path">/workplace-management</span>
+        </a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--ink" aria-labelledby="hub-h">
+    <div class="container">
+      <div class="head head--split">
+        <h2 id="hub-h">Data yang berpindah sendiri.</h2>
+        <p class="lead">Titik sambung yang biasanya diisi ulang manual oleh tim Anda.</p>
+      </div>
+      <table class="route-table">
+        <thead><tr><th scope="col">Dari</th><th scope="col">Data</th><th scope="col">Ke</th></tr></thead>
+        <tbody>
+          <tr><td>Pintu masuk</td><td data-label="Data" class="data">Jam masuk dan pulang</td><td data-label="Ke"><span class="tag"><span class="sw sw--erp" aria-hidden="true"></span>Absensi dan payroll</span></td></tr>
+          <tr><td>Booking ruangan</td><td data-label="Data" class="data">Peserta dan jam</td><td data-label="Ke"><span class="tag"><span class="sw sw--security" aria-hidden="true"></span>Akses pintu ruang</span></td></tr>
+          <tr><td>Buku tamu digital</td><td data-label="Data" class="data">Identitas tamu</td><td data-label="Ke"><span class="tag"><span class="sw sw--security" aria-hidden="true"></span>Rekaman CCTV terkait</span></td></tr>
+          <tr><td>Sales order</td><td data-label="Data" class="data">Barang dan nilai</td><td data-label="Ke"><span class="tag"><span class="sw sw--erp" aria-hidden="true"></span>Stok dan jurnal</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cara-h">
+    <div class="container">
+      <div class="head">
+        <h2 id="cara-h">Dari survei sampai dipakai.</h2>
+      </div>
+      <ol class="route">
+        <li><h3>Survei dan audit</h3><p>Kami datang ke lokasi, memetakan alur kerja dan perangkat yang sudah ada.</p></li>
+        <li><h3>Desain arsitektur</h3><p>Rancangan sistem, titik integrasi, dan fase kerja disepakati tertulis.</p></li>
+        <li><h3>Implementasi</h3><p>Instalasi perangkat, konfigurasi software, dan migrasi data.</p></li>
+        <li class="is-ink"><h3>Training dan support</h3><p>Tim Anda dilatih sampai mandiri, lalu kami dampingi lewat kontrak support.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--l section--last" id="kontak" aria-labelledby="kontak-h">
+    <div class="container contact">
+      <div class="contact__text">
+        <h2 id="kontak-h">Mulai dari satu kunjungan.</h2>
+        <p class="lead">Ceritakan gedung dan alur kerja Anda. Kami datang untuk survei.</p>
+      </div>
+      <dl>
+        <div><dt>Email</dt><dd><span class="fill" data-fill="email">Alamat email belum diisi</span></dd></div>
+        <div><dt>WhatsApp</dt><dd><span class="fill" data-fill="whatsapp">Nomor WhatsApp belum diisi</span></dd></div>
+        <div><dt>Area layanan</dt><dd>
+          <span class="cells" aria-label="Area layanan"><span>Jakarta</span><span>Bogor</span><span>Depok</span><span>Tangerang</span><span>Bekasi</span></span>
+        </dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer__mast" aria-hidden="true">Aditek</p>
+    <div class="footer__grid">
+      <p>System integrator untuk perusahaan di Jabodetabek: keamanan, ERP, dan aplikasi workplace.</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="security-system/index.html"><span class="sw sw--security" aria-hidden="true"></span>Sistem keamanan</a>
+        <a href="erp-system/index.html"><span class="sw sw--erp" aria-hidden="true"></span>Sistem ERP</a>
+        <a href="workplace-management/index.html"><span class="sw sw--workplace" aria-hidden="true"></span>Workplace management</a>
+        <a href="#kontak">Kontak</a>
+      </nav>
+    </div>
+    <p class="footer__legal">© 2026 Aditek</p>
+  </div>
+</footer>
+</body>
+</html>

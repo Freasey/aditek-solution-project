@@ -9,6 +9,8 @@ Kode website/aplikasi dikembangkan di branch `main`.
 |---|---|
 | [docs/01-positioning.md](docs/01-positioning.md) | Positioning bisnis, target pasar, prinsip "jual sistem, bukan barang" |
 | [docs/02-sitemap-seo.md](docs/02-sitemap-seo.md) | Struktur URL website, kata kunci per halaman, aturan SEO |
+| [docs/03-tech-stack.md](docs/03-tech-stack.md) | Rencana teknologi website (Astro), belum dieksekusi |
+| [design/](design/) | Opsi desain HTML statis: Home, Security, ERP, Workplace |
 
 ## Keputusan yang sudah disepakati
 
@@ -24,7 +26,9 @@ Kode website/aplikasi dikembangkan di branch `main`.
 ## Status
 
 - [x] Positioning awal
-- [x] Draf sitemap & kata kunci (menunggu konfirmasi endpoint)
+- [x] Sitemap & endpoint: `/security-system`, `/erp-system`, `/workplace-management`
 - [ ] Validasi volume kata kunci (Google Keyword Planner)
-- [ ] Setup website di branch `main`
+- [x] Opsi desain HTML (tema Wayfind, metode Hallmark)
+- [ ] Review desain oleh tim
+- [ ] Setup website di branch `main` (Astro, menunggu keputusan)
 - [ ] Google Business Profile

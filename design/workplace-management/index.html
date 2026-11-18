@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spaces, Aplikasi Workplace Management dan Booking Ruang Meeting | Aditek</title>
+<meta name="description" content="Spaces dari Aditek: aplikasi workplace management untuk otomasi pekerjaan kantor, dimulai dari booking ruang meeting yang terhubung ke akses pintu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Langsung ke konten</a>
+
+<header class="nav">
+  <div class="container nav__inner">
+    <a class="wordmark" href="../index.html" aria-label="Aditek, beranda">Aditek</a>
+    <nav class="nav__links" aria-label="Sistem">
+      <a href="../security-system/index.html"><span class="sw sw--security" aria-hidden="true"></span>Sistem keamanan</a>
+      <a href="../erp-system/index.html"><span class="sw sw--erp" aria-hidden="true"></span>ERP</a>
+      <a href="index.html" aria-current="page"><span class="sw sw--workplace" aria-hidden="true"></span>Workplace</a>
+    </nav>
+    <a class="btn" href="#kontak">Konsultasi</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <h1>Ruang meeting tanpa jadwal bentrok.</h1>
+        <p class="lead">Spaces dari Aditek mengotomasi pekerjaan kantor, dimulai dari booking ruangan.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#kontak">Minta demo Spaces</a>
+          <a class="btn" href="#jadwal">Lihat jadwal ruang</a>
+        </div>
+      </div>
+
+      <figure data-slot="spaces-booking" data-kind="product" data-alt="Tangkapan layar Spaces: form booking ruang meeting">
+        <div class="panel">
+          <div class="panel__head"><b>Pesan ruang</b><span class="label">Spaces, contoh</span></div>
+          <div class="panel__body">
+            <div class="field"><span>Ruang</span><span class="val">Rinjani<small>8 orang</small></span></div>
+            <div class="field"><span>Tanggal</span><span class="val">Senin, 09.00</span></div>
+            <div class="field field--wide"><span>Jam tersedia</span>
+              <span class="slots"><span class="is-off">08.00</span><span class="is-on">09.00</span><span>10.00</span><span class="is-off">11.00</span><span>13.00</span><span>14.00</span></span>
+            </div>
+            <div class="field field--wide"><span>Peserta</span><span class="val">6 karyawan, 1 tamu</span></div>
+            <span class="panel__cta" aria-hidden="true">Pesan ruang</span>
+          </div>
+          <div class="panel__note">
+            <div><b>Pintu terbuka 08.55</b><span>Akses ruang aktif untuk peserta selama jadwal berlangsung.</span></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="jadwal" aria-labelledby="jadwal-h">
+    <div class="container">
+      <div class="head head--split">
+        <h2 id="jadwal-h">Semua ruang, satu layar.</h2>
+        <div class="cells" role="tablist" aria-label="Hari" data-switch>
+          <button type="button" role="tab" id="tab-ini" aria-controls="p-ini" aria-selected="true">Hari ini</button>
+          <button type="button" role="tab" id="tab-besok" aria-controls="p-besok" aria-selected="false">Besok</button>
+        </div>
+      </div>
+
+      <div class="switch__panels">
+        <div role="tabpanel" id="p-ini" aria-labelledby="tab-ini">
+          <div class="sched-wrap" tabindex="0" aria-label="Jadwal ruang hari ini, contoh">
+            <div class="sched">
+              <span class="h corner">Ruang</span><span class="h">08</span><span class="h">09</span><span class="h">10</span><span class="h">11</span><span class="h">12</span><span class="h">13</span><span class="h">14</span><span class="h">15</span><span class="h">16</span>
+              <span class="room" style="grid-row: 2">Rinjani<small>8 orang</small></span>
+              <span class="bk bk--mine" style="grid-row: 2; grid-column: 3 / 4"><b>09.00</b>Review vendor</span>
+              <span class="bk" style="grid-row: 2; grid-column: 7 / 9"><b>13.00</b>Rapat bulanan</span>
+              <span class="room" style="grid-row: 3">Semeru<small>12 orang</small></span>
+              <span class="bk" style="grid-row: 3; grid-column: 2 / 4"><b>08.00</b>Briefing sales</span>
+              <span class="bk" style="grid-row: 3; grid-column: 9 / 11"><b>15.00</b>Interview</span>
+              <span class="room" style="grid-row: 4">Bromo<small>4 orang</small></span>
+              <span class="bk" style="grid-row: 4; grid-column: 5 / 6"><b>11.00</b>Panggilan klien</span>
+              <span class="room" style="grid-row: 5">Merapi<small>20 orang</small></span>
+              <span class="bk" style="grid-row: 5; grid-column: 4 / 7"><b>10.00</b>Training ERP</span>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" id="p-besok" aria-labelledby="tab-besok">
+          <div class="sched-wrap" tabindex="0" aria-label="Jadwal ruang besok, contoh">
+            <div class="sched">
+              <span class="h corner">Ruang</span><span class="h">08</span><span class="h">09</span><span class="h">10</span><span class="h">11</span><span class="h">12</span><span class="h">13</span><span class="h">14</span><span class="h">15</span><span class="h">16</span>
+              <span class="room" style="grid-row: 2">Rinjani<small>8 orang</small></span>
+              <span class="bk" style="grid-row: 2; grid-column: 4 / 6"><b>10.00</b>Desain proyek</span>
+              <span class="room" style="grid-row: 3">Semeru<small>12 orang</small></span>
+              <span class="bk bk--mine" style="grid-row: 3; grid-column: 8 / 10"><b>14.00</b>Demo produk</span>
+              <span class="room" style="grid-row: 4">Bromo<small>4 orang</small></span>
+              <span class="bk" style="grid-row: 4; grid-column: 2 / 3"><b>08.00</b>Stand-up</span>
+              <span class="bk" style="grid-row: 4; grid-column: 7 / 8"><b>13.00</b>Panggilan klien</span>
+              <span class="room" style="grid-row: 5">Merapi<small>20 orang</small></span>
+              <span class="bk" style="grid-row: 5; grid-column: 2 / 11"><b>08.00</b>Workshop seharian</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="caption">Contoh jadwal. Warna hijau menandai booking Anda.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cara-h">
+    <div class="container side">
+      <div class="head">
+        <h2 id="cara-h">Pesan, datang, ruang siap.</h2>
+      </div>
+      <ol class="rows">
+        <li><h3>Cek ruang kosong</h3><p>Kapasitas dan jam tersedia terlihat sebelum memesan.</p></li>
+        <li><h3>Pesan sekali</h3><p>Pilih ruang, jam, dan peserta. Jadwal langsung terlihat semua orang.</p></li>
+        <li><h3>Pintu ikut jadwal</h3><p>Dengan access control Aditek, ruang terbuka untuk peserta pada jamnya.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band band--ink" aria-labelledby="hub-h">
+    <div class="container">
+      <div class="head head--split">
+        <h2 id="hub-h">Terhubung ke sistem lain.</h2>
+        <p class="lead">Spaces makin berguna di gedung yang memakai sistem Aditek lain.</p>
+      </div>
+      <table class="route-table">
+        <thead><tr><th scope="col">Dari Spaces</th><th scope="col">Data</th><th scope="col">Ke</th></tr></thead>
+        <tbody>
+          <tr><td>Booking ruang</td><td data-label="Data" class="data">Peserta dan jam</td><td data-label="Ke"><span class="tag"><span class="sw sw--security" aria-hidden="true"></span>Akses pintu ruang</span></td></tr>
+          <tr><td>Tamu meeting</td><td data-label="Data" class="data">Nama dan jadwal</td><td data-label="Ke"><span class="tag"><span class="sw sw--security" aria-hidden="true"></span>Buku tamu digital</span></td></tr>
+          <tr><td>Daftar peserta</td><td data-label="Data" class="data">Data karyawan</td><td data-label="Ke"><span class="tag"><span class="sw sw--erp" aria-hidden="true"></span>HR di ERP</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section section--l section--last" id="kontak" aria-labelledby="kontak-h">
+    <div class="container contact">
+      <div class="contact__text">
+        <h2 id="kontak-h">Coba Spaces di kantor Anda.</h2>
+        <p class="lead">Modul baru dirilis bertahap. Mulai dari ruang meeting Anda sekarang.</p>
+      </div>
+      <dl>
+        <div><dt>Email</dt><dd><span class="fill" data-fill="email">Alamat email belum diisi</span></dd></div>
+        <div><dt>WhatsApp</dt><dd><span class="fill" data-fill="whatsapp">Nomor WhatsApp belum diisi</span></dd></div>
+        <div><dt>Area layanan</dt><dd>
+          <span class="cells" aria-label="Area layanan"><span>Jakarta</span><span>Bogor</span><span>Depok</span><span>Tangerang</span><span>Bekasi</span></span>
+        </dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer__mast" aria-hidden="true">Aditek</p>
+    <div class="footer__grid">
+      <p>System integrator untuk perusahaan di Jabodetabek: keamanan, ERP, dan aplikasi workplace.</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="../security-system/index.html"><span class="sw sw--security" aria-hidden="true"></span>Sistem keamanan</a>
+        <a href="../erp-system/index.html"><span class="sw sw--erp" aria-hidden="true"></span>Sistem ERP</a>
+        <a href="index.html"><span class="sw sw--workplace" aria-hidden="true"></span>Workplace management</a>
+        <a href="#kontak">Kontak</a>
+      </nav>
+    </div>
+    <p class="footer__legal">© 2026 Aditek</p>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
