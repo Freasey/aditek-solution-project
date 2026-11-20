@@ -50,5 +50,25 @@
       "summary": "Pemakaian listrik per lantai.",
       "stage": "perancangan"
     }
+  ],
+  "projects": [
+    {
+      "id": "proj-erp-pabrik-sandal-2025",
+      "clientName": "Perusahaan Pabrik Sandal",
+      "location": "Pabrik, Jakarta Utara",
+      "year": 2025,
+      "system": "erp",
+      "solution": "Sistem ERP",
+      "photoCaption": "ERP Odoo 19, dikerjakan engineer kami sebelum Worksell berdiri",
+      "items": [
+        "Sales order-to-cash dengan approval bertingkat dan cek limit kredit",
+        "Purchase request sampai tagihan vendor dengan three-way matching",
+        "Gudang: penerimaan, picking, packing, dan stok opname",
+        "Accounting, tutup buku, dan e-Faktur DJP",
+        "Aset tetap dengan audit QR lewat aplikasi mobile",
+        "Sinkronisasi data real-time antar sistem"
+      ],
+      "published": true
+    }
   ]
 }
