@@ -71,6 +71,22 @@
         "Sinkronisasi data real-time antar sistem"
       ],
       "published": true
+    },
+    {
+      "id": "proj-spaces-distributor-keamanan-2026",
+      "clientName": "Perusahaan Distributor Sistem Keamanan",
+      "location": "Kantor, Jakarta Pusat",
+      "year": 2026,
+      "system": "spaces",
+      "solution": "Spaces",
+      "photoCaption": "Booking ruang meeting dengan Spaces, kantor Jakarta Pusat",
+      "items": [
+        "Ruang rapat utama, 12 orang",
+        "Ruang diskusi, 6 orang",
+        "Pod fokus, 2 orang",
+        "Booking lewat web dan aplikasi Android"
+      ],
+      "published": true
     }
   ]
 }
