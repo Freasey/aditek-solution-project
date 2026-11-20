@@ -2,7 +2,7 @@
   "$comment": "Konten asli production. Ubah file ini lalu jalankan pnpm content:apply:remote. Aturan ada di scripts/content-sql.ts.",
   "settings": {
     "reply_promise": "Kami balas dalam satu hari kerja.",
-    "hero_title": "System integrator untuk keamanan gedung, ERP, dan workplace.",
+    "hero_title": "Satu tim IT untuk kebutuhan perusahaan Anda.",
     "footer_line": "Dirancang dengan benar, dipakai setiap hari."
   },
   "systems": [
