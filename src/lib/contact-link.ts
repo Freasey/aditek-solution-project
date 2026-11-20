@@ -18,15 +18,21 @@ const SYSTEM_LABEL: Record<string, string> = {
   security: 'Sistem keamanan',
   erp: 'Sistem ERP',
   spaces: 'Spaces',
+  marketing: 'Digital Marketing',
   unsure: 'Belum yakin',
 };
+
+/** Jenis gedung tidak relevan bila yang dipilih hanya Digital Marketing. */
+export function onlyMarketing(systems: string[]): boolean {
+  return systems.length === 1 && systems[0] === 'marketing';
+}
 
 export function leadText(l: LeadSummary): string {
   const sys = l.systems.map((s) => SYSTEM_LABEL[s] ?? s).join(', ') || 'Belum dipilih';
   return [
     `Halo Worksell ID, saya ${l.name} dari ${l.company}.`,
-    `Sistem: ${sys}`,
-    `Gedung: ${l.buildingType}, ${l.city}`,
+    `Layanan: ${sys}`,
+    onlyMarketing(l.systems) ? `Kota: ${l.city}` : `Gedung: ${l.buildingType}, ${l.city}`,
     `Hubungi lewat ${l.contactVia === 'whatsapp' ? 'WhatsApp' : 'email'}: ${l.contactValue}`,
     l.message ?? '',
   ]

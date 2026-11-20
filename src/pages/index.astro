@@ -21,7 +21,7 @@ const ogImage = await getMedia(db, settings.og_image_id);
 ---
 <Site
   title="Worksell ID | IT Solution dan System Integrator Perusahaan di Jabodetabek"
-  description="Worksell ID, system integrator di Jabodetabek untuk sistem keamanan gedung, ERP, dan aplikasi workplace management. Setiap sistem dikerjakan dari survei sampai dipakai tim Anda."
+  description="Worksell ID, system integrator di Jabodetabek untuk sistem keamanan gedung, ERP, aplikasi workplace management, dan digital marketing. Setiap layanan dikerjakan sampai benar-benar dipakai."
   path="/"
   settings={settings}
   ogImage={ogImage}
@@ -36,7 +36,7 @@ const ogImage = await getMedia(db, settings.og_image_id);
         <p class="lead">Worksell ID mengerjakan setiap sistem dari survei sampai benar-benar dipakai tim Anda, di Jabodetabek.</p>
         <div class="actions">
           <a class="btn btn--card" href="#kontak">Jadwalkan survei</a>
-          <a class="btn btn--quiet" href="#sistem">Lihat sistemnya</a>
+          <a class="btn btn--quiet" href="#sistem">Lihat layanannya</a>
         </div>
         <p class="hero__note">Untuk kantor, gudang, dan pabrik di Jakarta, Bogor, Depok, Tangerang, dan Bekasi.</p>
       </div>
@@ -47,7 +47,7 @@ const ogImage = await getMedia(db, settings.og_image_id);
   <section class="section" id="sistem" aria-labelledby="sistem-h">
     <div class="container">
       <div class="head">
-        <h2 id="sistem-h">Tiga sistem, masing-masing berdiri sendiri.</h2>
+        <h2 id="sistem-h">Layanan kami, masing-masing berdiri sendiri.</h2>
         <p class="lead">Pilih yang Anda butuhkan, dikerjakan sampai dipakai.</p>
       </div>
       <SystemCards systems={systems} />

@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-const PAGES = ['/', '/security-system', '/erp-system', '/workplace-management', '/kebijakan-privasi'];
+const PAGES = ['/', '/security-system', '/erp-system', '/workplace-management', '/digital-marketing', '/kebijakan-privasi'];
 
 export const GET: APIRoute = () => {
   const urls = PAGES.map((p) => `  <url><loc>https://worksell.id${p === '/' ? '/' : p}</loc></url>`).join('\n');
