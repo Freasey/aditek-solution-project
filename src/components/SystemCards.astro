@@ -7,17 +7,63 @@ interface Props {
 }
 const { systems } = Astro.props;
 ---
-<ul class="systems">
-  {systems.map((s) => (
-    <li class="stock system">
-      <div class="system__photo" data-slot={`sys-${s.slug}`}>
-        {s.photo && <Img media={s.photo} sizes="(max-width: 60rem) 92vw, 30vw" />}
-      </div>
-      <div class="system__body">
-        <h3>{s.title}</h3>
-        <p>{s.summary}</p>
-        <a href={s.pagePath}>{s.ctaLabel}</a>
-      </div>
-    </li>
-  ))}
-</ul>
+<div class="rail" data-rail>
+  <ul class="systems" id="layanan-rail" data-rail-track>
+    {systems.map((s) => (
+      <li class="stock system">
+        <div class="system__photo" data-slot={`sys-${s.slug}`}>
+          {s.photo && <Img media={s.photo} sizes="(max-width: 40rem) 92vw, (max-width: 60rem) 46vw, 30vw" />}
+        </div>
+        <div class="system__body">
+          <h3>{s.title}</h3>
+          <p>{s.summary}</p>
+          <a href={s.pagePath}>{s.ctaLabel}</a>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <div class="rail__controls">
+    <span class="rail__bar" aria-hidden="true"><span data-rail-thumb></span></span>
+    <button class="nav-btn" type="button" data-go="-1" aria-controls="layanan-rail" aria-label="Layanan sebelumnya">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+    </button>
+    <button class="nav-btn" type="button" data-go="1" aria-controls="layanan-rail" aria-label="Layanan berikutnya">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  /* rail layanan: geser per kartu dengan tombol, tombol dan bar hanya muncul bila kartunya tidak muat */
+  document.querySelectorAll<HTMLElement>('[data-rail]').forEach((rail) => {
+    const track = rail.querySelector<HTMLElement>('[data-rail-track]');
+    const thumb = rail.querySelector<HTMLElement>('[data-rail-thumb]');
+    const [prev, next] = rail.querySelectorAll<HTMLButtonElement>('[data-go]');
+    if (!track || !prev || !next) return;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      rail.classList.toggle('is-scrollable', max > 4);
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft >= max - 4;
+      if (thumb && track.scrollWidth > 0) {
+        thumb.style.width = `${(track.clientWidth / track.scrollWidth) * 100}%`;
+        thumb.style.left = `${(track.scrollLeft / track.scrollWidth) * 100}%`;
+      }
+    };
+    const step = () => {
+      const [a, b] = track.children;
+      if (!a) return track.clientWidth;
+      return b ? b.getBoundingClientRect().left - a.getBoundingClientRect().left : a.getBoundingClientRect().width;
+    };
+    [prev, next].forEach((btn) =>
+      btn.addEventListener('click', () => {
+        track.scrollBy({ left: Number(btn.dataset.go) * step(), behavior: still ? 'auto' : 'smooth' });
+      }),
+    );
+    track.addEventListener('scroll', update, { passive: true });
+    new ResizeObserver(update).observe(track);
+    update();
+  });
+</script>
