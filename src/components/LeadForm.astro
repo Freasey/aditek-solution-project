@@ -3,6 +3,7 @@ import { env } from 'cloudflare:workers';
 import type { SiteSettings } from '../lib/content';
 import { BUILDING_TYPES, CITIES, LEAD_SYSTEM_OPTIONS } from '../lib/labels';
 import { turnstileEnabled } from '../lib/turnstile';
+import { onlyMarketing } from '../lib/contact-link';
 
 interface Props {
   settings: SiteSettings;
@@ -10,13 +11,19 @@ interface Props {
   preselect?: string[];
   heading?: string;
   lead?: string;
+  /** Poin di samping form. Default: janji balasan, survei gratis, area Jabodetabek. */
+  points?: string[];
+  placeholder?: string;
 }
 const {
   settings,
   preselect = [],
   heading = 'Ceritakan kebutuhan Anda.',
   lead = 'Isi formnya, pilih mau dihubungi lewat email atau WhatsApp.',
+  points = ['Survei lokasi pertama tanpa biaya.', 'Area Jabodetabek.'],
+  placeholder = 'Contoh: 3 lantai, 120 karyawan, ingin ganti absensi ke face recognition.',
 } = Astro.props;
+const hideBuilding = onlyMarketing(preselect);
 const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
 ---
 <section class="section" id="kontak" aria-labelledby="kontak-h">
@@ -26,8 +33,7 @@ const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
       <p class="lead">{lead}</p>
       <ul>
         <li>{settings.reply_promise}</li>
-        <li>Survei lokasi pertama tanpa biaya.</li>
-        <li>Area Jabodetabek.</li>
+        {points.map((p) => <li>{p}</li>)}
       </ul>
     </div>
     <div class="stock letter">
@@ -43,14 +49,14 @@ const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
         <label class="field"><span>Nama</span><input type="text" name="nama" autocomplete="name" required minlength="2" maxlength="100" placeholder="Nama lengkap" /></label>
         <label class="field"><span>Perusahaan</span><input type="text" name="perusahaan" autocomplete="organization" required minlength="2" maxlength="150" placeholder="PT ..." /></label>
         <fieldset class="field field--full">
-          <legend>Sistem yang dibutuhkan</legend>
+          <legend>Layanan yang dibutuhkan</legend>
           <div class="choices">
             {LEAD_SYSTEM_OPTIONS.map((o) => (
               <label class="choice"><input type="checkbox" name="sistem" value={o.value} checked={preselect.includes(o.value)} /><span>{o.label}</span></label>
             ))}
           </div>
         </fieldset>
-        <label class="field"><span>Jenis gedung</span>
+        <label class="field" data-building hidden={hideBuilding}><span>Jenis gedung</span>
           <select name="gedung">{BUILDING_TYPES.map((b) => <option>{b}</option>)}</select>
         </label>
         <label class="field"><span>Kota</span>
@@ -66,7 +72,7 @@ const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
         <label class="field field--full" data-via="whatsapp"><span>Nomor WhatsApp</span><input type="tel" name="wa" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="0812 3456 7890" /></label>
         <label class="field field--full" data-via="email" hidden><span>Email kantor</span><input type="email" name="email" autocomplete="email" maxlength="200" placeholder="nama@perusahaan.co.id" /></label>
         <label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
-        <label class="field field--full"><span>Ceritakan singkat (opsional)</span><textarea name="pesan" maxlength="1000" placeholder="Contoh: 3 lantai, 120 karyawan, ingin ganti absensi ke face recognition."></textarea></label>
+        <label class="field field--full"><span>Ceritakan singkat (opsional)</span><textarea name="pesan" maxlength="1000" placeholder={placeholder}></textarea></label>
         {siteKey && <div class="form__captcha cf-turnstile" data-sitekey={siteKey} data-appearance="interaction-only" data-language="id"></div>}
         <div class="form__foot">
           <p>Data hanya dipakai untuk menghubungi Anda soal permintaan ini. <a href="/kebijakan-privasi">Kebijakan privasi</a>.</p>
@@ -80,7 +86,7 @@ const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
 {siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
 
 <script>
-  import { contactLink } from '../lib/contact-link';
+  import { contactLink, onlyMarketing } from '../lib/contact-link';
 
   type Turnstile = { reset: (el?: string | HTMLElement) => void };
 
@@ -95,8 +101,15 @@ const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
         el.hidden = el.dataset.via !== v;
       });
     };
+    // Jenis gedung disembunyikan bila yang dicentang hanya Digital Marketing.
+    const building = f.querySelector<HTMLElement>('[data-building]');
+    const syncBuilding = () => {
+      if (building) building.hidden = onlyMarketing(new FormData(f).getAll('sistem').map(String));
+    };
     f.addEventListener('change', (e) => {
-      if ((e.target as HTMLInputElement).name === 'via') sync();
+      const name = (e.target as HTMLInputElement).name;
+      if (name === 'via') sync();
+      if (name === 'sistem') syncBuilding();
     });
 
     const text = (d: FormData, name: string) => String(d.get(name) ?? '').trim();
@@ -115,7 +128,7 @@ const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
         name: text(d, 'nama'),
         company: text(d, 'perusahaan'),
         systems: d.getAll('sistem').map(String),
-        buildingType: text(d, 'gedung'),
+        buildingType: building?.hidden ? 'Lainnya' : text(d, 'gedung'),
         city: text(d, 'kota'),
         contactVia: v as 'whatsapp' | 'email',
         whatsapp: text(d, 'wa'),
@@ -157,6 +170,7 @@ const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
           f.classList.add('is-sent');
           f.reset();
           sync();
+          syncBuilding();
           status.textContent = `Terima kasih. ${f.dataset.reply ?? ''}`.trim();
         } else if (res.status === 400) {
           win?.close();
@@ -179,5 +193,6 @@ const siteKey = turnstileEnabled() ? env.PUBLIC_TURNSTILE_SITE_KEY : '';
       }
     });
     sync();
+    syncBuilding();
   }
 </script>

@@ -26,6 +26,13 @@ export interface ServiceContent {
   steps: Item[];
   formHeading: string;
   serviceType: string;
+  /** Opsional, untuk layanan yang tidak dimulai dengan survei lokasi. */
+  heroCta?: string;
+  heroNote?: string;
+  partsCta?: string;
+  stepsLead?: string;
+  formPoints?: string[];
+  formPlaceholder?: string;
 }
 interface Props { content: ServiceContent }
 const { content: c } = Astro.props;
@@ -66,10 +73,10 @@ const serviceSchema = {
         <h1>{c.h1}</h1>
         <p class="lead">{c.lead}</p>
         <div class="actions">
-          <a class="btn btn--card" href="#kontak">Jadwalkan survei</a>
-          <a class="btn btn--quiet" href="#komponen">Lihat komponennya</a>
+          <a class="btn btn--card" href="#kontak">{c.heroCta ?? 'Jadwalkan survei'}</a>
+          <a class="btn btn--quiet" href="#komponen">{c.partsCta ?? 'Lihat komponennya'}</a>
         </div>
-        <p class="hero__note">Untuk kantor, gudang, dan pabrik di Jakarta, Bogor, Depok, Tangerang, dan Bekasi.</p>
+        <p class="hero__note">{c.heroNote ?? 'Untuk kantor, gudang, dan pabrik di Jakarta, Bogor, Depok, Tangerang, dan Bekasi.'}</p>
       </div>
       <div class="stock spec">
         {system?.photo && (
@@ -115,7 +122,7 @@ const serviceSchema = {
     <div class="container">
       <div class="head">
         <h2 id="cara-h">Cara kami mengerjakannya.</h2>
-        <p class="lead">Satu tim dari survei sampai sistem dipakai setiap hari.</p>
+        <p class="lead">{c.stepsLead ?? 'Satu tim dari survei sampai sistem dipakai setiap hari.'}</p>
       </div>
       <ol class="steps">
         {c.steps.map((s, i) => (
@@ -125,5 +132,5 @@ const serviceSchema = {
     </div>
   </section>
 
-  <LeadForm settings={settings} preselect={[c.slug]} heading={c.formHeading} />
+  <LeadForm settings={settings} preselect={[c.slug]} heading={c.formHeading} points={c.formPoints} placeholder={c.formPlaceholder} />
 </Site>

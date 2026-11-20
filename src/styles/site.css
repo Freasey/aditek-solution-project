@@ -102,8 +102,9 @@ main::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-e
 .head { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-2xl); }
 .head .lead { justify-self: end; }
 
-/* three systems, each a print and its card */
-.systems { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); }
+/* the services, each a print and its card: four across on wide screens, two on mid-size */
+.systems { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap-columns); }
+@media (max-width: 80rem) { .systems { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .system { display: grid; grid-template-rows: auto 1fr; padding: var(--space-sm); }
 .system:nth-child(1) { transform: rotate(-0.6deg); }
 .system:nth-child(3) { transform: rotate(0.5deg); }
@@ -167,6 +168,7 @@ main::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-e
 .via { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xs); }
 .via .choice span { width: 100%; min-height: 56px; justify-content: center; font-size: var(--text-md); }
 .form [hidden] { display: none; }
+.form [data-building][hidden] + .field { grid-column: 1 / -1; }
 .form__foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-md); padding-top: var(--space-md); border-top: var(--rule-hair) solid var(--color-print-rule); }
 .form__foot p { font-size: var(--text-sm); color: var(--color-print-muted); max-width: 34ch; }
 .form .btn--ink { background: var(--color-print); color: var(--color-cotton); box-shadow: 0 1px 0 oklch(var(--lit) / 0.6), 0 6px 14px -6px oklch(var(--deep) / 0.6); }
@@ -188,7 +190,6 @@ main::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-e
   .head .lead { justify-self: start; }
   .close__text { position: static; }
   .next { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .systems { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xl); }
   .flow { gap: var(--space-md); }
 }
 @media (max-width: 40rem) {
@@ -198,6 +199,7 @@ main::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-e
   .sheet { width: 64%; }
   .next { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
   .next li { min-height: 0; }
+  .systems { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xl); }
   .form, .via { grid-template-columns: minmax(0, 1fr); }
   .flow ol { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
   .flow ol::before { left: 50%; right: auto; top: var(--space-lg); bottom: var(--space-lg); border-top: 0; border-left: var(--rule-hair) dashed var(--color-rule-2); }

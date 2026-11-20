@@ -1,0 +1,61 @@
+---
+import ServicePage, { type ServiceContent } from '../components/ServicePage.astro';
+
+const content: ServiceContent = {
+  slug: 'marketing',
+  path: '/digital-marketing',
+  title: 'Jasa Digital Marketing: Branding, Website, SEO, dan Google Ads | Worksell ID',
+  description:
+    'Jasa digital marketing Worksell ID untuk perusahaan di Jabodetabek: branding, pembuatan website, SEO, dan setup Google Ads, dikerjakan satu tim dari awal sampai berjalan.',
+  h1: 'Digital marketing, dari branding sampai Google Ads.',
+  lead: 'Worksell ID menyiapkan branding, website, SEO, dan Google Ads perusahaan Anda dalam satu alur, supaya calon pelanggan yang mencari di Google menemukan Anda dan tahu cara menghubungi.',
+  heroCta: 'Mulai konsultasi',
+  partsCta: 'Lihat cakupannya',
+  heroNote: 'Untuk perusahaan di Jakarta, Bogor, Depok, Tangerang, dan Bekasi.',
+  specTitle: 'Cakupan layanan',
+  spec: [
+    ['Branding dan identitas visual', 'layanan'],
+    ['Website perusahaan', 'layanan'],
+    ['SEO', 'layanan'],
+    ['Setup Google Ads', 'layanan'],
+    ['Dipilih per bagian', 'fleksibel'],
+  ],
+  problemsTitle: 'Tanda pemasaran online perlu dibenahi.',
+  problems: [
+    {
+      title: 'Tidak muncul di Google',
+      text: 'Calon pelanggan mencari jasa atau produk Anda, tapi yang muncul justru pesaing.',
+    },
+    {
+      title: 'Website ada, tapi tidak menghasilkan',
+      text: 'Website jarang diperbarui, lambat dibuka di HP, dan pengunjung tidak tahu cara menghubungi Anda.',
+    },
+    {
+      title: 'Iklan jalan, hasilnya tidak terukur',
+      text: 'Biaya iklan keluar setiap bulan, tapi tidak ada yang tahu berapa permintaan yang datang dari sana.',
+    },
+  ],
+  partsTitle: 'Yang kami kerjakan.',
+  partsLead: 'Bisa dipilih per bagian, paling kuat bila dikerjakan berurutan dari branding sampai iklan.',
+  parts: [
+    { title: 'Branding', text: 'Logo, warna, dan gaya bahasa yang konsisten di website, media sosial, dan materi penawaran.' },
+    { title: 'Website perusahaan', text: 'Cepat dibuka di HP, menjelaskan layanan Anda dengan jelas, dan memudahkan pengunjung menghubungi.' },
+    { title: 'SEO', text: 'Riset kata kunci, struktur halaman, dan konten supaya website muncul di hasil pencarian Google.' },
+    { title: 'Setup Google Ads', text: 'Akun, struktur kampanye, kata kunci, dan teks iklan disusun sesuai target dan anggaran Anda.' },
+    { title: 'Pelacakan konversi', text: 'Telepon, chat WhatsApp, dan isian form dari iklan tercatat, jadi biaya per permintaan terlihat.' },
+    { title: 'Satu tim untuk semuanya', text: 'Branding, website, SEO, dan iklan dikerjakan tim yang sama, jadi pesannya konsisten.' },
+  ],
+  steps: [
+    { title: 'Konsultasi dan audit', text: 'Kami lihat brand, website, dan iklan yang sudah ada, lalu tentukan target dan prioritasnya.' },
+    { title: 'Branding dan website', text: 'Identitas visual dirapikan, lalu website dibuat atau diperbaiki di atasnya.' },
+    { title: 'SEO dan Google Ads', text: 'Halaman dioptimasi untuk pencarian, kampanye iklan disusun, dan pelacakan dipasang.' },
+    { title: 'Peluncuran', text: 'Website dan iklan diluncurkan, lalu hasil awalnya kami tinjau bersama Anda.' },
+  ],
+  stepsLead: 'Satu tim dari branding sampai iklan berjalan.',
+  formHeading: 'Konsultasikan digital marketing Anda.',
+  formPoints: ['Area Jabodetabek.'],
+  formPlaceholder: 'Contoh: sudah punya website, ingin mulai iklan Google Ads untuk jasa kami.',
+  serviceType: 'Digital marketing',
+};
+---
+<ServicePage content={content} />

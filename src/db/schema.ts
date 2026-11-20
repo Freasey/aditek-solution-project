@@ -1,8 +1,8 @@
 import { sql } from 'drizzle-orm';
 import { check, index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-export const SYSTEM_SLUGS = ['security', 'erp', 'spaces'] as const;
-export const PROJECT_SYSTEMS = ['security', 'erp', 'spaces', 'multi'] as const;
+export const SYSTEM_SLUGS = ['security', 'erp', 'spaces', 'marketing'] as const;
+export const PROJECT_SYSTEMS = ['security', 'erp', 'spaces', 'marketing', 'multi'] as const;
 export const ROADMAP_STAGES = ['perancangan', 'uji_coba', 'segera'] as const;
 export const LEAD_STATUSES = ['baru', 'dihubungi', 'survei', 'penawaran', 'menang', 'batal'] as const;
 export const CONTACT_VIA = ['whatsapp', 'email'] as const;
@@ -40,7 +40,7 @@ export const projects = sqliteTable(
     createdAt: text('created_at').notNull(),
     updatedAt: text('updated_at').notNull(),
   },
-  (t) => [check('projects_system_check', sql`${t.system} IN ('security','erp','spaces','multi')`)],
+  (t) => [check('projects_system_check', sql`${t.system} IN ('security','erp','spaces','marketing','multi')`)],
 );
 
 export const projectItems = sqliteTable('project_items', {
@@ -64,7 +64,7 @@ export const systems = sqliteTable(
     sortOrder: integer('sort_order').notNull().default(0),
     updatedAt: text('updated_at').notNull(),
   },
-  (t) => [check('systems_slug_check', sql`${t.slug} IN ('security','erp','spaces')`)],
+  (t) => [check('systems_slug_check', sql`${t.slug} IN ('security','erp','spaces','marketing')`)],
 );
 
 export const roadmapItems = sqliteTable(

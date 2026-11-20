@@ -14,7 +14,7 @@ const [systems, mediaItems] = await Promise.all([
 ]);
 ---
 <Admin title="Sistem">
-  <div class="bar"><div><h1>Sistem</h1><p>Tiga kartu sistem di Home. Tautan kartu mengarah ke halaman layanannya.</p></div></div>
+  <div class="bar"><div><h1>Sistem</h1><p>Kartu layanan di Home. Tautan kartu mengarah ke halaman layanannya.</p></div></div>
   {systems.map((s) => (
     <form class="af panel" method="post" action={`/api/admin/systems/${s.slug}`}>
       <div class="bar"><h2>{s.title}</h2><a class="hint" href={s.pagePath} target="_blank" rel="noopener">{s.pagePath}</a></div>

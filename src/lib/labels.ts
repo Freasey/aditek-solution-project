@@ -4,6 +4,7 @@ export const LEAD_SYSTEM_OPTIONS = [
   { value: 'security', label: 'Sistem keamanan' },
   { value: 'erp', label: 'Sistem ERP' },
   { value: 'spaces', label: 'Spaces' },
+  { value: 'marketing', label: 'Digital Marketing' },
   { value: 'unsure', label: 'Belum yakin' },
 ] as const;
 
@@ -29,6 +30,7 @@ export const PROJECT_SYSTEM_LABEL: Record<(typeof PROJECT_SYSTEMS)[number], stri
   security: 'Sistem keamanan',
   erp: 'Sistem ERP',
   spaces: 'Spaces',
+  marketing: 'Digital Marketing',
   multi: 'Gabungan',
 };
 

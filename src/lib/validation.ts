@@ -16,7 +16,7 @@ export const leadSchema = z
   .object({
     name: trimmed(2, 100),
     company: trimmed(2, 150),
-    systems: z.array(z.enum(['security', 'erp', 'spaces', 'unsure'])).max(4).default([]),
+    systems: z.array(z.enum(['security', 'erp', 'spaces', 'marketing', 'unsure'])).max(5).default([]),
     buildingType: z.enum(BUILDING_TYPES),
     city: z.enum(CITIES),
     contactVia: z.enum(['whatsapp', 'email']),
