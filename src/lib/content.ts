@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   whatsapp_number: '',
   contact_email: '',
   reply_promise: 'Kami balas dalam satu hari kerja.',
-  hero_title: 'System integrator untuk keamanan gedung, ERP, dan workplace.',
+  hero_title: 'Satu tim IT untuk kebutuhan perusahaan Anda.',
   footer_line: 'Dirancang dengan benar, dipakai setiap hari.',
   og_image_id: '',
 };
