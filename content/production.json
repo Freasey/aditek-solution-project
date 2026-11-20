@@ -87,6 +87,22 @@
         "Booking lewat web dan aplikasi Android"
       ],
       "published": true
+    },
+    {
+      "id": "proj-marketing-mla-packaging-2026",
+      "clientName": "MLA Packaging",
+      "location": "Kemasan kosmetik, Jakarta Timur",
+      "year": 2026,
+      "system": "marketing",
+      "solution": "Google Ads",
+      "photoCaption": "Iklan Google Ads dan laporan KPI mingguan untuk MLA Packaging, kampanye masih berjalan",
+      "items": [
+        "Riset kata kunci kemasan kosmetik dan skincare",
+        "Struktur kampanye Google Ads",
+        "Pemasangan pelacakan konversi",
+        "Laporan KPI mingguan otomatis"
+      ],
+      "published": true
     }
   ]
 }
