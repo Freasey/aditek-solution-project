@@ -27,27 +27,23 @@
   ],
   "roadmap": [
     {
-      "id": "3f0c2a0e-6c55-4a43-9d0e-6a1d1f2b7a01",
-      "title": "Manajemen aset IT",
-      "summary": "Laptop, lisensi, dan perangkat jaringan.",
-      "stage": "uji_coba"
-    },
-    {
-      "id": "3f0c2a0e-6c55-4a43-9d0e-6a1d1f2b7a02",
-      "title": "Helpdesk IT",
-      "summary": "Tiket keluhan IT karyawan.",
-      "stage": "uji_coba"
-    },
-    {
-      "id": "3f0c2a0e-6c55-4a43-9d0e-6a1d1f2b7a03",
-      "title": "Parkir dan kendaraan",
-      "summary": "Gerbang dengan pembaca plat nomor.",
+      "title": "Check-in dan lepas otomatis",
+      "summary": "Ruang meeting yang tidak dikonfirmasi dilepas untuk tim lain.",
       "stage": "perancangan"
     },
     {
-      "id": "3f0c2a0e-6c55-4a43-9d0e-6a1d1f2b7a04",
-      "title": "Monitoring energi",
-      "summary": "Pemakaian listrik per lantai.",
+      "title": "Peminjaman aset",
+      "summary": "Laptop, proyektor, dan peralatan kantor dipinjam lewat jadwal yang sama.",
+      "stage": "perancangan"
+    },
+    {
+      "title": "Kendaraan operasional",
+      "summary": "Jadwal mobil kantor tanpa bentrok.",
+      "stage": "perancangan"
+    },
+    {
+      "title": "Manajemen tamu",
+      "summary": "Tamu didaftarkan sebelum datang dan tercatat saat tiba.",
       "stage": "perancangan"
     }
   ],

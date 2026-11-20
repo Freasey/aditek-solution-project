@@ -9,6 +9,9 @@ import { getMedia, getRoadmap, getSettings, getSystems } from '../lib/content';
 import type { SYSTEM_SLUGS } from '../db/schema';
 
 interface Item { title: string; text: string }
+/** Komponen yang belum tersedia ditandai "Segera". */
+interface Part extends Item { soon?: boolean }
+interface Link { label: string; href: string }
 export interface ServiceContent {
   slug: (typeof SYSTEM_SLUGS)[number];
   path: string;
@@ -22,7 +25,9 @@ export interface ServiceContent {
   problems: Item[];
   partsTitle: string;
   partsLead: string;
-  parts: Item[];
+  parts: Part[];
+  /** Tautan ke produk yang sudah bisa dipakai, tampil di bawah tombol hero. */
+  heroLinks?: Link[];
   steps: Item[];
   formHeading: string;
   serviceType: string;
@@ -70,6 +75,11 @@ const serviceSchema = {
           <a class="btn btn--quiet" href="#komponen">Lihat komponennya</a>
         </div>
         <p class="hero__note">Untuk kantor, gudang, dan pabrik di Jakarta, Bogor, Depok, Tangerang, dan Bekasi.</p>
+        {c.heroLinks?.length ? (
+          <p class="hero__links">
+            {c.heroLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+          </p>
+        ) : null}
       </div>
       <div class="stock spec">
         {system?.photo && (
@@ -105,7 +115,10 @@ const serviceSchema = {
       </div>
       <ul class="parts">
         {c.parts.map((p, i) => (
-          <li class="stock"><span class="fig">{String(i + 1).padStart(2, '0')}</span><h3>{p.title}</h3><p>{p.text}</p></li>
+          <li class:list={['stock', { 'is-soon': p.soon }]}>
+            <span class="fig">{String(i + 1).padStart(2, '0')}{p.soon && <span class="soon">Segera</span>}</span>
+            <h3>{p.title}</h3><p>{p.text}</p>
+          </li>
         ))}
       </ul>
     </div>

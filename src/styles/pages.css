@@ -27,6 +27,8 @@
 .parts h3 { color: var(--color-print); }
 .parts p { color: var(--color-print-muted); }
 .parts .fig { font-size: var(--text-sm); color: var(--color-print-muted); }
+.parts .soon { margin-left: var(--space-xs); padding: var(--space-3xs) var(--space-xs); border: var(--rule-hair) solid currentColor; border-radius: 4px; font-size: var(--text-xs); color: var(--color-paid); }
+.parts .is-soon h3, .parts .is-soon p { opacity: 0.75; }
 
 /* cara kerja: empat langkah di board */
 .steps { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-xl); }

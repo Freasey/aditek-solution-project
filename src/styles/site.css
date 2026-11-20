@@ -52,6 +52,8 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
 .hero__text { display: grid; gap: var(--space-lg); justify-items: start; }
 .hero__text .actions { margin-top: var(--space-xs); }
 .hero__note { font-size: var(--text-sm); color: var(--color-muted); }
+.hero__links { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-lg); font-size: var(--text-sm); }
+.hero__links a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.2em; }
 
 /* the showcase: a carousel of finished projects, each a site print with the client's case card laid over it */
 .showcase { display: grid; gap: var(--space-md); }
