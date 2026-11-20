@@ -40,7 +40,10 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
 /* nav */
 .nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: var(--color-desk); border-bottom: var(--rule-hair) solid var(--color-rule); }
 .nav__in { display: flex; align-items: center; gap: var(--space-xl); min-height: 72px; }
-.wordmark { font: 600 var(--text-title)/1 var(--font-display); letter-spacing: -0.02em; text-decoration: none; }
+.wordmark { display: inline-flex; align-items: center; gap: 0.42em; font: 600 var(--text-title)/1 var(--font-display); letter-spacing: -0.02em; text-decoration: none; color: var(--color-ink); white-space: nowrap; }
+.wordmark__mark { flex: none; width: auto; height: 1.12em; color: var(--color-accent); transition: transform var(--dur-short) var(--ease-out); }
+.wordmark__id { display: inline-block; margin-left: 0.3em; vertical-align: 0.95em; font: 400 0.42em/1 var(--font-outlier); letter-spacing: 0.04em; color: var(--color-ink-2); }
+.wordmark:hover .wordmark__mark { transform: translateY(-1px); }
 .nav__links { display: flex; gap: var(--space-xl); margin-left: auto; }
 .nav__links a { font-size: var(--text-sm); font-weight: 500; color: var(--color-ink-2); text-decoration: none; padding-block: var(--space-sm); white-space: nowrap; }
 .nav__links a:hover { color: var(--color-ink); text-decoration: underline; text-decoration-color: var(--color-accent); }
@@ -52,6 +55,8 @@ ul, ol, dl, dd, figure { margin: 0; padding: 0; list-style: none; }
 .hero__text { display: grid; gap: var(--space-lg); justify-items: start; }
 .hero__text .actions { margin-top: var(--space-xs); }
 .hero__note { font-size: var(--text-sm); color: var(--color-muted); }
+.hero__links { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-lg); font-size: var(--text-sm); }
+.hero__links a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.2em; }
 
 /* the showcase: a carousel of finished projects, each a site print with the client's case card laid over it */
 .showcase { display: grid; gap: var(--space-md); }

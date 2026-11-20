@@ -13,7 +13,10 @@
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
     "db:seed:local": "wrangler d1 execute DB --local --file=seed/dev-storage.sql && wrangler d1 execute DB --local --file=seed/dev.sql",
     "cf-typegen": "wrangler types",
-    "deploy": "wrangler d1 migrations apply DB --remote && wrangler deploy"
+    "deploy": "wrangler d1 migrations apply DB --remote && wrangler deploy",
+    "content:sql": "tsx scripts/content-sql.ts",
+    "content:apply:local": "mkdir -p .wrangler && tsx scripts/content-sql.ts --out .wrangler/content.sql && wrangler d1 execute DB --local --file=.wrangler/content.sql",
+    "content:apply:remote": "mkdir -p .wrangler && tsx scripts/content-sql.ts --out .wrangler/content.sql && wrangler d1 execute DB --remote --file=.wrangler/content.sql"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.4.8",
@@ -25,6 +28,7 @@
     "@astrojs/check": "^0.9.12",
     "@types/node": "^22.20.5",
     "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "wrangler": "^4.164.0"
   },

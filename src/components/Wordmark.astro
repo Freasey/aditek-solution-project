@@ -1,0 +1,13 @@
+---
+import LogoMark from './LogoMark.astro';
+
+interface Props {
+  href: string;
+  label?: string;
+}
+const { href, label = 'Worksell ID, beranda' } = Astro.props;
+---
+<a class="wordmark" href={href} aria-label={label}>
+  <LogoMark class="wordmark__mark" />
+  <span class="wordmark__name">worksell<span class="wordmark__id">ID</span></span>
+</a>

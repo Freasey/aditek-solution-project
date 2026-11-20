@@ -12,10 +12,10 @@ const content: ServiceContent = {
   specTitle: 'Modul Spaces',
   spec: [
     ['Booking ruang meeting', 'tersedia'],
-    ['Tablet di depan ruang', 'opsional'],
-    ['Check-in tamu', 'terhubung'],
-    ['Akses pintu ruang', 'terhubung'],
-    ['Modul berikutnya', 'segera'],
+    ['Aplikasi Android', 'tersedia'],
+    ['Check-in dan lepas otomatis', 'segera'],
+    ['Tablet dan akses pintu', 'segera'],
+    ['Laporan pemakaian', 'segera'],
   ],
   problemsTitle: 'Pekerjaan kecil yang menghabiskan waktu.',
   problems: [
@@ -33,19 +33,40 @@ const content: ServiceContent = {
     },
   ],
   partsTitle: 'Yang ada di Spaces.',
-  partsLead: 'Dipakai sendiri sudah berguna, lebih kuat bila disambungkan ke sistem keamanan.',
+  partsLead: 'Yang tersedia bisa dipakai hari ini. Yang bertanda Segera sedang kami kembangkan.',
   parts: [
-    { title: 'Booking ruang meeting', text: 'Lihat ruang yang kosong, pesan dari HP atau laptop, dan undang peserta.' },
-    { title: 'Tablet di depan ruang', text: 'Status ruang terlihat dari luar, dan rapat bisa dikonfirmasi atau dilepas di tempat.' },
-    { title: 'Lepas otomatis', text: 'Ruang yang tidak dikonfirmasi dalam beberapa menit dilepas untuk tim lain.' },
-    { title: 'Terhubung ke visitor management', text: 'Tamu rapat yang sudah check-in di lobi langsung tercatat di jadwal.' },
-    { title: 'Terhubung ke access control', text: 'Pintu ruang terbuka untuk peserta rapat pada jam yang dipesan.' },
-    { title: 'Laporan pemakaian', text: 'Lihat ruang mana yang paling sering dipakai untuk merencanakan ruang kantor.' },
+    {
+      title: 'Jadwal dalam satu layar',
+      text: 'Ruangan ke bawah, jam ke samping. Klik atau seret di area kosong untuk memesan, dengan slot 15 menit.',
+    },
+    { title: 'Dari laptop atau HP', text: 'Pakai web atau aplikasi Android dengan akun yang sama. Versi iOS menyusul.' },
+    {
+      title: 'Tidak ada booking ganda',
+      text: 'Bentrok dicegah di database, termasuk saat dua orang menyimpan jam yang sama bersamaan.',
+    },
+    {
+      title: 'Aturan milik kantor Anda',
+      text: 'Jam buka per hari, jam istirahat, tanggal tutup, durasi maksimal, dan batas booking ke depan.',
+    },
+    {
+      title: 'Check-in dan tablet di depan ruang',
+      text: 'Rapat dikonfirmasi di tempat, dan ruang yang tidak dikonfirmasi dilepas untuk tim lain.',
+      soon: true,
+    },
+    {
+      title: 'Terhubung ke sistem keamanan',
+      text: 'Tamu yang check-in di lobi tercatat di jadwal, dan pintu ruang terbuka untuk peserta rapat.',
+      soon: true,
+    },
+  ],
+  heroLinks: [
+    { label: 'Buka Spaces', href: 'https://spaces.worksell.id' },
+    { label: 'Unduh aplikasi Android', href: 'https://spaces.worksell.id/download/spaces-android.apk' },
   ],
   steps: [
     { title: 'Demo dan pemetaan', text: 'Kami tunjukkan Spaces dan memetakan ruang serta aturan kantor Anda.' },
     { title: 'Konfigurasi', text: 'Ruang, kapasitas, jam kerja, dan pengguna diatur sesuai kebutuhan.' },
-    { title: 'Pemasangan', text: 'Tablet dan integrasi pintu dipasang bila dibutuhkan.' },
+    { title: 'Akun dan aplikasi', text: 'Admin kantor menerima akun, karyawan memakai web atau memasang aplikasi Android.' },
     { title: 'Pendampingan', text: 'Tim Anda dilatih, lalu kami pantau pemakaian di minggu pertama.' },
   ],
   formHeading: 'Minta demo Spaces.',

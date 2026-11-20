@@ -65,6 +65,24 @@ src/components/      komponen website (port dari design/home-coral-dark.html) da
 src/pages/           halaman publik, /admin, /api/leads, /api/admin/*, /media/* (foto lokal, dev saja)
 ```
 
+## Konten asli production
+
+`content/production.json` menyimpan konten asli (proyek, roadmap, kartu sistem, settings).
+`scripts/content-sql.ts` memvalidasinya dengan skema Zod yang sama dengan form `/admin`, lalu
+membuat SQL yang aman dijalankan ulang.
+
+```bash
+pnpm content:apply:remote
+```
+
+- Hanya bagian yang ada di file yang disentuh. Di `settings`, hanya key yang ditulis yang diubah.
+- `projects` dan `roadmap` adalah daftar lengkap: baris di database yang tidak ada di file dihapus,
+  dan urutan di file menjadi urutan tampil.
+- Foto dipasang lewat `/admin` dan tidak ditimpa oleh file ini.
+- Perubahan lewat `/admin` pada bagian yang sama akan tertimpa saat file dijalankan lagi, jadi
+  samakan file dengan isi production dulu bila ada yang diubah lewat admin.
+- `pnpm content:sql` hanya menampilkan SQL, `pnpm content:apply:local` mencobanya ke D1 lokal.
+
 ## Env yang diisi pemilik
 
 Isi di dashboard Cloudflare: **Workers & Pages > worksell-web > Settings > Variables and Secrets**.
@@ -100,3 +118,12 @@ supaya foto disajikan dengan `srcset`.
 
 Setelah live, isi nomor WhatsApp, email kontak, dan OG image di `/admin/settings`, lalu
 tampilkan item roadmap yang sudah dikonfirmasi di `/admin/roadmap` (seed production menyimpannya sebagai draft).
+
+## Logo
+
+Monogram W dan semua aset logo dibuat dari `scripts/brand-mark.py`. Script ini menghasilkan `src/components/LogoMark.astro`, `public/favicon.svg`, dan `public/brand/*.svg`. Ubah geometri di script lalu jalankan ulang; jangan sunting SVG-nya manual.
+
+```bash
+pip install shapely fonttools brotli
+python3 scripts/brand-mark.py
+```

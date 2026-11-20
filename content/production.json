@@ -1,0 +1,108 @@
+{
+  "$comment": "Konten asli production. Ubah file ini lalu jalankan pnpm content:apply:remote. Aturan ada di scripts/content-sql.ts.",
+  "settings": {
+    "reply_promise": "Kami balas dalam satu hari kerja.",
+    "hero_title": "Satu tim IT untuk kebutuhan perusahaan Anda.",
+    "footer_line": "Dirancang dengan benar, dipakai setiap hari."
+  },
+  "systems": [
+    {
+      "slug": "security",
+      "title": "Sistem keamanan",
+      "summary": "Access control, CCTV, dan visitor management dalam satu arsitektur.",
+      "ctaLabel": "Konsultasikan sistem keamanan"
+    },
+    {
+      "slug": "erp",
+      "title": "Sistem ERP",
+      "summary": "Sales, purchasing, inventory, sampai accounting dalam satu data.",
+      "ctaLabel": "Konsultasikan sistem ERP"
+    },
+    {
+      "slug": "spaces",
+      "title": "Spaces",
+      "summary": "Booking ruang meeting tanpa bentrok, di web dan aplikasi Android. Modul kantor berikutnya menyusul.",
+      "ctaLabel": "Minta demo Spaces"
+    },
+    {
+      "slug": "marketing",
+      "title": "Digital Marketing",
+      "summary": "Branding, website, SEO, dan Google Ads supaya calon pelanggan menemukan Anda.",
+      "ctaLabel": "Konsultasikan digital marketing"
+    }
+  ],
+  "roadmap": [
+    {
+      "title": "Check-in dan lepas otomatis",
+      "summary": "Ruang meeting yang tidak dikonfirmasi dilepas untuk tim lain.",
+      "stage": "perancangan"
+    },
+    {
+      "title": "Peminjaman aset",
+      "summary": "Laptop, proyektor, dan peralatan kantor dipinjam lewat jadwal yang sama.",
+      "stage": "perancangan"
+    },
+    {
+      "title": "Kendaraan operasional",
+      "summary": "Jadwal mobil kantor tanpa bentrok.",
+      "stage": "perancangan"
+    },
+    {
+      "title": "Manajemen tamu",
+      "summary": "Tamu didaftarkan sebelum datang dan tercatat saat tiba.",
+      "stage": "perancangan"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-erp-pabrik-sandal-2025",
+      "clientName": "Perusahaan Pabrik Sandal",
+      "location": "Pabrik, Jakarta Utara",
+      "year": 2025,
+      "system": "erp",
+      "solution": "Sistem ERP",
+      "photoCaption": "ERP Odoo 19, dikerjakan engineer kami sebelum Worksell berdiri",
+      "items": [
+        "Sales order-to-cash dengan approval bertingkat dan cek limit kredit",
+        "Purchase request sampai tagihan vendor dengan three-way matching",
+        "Gudang: penerimaan, picking, packing, dan stok opname",
+        "Accounting, tutup buku, dan e-Faktur DJP",
+        "Aset tetap dengan audit QR lewat aplikasi mobile",
+        "Sinkronisasi data real-time antar sistem"
+      ],
+      "published": true
+    },
+    {
+      "id": "proj-spaces-distributor-keamanan-2026",
+      "clientName": "Perusahaan Distributor Sistem Keamanan",
+      "location": "Kantor, Jakarta Pusat",
+      "year": 2026,
+      "system": "spaces",
+      "solution": "Spaces",
+      "photoCaption": "Booking ruang meeting dengan Spaces, kantor Jakarta Pusat",
+      "items": [
+        "Ruang rapat utama, 12 orang",
+        "Ruang diskusi, 6 orang",
+        "Pod fokus, 2 orang",
+        "Booking lewat web dan aplikasi Android"
+      ],
+      "published": true
+    },
+    {
+      "id": "proj-marketing-mla-packaging-2026",
+      "clientName": "MLA Packaging",
+      "location": "Kemasan kosmetik, Jakarta Timur",
+      "year": 2026,
+      "system": "marketing",
+      "solution": "Google Ads",
+      "photoCaption": "Iklan Google Ads dan laporan KPI mingguan untuk MLA Packaging, kampanye masih berjalan",
+      "items": [
+        "Riset kata kunci kemasan kosmetik dan skincare",
+        "Struktur kampanye Google Ads",
+        "Pemasangan pelacakan konversi",
+        "Laporan KPI mingguan otomatis"
+      ],
+      "published": true
+    }
+  ]
+}
