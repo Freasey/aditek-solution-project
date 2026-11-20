@@ -118,3 +118,12 @@ supaya foto disajikan dengan `srcset`.
 
 Setelah live, isi nomor WhatsApp, email kontak, dan OG image di `/admin/settings`, lalu
 tampilkan item roadmap yang sudah dikonfirmasi di `/admin/roadmap` (seed production menyimpannya sebagai draft).
+
+## Logo
+
+Monogram W dan semua aset logo dibuat dari `scripts/brand-mark.py`. Script ini menghasilkan `src/components/LogoMark.astro`, `public/favicon.svg`, dan `public/brand/*.svg`. Ubah geometri di script lalu jalankan ulang; jangan sunting SVG-nya manual.
+
+```bash
+pip install shapely fonttools brotli
+python3 scripts/brand-mark.py
+```

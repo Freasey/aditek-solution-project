@@ -3,6 +3,7 @@ import '../styles/tokens.css';
 import '../styles/site.css';
 import '../styles/admin.css';
 import { flash } from '../lib/admin';
+import Wordmark from '../components/Wordmark.astro';
 
 interface Props {
   title: string;
@@ -33,7 +34,7 @@ const current = (href: string) => (href === '/admin' ? path === '/admin' : path.
 <body>
   <div class="admin">
     <aside class="side">
-      <a class="wordmark" href="/admin">Worksell ID</a>
+      <Wordmark href="/admin" label="Worksell ID, admin" />
       <nav aria-label="Menu admin">
         {links.map((l) => <a href={l.href} aria-current={current(l.href) ? 'page' : undefined}>{l.label}</a>)}
       </nav>
