@@ -7,7 +7,7 @@ import { newId, nowIso } from './util';
 
 const FIELDS = [
   'clientName', 'location', 'year', 'system', 'solution', 'photoId', 'photoCaption',
-  'quote', 'quoteRole', 'statusLabel', 'sortOrder', 'published',
+  'quote', 'quoteRole', 'sortOrder', 'published',
 ] as const;
 
 export function parseProjectForm(form: FormData) {
@@ -16,11 +16,11 @@ export function parseProjectForm(form: FormData) {
     const v = form.get(k);
     if (typeof v === 'string') raw[k] = v;
   }
-  const labels = form.getAll('item_label').map(String);
-  const qtys = form.getAll('item_qty').map(String);
-  raw.items = labels
-    .map((label, i) => ({ label: label.trim(), quantity: (qtys[i] ?? '').trim() }))
-    .filter((it) => it.label || it.quantity);
+  raw.items = form
+    .getAll('item_label')
+    .map((v) => String(v).trim())
+    .filter(Boolean)
+    .map((label) => ({ label }));
   const parsed = projectSchema.safeParse(raw);
   return parsed.success ? { ok: true as const, data: parsed.data } : { ok: false as const, error: firstIssue(parsed.error) };
 }
@@ -45,7 +45,7 @@ export async function saveProject(db: Db, input: ProjectInput, id?: string): Pro
   if (items.length) {
     rest.push(
       db.insert(projectItems).values(
-        items.map((it, i) => ({ id: newId(), projectId, label: it.label, quantity: it.quantity, sortOrder: i + 1 })),
+        items.map((it, i) => ({ id: newId(), projectId, label: it.label, sortOrder: i + 1 })),
       ),
     );
   }

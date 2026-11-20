@@ -35,7 +35,6 @@ export const projects = sqliteTable(
     photoCaption: text('photo_caption'),
     quote: text('quote'),
     quoteRole: text('quote_role'),
-    statusLabel: text('status_label').notNull().default('Berjalan'),
     sortOrder: integer('sort_order').notNull().default(0),
     published: integer('published', { mode: 'boolean' }).notNull().default(false),
     createdAt: text('created_at').notNull(),
@@ -50,7 +49,6 @@ export const projectItems = sqliteTable('project_items', {
     .notNull()
     .references(() => projects.id, { onDelete: 'cascade' }),
   label: text('label').notNull(),
-  quantity: text('quantity').notNull(),
   sortOrder: integer('sort_order').notNull().default(0),
 });
 

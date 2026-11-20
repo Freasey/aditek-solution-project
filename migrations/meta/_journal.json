@@ -22,6 +22,13 @@
       "when": 1795000300733,
       "tag": "0002_login_attempts",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1795142123545,
+      "tag": "0003_drop_status_quantity",
+      "breakpoints": true
     }
   ]
 }

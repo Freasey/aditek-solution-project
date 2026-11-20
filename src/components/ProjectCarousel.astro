@@ -25,8 +25,12 @@ const total = projects.length;
   {total > 1 && (
     <div class="controls">
       <span class="count fig" aria-hidden="true"><b data-now>01</b> / {pad2(total)}</span>
-      <button class="btn btn--quiet" type="button" data-go="-1" aria-controls="cases" aria-label="Proyek sebelumnya">Sebelumnya</button>
-      <button class="btn btn--quiet" type="button" data-go="1" aria-controls="cases" aria-label="Proyek berikutnya">Berikutnya</button>
+      <button class="nav-btn" type="button" data-go="-1" aria-controls="cases" aria-label="Proyek sebelumnya">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+      </button>
+      <button class="nav-btn" type="button" data-go="1" aria-controls="cases" aria-label="Proyek berikutnya">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+      </button>
     </div>
   )}
 </div>

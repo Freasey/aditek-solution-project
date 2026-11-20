@@ -23,7 +23,7 @@ const { project: p, index, eager = false } = Astro.props;
   {p.items.length > 0 && (
     <ul>
       {p.items.map((it) => (
-        <li><span>{it.label}</span><span>{it.quantity}</span></li>
+        <li>{it.label}</li>
       ))}
     </ul>
   )}
@@ -33,5 +33,4 @@ const { project: p, index, eager = false } = Astro.props;
       {p.quoteRole && <cite><span data-show="quoteRole">{p.quoteRole}</span>, {p.clientName}</cite>}
     </blockquote>
   )}
-  <span class="stamp" aria-hidden="true" data-show="statusLabel">{p.statusLabel}</span>
 </div>

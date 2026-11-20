@@ -55,7 +55,7 @@ Perintah lain:
 ## Struktur
 
 ```
-migrations/          SQL untuk wrangler d1 migrations (0000_init, 0001_seed)
+migrations/          SQL untuk wrangler d1 migrations (dibuat dengan pnpm db:generate)
 seed/dev.sql         data contoh, hanya lokal
 public/fonts/        General Sans (Fontshare) dan Geist Mono, di-host sendiri
 src/db/              skema Drizzle dan client

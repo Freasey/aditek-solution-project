@@ -70,11 +70,10 @@ export const projectSchema = z.object({
   photoCaption: optionalText(160),
   quote: optionalText(300),
   quoteRole: optionalText(100),
-  statusLabel: trimmed(1, 30),
   sortOrder: intField(0, 9999).default(0),
   published: checkbox,
   items: z
-    .array(z.object({ label: trimmed(1, 100), quantity: trimmed(1, 30) }))
+    .array(z.object({ label: trimmed(1, 100) }))
     .max(12)
     .default([]),
 });
