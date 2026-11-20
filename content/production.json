@@ -1,0 +1,54 @@
+{
+  "$comment": "Konten asli production. Ubah file ini lalu jalankan pnpm content:apply:remote. Aturan ada di scripts/content-sql.ts.",
+  "settings": {
+    "reply_promise": "Kami balas dalam satu hari kerja.",
+    "hero_title": "System integrator untuk keamanan gedung, ERP, dan workplace.",
+    "footer_line": "Dirancang dengan benar, dipakai setiap hari."
+  },
+  "systems": [
+    {
+      "slug": "security",
+      "title": "Sistem keamanan",
+      "summary": "Access control, CCTV, dan visitor management dalam satu arsitektur.",
+      "ctaLabel": "Konsultasikan sistem keamanan"
+    },
+    {
+      "slug": "erp",
+      "title": "Sistem ERP",
+      "summary": "Sales, purchasing, inventory, sampai accounting dalam satu data.",
+      "ctaLabel": "Konsultasikan sistem ERP"
+    },
+    {
+      "slug": "spaces",
+      "title": "Spaces",
+      "summary": "Aplikasi workplace kami, dimulai dari booking ruang meeting.",
+      "ctaLabel": "Minta demo Spaces"
+    }
+  ],
+  "roadmap": [
+    {
+      "id": "3f0c2a0e-6c55-4a43-9d0e-6a1d1f2b7a01",
+      "title": "Manajemen aset IT",
+      "summary": "Laptop, lisensi, dan perangkat jaringan.",
+      "stage": "uji_coba"
+    },
+    {
+      "id": "3f0c2a0e-6c55-4a43-9d0e-6a1d1f2b7a02",
+      "title": "Helpdesk IT",
+      "summary": "Tiket keluhan IT karyawan.",
+      "stage": "uji_coba"
+    },
+    {
+      "id": "3f0c2a0e-6c55-4a43-9d0e-6a1d1f2b7a03",
+      "title": "Parkir dan kendaraan",
+      "summary": "Gerbang dengan pembaca plat nomor.",
+      "stage": "perancangan"
+    },
+    {
+      "id": "3f0c2a0e-6c55-4a43-9d0e-6a1d1f2b7a04",
+      "title": "Monitoring energi",
+      "summary": "Pemakaian listrik per lantai.",
+      "stage": "perancangan"
+    }
+  ]
+}
